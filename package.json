@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Enigma Framework for Node server aplications",
   "scripts": {
-    "lint": "eslint src/**/*.ts --fix",
-    "lint-test": "eslint test/**/*.ts --fix",
+    "lint": "eslint packages/**/*.ts --fix",
     "test": "jest"
   },
   "repository": {
