@@ -23,6 +23,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@enigmagtm/core": "file:../core/enigmagtm-core-1.0.0.tgz",
     "knex": "^0.95.11",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
