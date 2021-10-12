@@ -1,5 +1,5 @@
-export const staticClassAccesor = (metadataKey: string, metadataValue: any): ClassDecorator => {
-  const staticDecorator = <TFunction extends Function>(target: TFunction) => {
+export const StaticClassAccesor = (metadataKey: string, metadataValue: any): ClassDecorator => {
+  const StaticDecorator = <TFunction extends Function>(target: TFunction) => {
     Reflect.defineMetadata(metadataKey, metadataValue, target.prototype);
     Reflect.defineProperty(target, metadataKey, {
       enumerable: false,
@@ -8,5 +8,5 @@ export const staticClassAccesor = (metadataKey: string, metadataValue: any): Cla
       writable: false
     });
   }
-  return staticDecorator;
+  return StaticDecorator;
 }

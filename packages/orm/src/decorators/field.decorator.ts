@@ -2,7 +2,7 @@ import { FieldInfo } from '../types';
 import { FIELDS } from './constants';
 
 export const Field = (): PropertyDecorator => {
-  const fieldDecorator = (target: Object, property: string | symbol): void => {
+  const FieldDecorator = (target: Object, property: string | symbol): void => {
     const targetClass = target.constructor;
     const fields: FieldInfo[] = Reflect.getOwnMetadata(FIELDS, targetClass) || [];
     const type = Reflect.getMetadata('design:type', target, property);
@@ -16,5 +16,5 @@ export const Field = (): PropertyDecorator => {
       writable: false
     });
   }
-  return fieldDecorator;
+  return FieldDecorator;
 }

@@ -22,5 +22,7 @@ describe('decorators', () => {
     expect(TestModel.fields[0].type).toBe('number');
     expect(TestModel.fields[1].name).toBe('name');
     expect(TestModel.fields[1].type).toBe('string');
+    expect(TestModel.orderBy.length).toBe(1);
+    expect(TestModel.orderBy[0]).toBe('id');
   });
 });

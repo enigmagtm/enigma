@@ -1,11 +1,11 @@
 import { SCHEMA, TABLE } from './constants';
-import { staticClassAccesor } from './static-class.decorator';
+import { StaticClassAccesor } from './static-class.decorator';
 
 export const Table = (name: string, schema?: string): ClassDecorator => {
-  const tableDecorator = <TFunction extends Function>(target: TFunction): void => {
-    staticClassAccesor(TABLE, name)(target);
-    staticClassAccesor(SCHEMA, schema)(target);
+  const TableDecorator = <TFunction extends Function>(target: TFunction): void => {
+    StaticClassAccesor(TABLE, name)(target);
+    StaticClassAccesor(SCHEMA, schema)(target);
   }
 
-  return tableDecorator;
+  return TableDecorator;
 }

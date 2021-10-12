@@ -1,4 +1,4 @@
-import { FIELDS, PRIMARY_KEYS, SCHEMA, TABLE } from '../decorators';
+import { FIELDS, ORDER_BY, PRIMARY_KEYS, SCHEMA, TABLE } from '../decorators';
 import { FieldInfo } from '../types/field';
 
 export class Model {
@@ -19,6 +19,9 @@ export class Model {
     return Reflect.getOwnMetadata(FIELDS, this);
   }
 
-  static orderBy: string[];
+  static get orderBy(): string[] {
+    return Reflect.getOwnMetadata(ORDER_BY, this);
+  }
+
   static oneToMany?: any[];
 }

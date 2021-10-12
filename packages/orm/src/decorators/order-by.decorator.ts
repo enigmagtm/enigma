@@ -1,7 +1,7 @@
 import { ORDER_BY } from './constants';
 
 export const OrderBy = (): PropertyDecorator => {
-  const orderByDecorator = (target: Object, property: string | symbol): void => {
+  const OrderByDecorator = (target: Object, property: string | symbol): void => {
     const targetClass = target.constructor;
     const orderByList: string[] = Reflect.getOwnMetadata(ORDER_BY, targetClass) || [];
     orderByList.push(String(property));
@@ -13,5 +13,5 @@ export const OrderBy = (): PropertyDecorator => {
       writable: false
     });
   }
-  return orderByDecorator;
+  return OrderByDecorator;
 }

@@ -4,7 +4,7 @@ import { Field } from './field.decorator';
 import { OrderBy } from './order-by.decorator';
 
 export const Id = (orderById = true): PropertyDecorator => {
-  const idDecorator = (target: Object, property: string | symbol): void => {
+  const IdDecorator = (target: Object, property: string | symbol): void => {
     const targetClass = target.constructor;
     const primaryKeys: FieldInfo[] = Reflect.getOwnMetadata(PRIMARY_KEYS, targetClass) || [];
     const type = Reflect.getMetadata('design:type', target, property);
@@ -22,5 +22,5 @@ export const Id = (orderById = true): PropertyDecorator => {
     });
     Field()(target, property);
   }
-  return idDecorator;
+  return IdDecorator;
 }
