@@ -5,4 +5,5 @@ export const numberTypes = ['number', 'bigint'];
 export interface FieldInfo {
   name: string;
   type: FieldType;
+  regex?: string;
 }
