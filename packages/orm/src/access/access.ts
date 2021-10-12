@@ -1,6 +1,6 @@
 import { BaseRecord } from '@enigmagtm/core';
 import { Model } from '../model';
-import { FieldInfo, Transaction } from '../types';
+import { FieldInfo, GetAllParams, Transaction } from '../types';
 
 export interface DataAccessCore {
   readonly schema: string;
@@ -14,7 +14,7 @@ export interface DataAccessCore {
 export interface DataAccessModel<T extends Model> extends DataAccessCore {
   validate(data: T, $trx: Transaction): Promise<T>;
   onGetAll(rows: T[], $trx: Transaction): Promise<T[]>;
-  getAll(params: any, $trx: Transaction, useLimit?: boolean): Promise<T[]>;
+  getAll(params: GetAllParams, $trx: Transaction, useLimit?: boolean): Promise<T[]>;
   getCount(params: any): Promise<any>;
   onGetById(params: any, $trx: Transaction): Promise<T>;
   getById(params: any, $trx: Transaction): Promise<T>;
