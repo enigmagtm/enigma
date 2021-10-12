@@ -1,7 +1,7 @@
 {
-  "name": "@enigmagtm/core",
+  "name": "@enigmagtm/rest",
   "version": "1.0.0",
-  "description": "Enigma core framework",
+  "description": "Enigma REST framework",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
@@ -12,19 +12,26 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enigmagtm/enigma.git",
-    "directory": "packages/core"
+    "directory": "pacakges/rest"
   },
   "keywords": [
     "ngm",
     "enigma",
-    "core"
+    "rest"
   ],
+  "peerDependencies": {
+    "@enigmagtm/core": "^1.0.0"
+  },
   "license": "MIT",
   "dependencies": {
+    "@enigmagtm/core": "file:../core/enigmagtm-core-1.0.0.tgz",
+    "@enigmagtm/orm": "file:../orm/enigmagtm-orm-1.0.0.tgz",
+    "express": "^4.17.1",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/lodash": "^4.14.175"
   }
 }
