@@ -53,7 +53,7 @@ export const validateField = (data: any, field: string, greaterThanZero = false)
   if (greaterThanZero) {
     if (!Number.isNaN(data[field])) {
       if (data[field] <= 0) {
-        throw new Error(`The field [${field}] must be grater than 0.`);
+        throw new Error(`The field [${field}] must be greater than 0.`);
       }
     }
   }
