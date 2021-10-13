@@ -27,13 +27,13 @@ export const copyObject = (fields: string[], obj: any): any => {
 
 /**
  * @param fields list of fields to compare
- * @param obj1 object to compare
- * @param obj2 object to be compare
+ * @param objTo object to compare
+ * @param objToBe object to be compare
  * @returns true if all fields are equals
  */
-export const compareObj = (fields: string[], obj1: any, obj2: any): boolean => {
+export const compareObj = (fields: string[], objTo: any, objToBe: any): boolean => {
   for (const field of fields) {
-    if (obj1[field] !== obj2[field]) {
+    if (objTo[field] !== objToBe[field]) {
       return false;
     }
   }
@@ -61,14 +61,14 @@ export const validateField = (data: any, field: string, greaterThanZero = false)
 };
 
 /**
- * @param paramObj objetct that contains param values
- * @param fields list of primary keys
- * @param obj object to set params values
+ * @param destination destination objett where values will be assign from soruce object
+ * @param fields list of fields
+ * @param source source object from which values will be assign
  * @returns object with assigned values
  */
-export const copyFields = (paramObj: any, fields: FieldInfo[], obj: any): any => {
+export const copyFields = (destination: any, fields: FieldInfo[], source: any): any => {
   fields.forEach((field: FieldInfo) => {
-    paramObj[field.name] = obj[field.name];
+    destination[field.name] = source[field.name];
   });
-  return paramObj;
+  return destination;
 };
