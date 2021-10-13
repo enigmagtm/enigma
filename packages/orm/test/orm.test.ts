@@ -1,4 +1,4 @@
-import { Model } from '../src';
+import { compareObj, copyFields, copyObject, Model, validateField } from '../src';
 import { Field, Id, Table } from '../src/decorators';
 
 @Table('test', 'schema')
@@ -25,4 +25,53 @@ describe('decorators', () => {
     expect(TestModel.orderBy.length).toBe(1);
     expect(TestModel.orderBy[0]).toBe('id');
   });
+});
+
+describe('utils', () => {
+  const obj = { id: 1, name: 'name', desc: 'desc', test: 0 };
+  const newObj = copyObject(['id', 'name'], obj);
+  const copyObj = copyObject(['desc'], obj);
+  it('Should copy fields and create new object', () => {
+    expect(newObj.id === 1).toBeTruthy();
+    expect(newObj.name === 'name').toBeTruthy();
+    expect(newObj.desc === 'desc').toBeFalsy();
+    expect(newObj === obj).toBeFalsy();
+
+    expect(copyObj.id === 1).toBeFalsy();
+    expect(copyObj.name === 'name').toBeFalsy();
+    expect(copyObj.desc === 'desc').toBeTruthy();
+    expect(copyObj.test === undefined).toBeTruthy();
+  });
+
+  it('Should compare objects by fields', () => {
+    expect(compareObj(['id', 'name'], obj, newObj)).toBeTruthy();
+    expect(compareObj(['id', 'name', 'desc'], obj, newObj)).toBeFalsy();
+  });
+
+  it('Should validate fields', () => {
+    expect(validateField(obj, 'id')).toBeTruthy();
+    expect(validateField(obj, 'id', true)).toBeTruthy();
+    expect((() => {
+      try {
+        validateField(newObj, 'desc');
+      } catch (e: any) {
+        return e.message;
+      }
+    })()).toBe('The field [desc] is required.');
+    expect((() => {
+      try {
+        validateField(obj, 'test', true);
+      } catch (e: any) {
+        return e.message;
+      }
+    })()).toBe(`The field [test] must be greater than 0.`);
+  });
+
+  it('Should copy fields from source object', () => {
+    copyFields(copyObj, [{ name: 'id', type: 'number' }, { name: 'name', type: 'string' }], obj);
+    expect(copyObj.id === 1).toBeTruthy();
+    expect(copyObj.name === 'name').toBeTruthy();
+    expect(copyObj.desc === 'desc').toBeTruthy();
+    expect(copyObj.test === 0).toBeFalsy();
+  })
 });
