@@ -5,7 +5,7 @@ import { FieldInfo } from '../types';
  * @param fields Array of fields to set
  * @param obj Object with the fields to be set to new object
  */
-export const copyFields = (fields: string[], obj: any): any => {
+export const copyObject = (fields: string[], obj: any): any => {
   if (obj instanceof Array) {
     return obj.map((object: any) => {
       return fields.reduce((newObject: any, field: string) => {
@@ -62,12 +62,12 @@ export const validateField = (data: any, field: string, greaterThanZero = false)
 
 /**
  * @param paramObj objetct that contains param values
- * @param primaryKeys list of primary keys
+ * @param fields list of primary keys
  * @param obj object to set params values
  * @returns object with assigned values
  */
-export const copyPrimaryKeys = (paramObj: any, primaryKeys: FieldInfo[], obj: any): any => {
-  primaryKeys.forEach((field: FieldInfo) => {
+export const copyFields = (paramObj: any, fields: FieldInfo[], obj: any): any => {
+  fields.forEach((field: FieldInfo) => {
     paramObj[field.name] = obj[field.name];
   });
   return paramObj;
