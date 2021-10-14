@@ -1,7 +1,7 @@
 {
-  "name": "@enigmagtm/rest",
+  "name": "@enigmagtm/http",
   "version": "1.0.0",
-  "description": "Enigma REST framework",
+  "description": "Enigma HTTP framework",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
@@ -12,12 +12,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enigmagtm/enigma.git",
-    "directory": "pacakges/rest"
+    "directory": "pacakges/http"
   },
   "keywords": [
     "ngm",
     "enigma",
-    "rest"
+    "http"
   ],
   "peerDependencies": {
     "@enigmagtm/core": "^1.0.0"
