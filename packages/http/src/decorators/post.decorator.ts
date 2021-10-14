@@ -1,11 +1,11 @@
 import {
   BODY_PARAM, HeaderParameter, HEADER_PARAMS, HttpStatus, HttpVerb, METHOD, NextFunction, Parameter, PathParameter, PATH_PARAMS,
-  QueryParameter, QUERY_PARAMS, Request, RESOURCE_METHOD, Response, RESTParams
+  QueryParameter, QUERY_PARAMS, Request, RESOURCE_METHOD, Response, HTTPParams
 } from '../types';
 import { HttpMethodDecorator as HttpMethodDecorator } from './http-method.decorator';
 
 export const postConfig = {
-  function: async (target: Object, method: any, args: any[], params: RESTParams): Promise<void> => {
+  function: async (target: Object, method: any, args: any[], params: HTTPParams): Promise<void> => {
     try {
       const result = await method.apply(target, args);
       (params.res as any).res.status(params.options?.status || HttpStatus.OK).json(result);

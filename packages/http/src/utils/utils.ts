@@ -3,7 +3,7 @@ import { asyncHandler, HttpVerb, RequestHandler, Router } from '../types';
 
 /**
  * @param fields keys to be set as a path param
- * @returns path param for api rest calls
+ * @returns path param for api http calls
  */
 export const buildPathParams = (fields: FieldInfo[]): string => {
   return fields.reduce((params: string, field: FieldInfo) =>

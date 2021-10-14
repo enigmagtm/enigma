@@ -9,7 +9,7 @@ export const fnAsyncHandler = ((fn: RequestHandler) =>
     Promise.resolve(fn(req, res, next)).catch(next));
 export const asyncHandler: RequestExecutor = fnAsyncHandler;
 
-export interface RESTParams {
+export interface HTTPParams {
   res: Response;
   req: Request;
   next: NextFunction;
