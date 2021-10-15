@@ -2,7 +2,7 @@ import { BaseRecord } from '@enigmagtm/core';
 import { Model } from '../model';
 import { FieldInfo, GetAllParams, Transaction } from '../types';
 
-export interface DataAccessCore {
+export interface DataAccessBase {
   readonly schema: string;
   readonly table: string;
   readonly fields: FieldInfo[];
@@ -11,7 +11,7 @@ export interface DataAccessCore {
   readonly oneToMany?: any[];
 }
 
-export interface DataAccessModel<T extends Model> extends DataAccessCore {
+export interface DataAccessModel<T extends Model> extends DataAccessBase {
   validate(data: T, $trx: Transaction): Promise<T>;
   onGetAll(rows: T[], $trx: Transaction): Promise<T[]>;
   getAll(params: GetAllParams, $trx: Transaction, useLimit?: boolean): Promise<T[]>;

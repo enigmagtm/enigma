@@ -1,5 +1,5 @@
 import { TypeRef } from '@enigmagtm/core';
-import { DataAccessCore } from '../access';
+import { DataAccessBase } from '../access';
 import { FIELDS, ORDER_BY, PRIMARY_KEYS, SCHEMA, TABLE } from '../decorators';
 import { FieldInfo } from '../types/field';
 
@@ -28,5 +28,5 @@ export class Model {
   static oneToMany?: any[];
 }
 
-export interface ModelRef<T extends Model> extends TypeRef<T>, DataAccessCore {
+export interface ModelRef<T extends Model> extends TypeRef<T>, DataAccessBase {
 }
