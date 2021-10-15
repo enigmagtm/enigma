@@ -20,12 +20,11 @@
     "http"
   ],
   "peerDependencies": {
-    "@enigmagtm/core": "^1.0.0"
+    "@enigmagtm/core": "^1.0.0",
+    "@enigmagtm/orm": "^1.0.0"
   },
   "license": "MIT",
   "dependencies": {
-    "@enigmagtm/core": "file:../core/enigmagtm-core-1.0.0.tgz",
-    "@enigmagtm/orm": "file:../orm/enigmagtm-orm-1.0.0.tgz",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
