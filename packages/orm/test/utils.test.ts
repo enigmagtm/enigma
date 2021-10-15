@@ -1,24 +1,4 @@
 import { compareObj, copyFields, copyObject, validateField } from '../src';
-import { ModelStub } from './model.stub';
-
-
-describe('decorators', () => {
-  it('should assign all table related decorators', () => {
-    expect(ModelStub.table).toBe('test');
-    expect(ModelStub.schema).toBe('schema');
-    expect(ModelStub.primaryKeys).toBeInstanceOf(Array);
-    expect(ModelStub.primaryKeys[0].name).toBe('id');
-    expect(ModelStub.primaryKeys[0].type).toBe('number');
-    expect(ModelStub.fields).toBeInstanceOf(Array);
-    expect(ModelStub.fields.length).toBe(2);
-    expect(ModelStub.fields[0].name).toBe('id');
-    expect(ModelStub.fields[0].type).toBe('number');
-    expect(ModelStub.fields[1].name).toBe('name');
-    expect(ModelStub.fields[1].type).toBe('string');
-    expect(ModelStub.orderBy.length).toBe(1);
-    expect(ModelStub.orderBy[0]).toBe('id');
-  });
-});
 
 describe('utils', () => {
   let obj: any;
