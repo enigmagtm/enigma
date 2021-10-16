@@ -1,18 +1,20 @@
 import {
-  BODY_PARAM, HeaderParameter, HEADER_PARAMS, HttpStatus, HttpVerb, METHOD, NextFunction, Parameter, PathParameter, PATH_PARAMS,
-  QueryParameter, QUERY_PARAMS, Request, RESOURCE_METHOD, Response, HTTPParams
+  BODY_PARAM, CustomHttpMethod, HeaderParameter, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, NextFunction, Parameter,
+  PathParameter, PATH_PARAMS, QueryParameter, QUERY_PARAMS, Request, RESOURCE_METHOD, Response
 } from '../types';
 import { HttpMethodDecorator } from './http-method.decorator';
 
-export const patchConfig = {
-  function: async (target: Object, method: any, args: any[], params: HTTPParams): Promise<void> => {
-    try {
-      const result = await method.apply(target, args);
-      (params.res as any).res.status(params.options?.status || HttpStatus.OK).json(result);
-    } catch (e) {
-      params.next(e);
-    }
+let customMethod: CustomHttpMethod = async (target: Object, method: any, args: any[], params: HttpParams): Promise<void> => {
+  try {
+    const result = await method.apply(target, args);
+    (params.res as any).res.status(params.options?.status || HttpStatus.OK).json(result);
+  } catch (e) {
+    params.next(e);
   }
+};
+
+export const configurePatchMethod = (method: CustomHttpMethod) => {
+  customMethod = method;
 };
 
 export const Patch = (options?: any): MethodDecorator => {
@@ -43,7 +45,7 @@ export const Patch = (options?: any): MethodDecorator => {
             args.push(param.value);
           }
 
-          await patchConfig.function(this, method, args, { res, req, next, options });
+          await customMethod(this, method, args, { res, req, next, options });
         },
         writable: false
       });
