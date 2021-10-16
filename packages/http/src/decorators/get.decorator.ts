@@ -2,7 +2,7 @@ import {
   BODY_PARAM, CustomHttpMethod, HeaderParameter, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, NextFunction, Parameter,
   PathParameter, PATH_PARAMS, QueryParameter, QUERY_PARAMS, Request, RESOURCE_METHOD, Response
 } from '../types';
-import { HttpMethodDecorator as HttpMethodDecorator } from './http-method.decorator';
+import { HttpMethodDecorator } from './http-method.decorator';
 
 let customMethod: CustomHttpMethod = async (target: Object, method: any, args: any[], params: HttpParams): Promise<void> => {
   try {
