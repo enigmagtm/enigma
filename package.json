@@ -4,7 +4,11 @@
   "description": "Enigma Framework for Node server aplications",
   "scripts": {
     "lint": "eslint packages/**/*.ts --fix",
-    "test": "jest"
+    "test": "jest",
+    "pack-core": "cd packages/core && npm pack",
+    "pack-orm": "cd packages/orm && npm pack",
+    "pack-http": "cd packages/http && npm pack",
+    "pack-all": "npm run pack-core && npm run pack-orm && npm run pack-http"
   },
   "repository": {
     "type": "git",
