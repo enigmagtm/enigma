@@ -7,8 +7,7 @@ class TestInjectable {
 
 @Injectable()
 class TestClass {
-  constructor(@Inject(TestInjectable) readonly testInjectable?: TestInjectable) {
-  }
+  @Inject() readonly propInjectable: TestInjectable;
 }
 
 describe('injectable', () => {
@@ -16,7 +15,7 @@ describe('injectable', () => {
     expect((Reflect.getOwnMetadata(`${INJECT}TestClass`, TestClass.prototype.constructor) || []).length).toBeGreaterThan(0);
   });
   it('Should be instance of TestInjectable', () => {
-    expect(new TestClass().testInjectable).toBeInstanceOf(TestInjectable);
+    expect(new TestClass().propInjectable).toBeInstanceOf(TestInjectable);
   });
 });
 

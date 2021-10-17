@@ -1,14 +1,15 @@
-import { TypeRef } from '../types';
+import { Property } from '../types';
 import { INJECT } from './constants';
 
-export const Inject = (reference: TypeRef<any>): ParameterDecorator => {
-  const injectDecorator = (target: any, _property: string | symbol, index: number): void => {
-    const metadataKey = `${INJECT}${String(target.name || '')}`;
-    const params: any[] = Reflect.getOwnMetadata(metadataKey, target) || [];
-    if (params.findIndex((param: any) => param.index === index) === -1) {
-      params.unshift({ reference, index });
-    }
-    Reflect.defineMetadata(metadataKey, params, target);
-  };
-  return injectDecorator;
+export const Inject = (): PropertyDecorator => {
+  const InjectDecorator = (target: any, property: string | symbol): void => {
+    const targetClass = target.constructor;
+    const metadataKey = `${INJECT}${targetClass.name}`;
+    const properties: Property[] = Reflect.getOwnMetadata(metadataKey, targetClass) || [];
+    const type = Reflect.getMetadata('design:type', target, property);
+    const fieldType = type.name.toLowerCase();
+    properties.push({ name: String(property), type, fieldType });
+    Reflect.defineMetadata(metadataKey, properties, targetClass);
+  }
+  return InjectDecorator;
 }
