@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { FieldInfo } from '../types';
+import { FieldInfo, Param, QueryBuilder } from '../types';
 
 /**
  * @param fields Array of fields to set
@@ -72,3 +72,30 @@ export const copyFields = (destination: any, fields: FieldInfo[], source: any): 
   });
   return destination;
 };
+
+/**
+ * @param query object that manages where clauses
+ * @param where object with conditions
+ * @returns queryBuilder with added conditions
+ */
+export const parseWhere = (query: QueryBuilder, where: any): QueryBuilder => {
+  for (const [key, value] of Object.entries<any>(where)) {
+    if (key === 'or') {
+      for (const [keyOr, valueOr] of Object.entries<any>(value)) {
+        if (valueOr === 'object') {
+          query = query.orWhere(keyOr, (valueOr as Param).operator, (valueOr as Param).value);
+          continue;
+        }
+        query = query.orWhere({ [keyOr]: valueOr });
+        continue;
+      }
+      continue;
+    }
+    if (typeof value === 'object') {
+      query = query.where(key, (value as Param).operator, (value as Param).value);
+      continue;
+    }
+    query = query.where({ [key]: value });
+  }
+  return query;
+}
