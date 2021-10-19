@@ -1,30 +1,11 @@
 import { BaseRecord } from '@enigmagtm/core';
 import { isNil, remove } from 'lodash';
-import { connection, DataAccess } from '.';
-import { Model, ModelRef } from '../model';
-import { Connection, CountResult, FieldInfo, GetAllParams, Transaction } from '../types';
+import { connection, DataAccess, ModelAccessBase } from '.';
+import { Model } from '../model';
+import { CountResult, FieldInfo, GetAllParams, Transaction } from '../types';
 import { compareObj, copyFields, copyObject, parseWhere } from '../utils';
 
-export class DataModelAccess<T extends Model> implements DataAccess<T> {
-  readonly schema: string;
-  readonly table: string;
-  readonly fields: FieldInfo[];
-  readonly primaryKeys: FieldInfo[];
-  readonly orderBy: string[];
-  readonly oneToMany: any[];
-  constructor(options: ModelRef<T>) {
-    const { schema, table, fields, primaryKeys, orderBy, oneToMany = [] } = options;
-    this.schema = schema;
-    this.table = table;
-    this.fields = fields;
-    this.primaryKeys = primaryKeys;
-    this.orderBy = orderBy;
-    this.oneToMany = oneToMany;
-  }
-
-  get db(): Connection {
-    return connection(this.schema);
-  }
+export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements DataAccess<T> {
 
   async validate(data: T, _$trx?: Transaction): Promise<T> {
     return data;
