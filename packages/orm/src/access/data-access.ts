@@ -1,15 +1,7 @@
 import { BaseRecord } from '@enigmagtm/core';
 import { Model } from '../model';
-import { CountResult, FieldInfo, GetAllParams, Transaction } from '../types';
-
-export interface DataAccessBase {
-  readonly schema: string;
-  readonly table: string;
-  readonly fields: FieldInfo[];
-  readonly primaryKeys: FieldInfo[];
-  readonly orderBy: string[];
-  readonly oneToMany?: any[];
-}
+import { CountResult, GetAllParams, Transaction } from '../types';
+import { DataAccessBase } from './data-access-base';
 
 export interface DataAccess<T extends Model> extends DataAccessBase {
   validate(data: T, $trx: Transaction): Promise<T>;

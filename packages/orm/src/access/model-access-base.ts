@@ -1,6 +1,7 @@
-import { connection, DataAccessBase } from '.';
+import { connection } from '../db';
 import { Model, ModelRef } from '../model';
 import { Connection, FieldInfo } from '../types';
+import { DataAccessBase } from './data-access-base';
 
 export class ModelAccessBase<T extends Model> implements DataAccessBase {
   readonly schema: string;

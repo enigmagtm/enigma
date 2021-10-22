@@ -1,9 +1,11 @@
 import { BaseRecord } from '@enigmagtm/core';
 import { isNil, remove } from 'lodash';
-import { connection, DataAccess, ModelAccessBase } from '.';
+import { connection } from '../db';
 import { Model } from '../model';
 import { CountResult, FieldInfo, GetAllParams, Transaction } from '../types';
 import { compareObj, copyFields, copyObject, parseWhere } from '../utils';
+import { DataAccess } from './data-access';
+import { ModelAccessBase } from './model-access-base';
 
 export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements DataAccess<T> {
 
