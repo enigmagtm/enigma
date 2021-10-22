@@ -1,3 +1,4 @@
+export * from './column-options';
 export * from './count';
 export * from './field';
 export * from './k-types';

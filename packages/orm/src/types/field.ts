@@ -5,5 +5,6 @@ export const numberTypes = ['number', 'bigint'];
 export interface FieldInfo {
   name: string;
   type: FieldType;
+  mapTo?: string;
   regex?: string;
 }
