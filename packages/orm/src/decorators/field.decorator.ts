@@ -7,7 +7,7 @@ export const Field = (options?: ColumnOptions): PropertyDecorator => {
     const fields: FieldInfo[] = Reflect.getOwnMetadata(FIELDS, targetClass) || [];
     const type = Reflect.getMetadata('design:type', target, property);
     const fieldType = type.name.toLowerCase();
-    fields.push({ name: String(property), type: fieldType, mapTo: options?.mapTo });
+    fields.push({ name: String(property), type: fieldType, map: options?.map });
     Reflect.defineMetadata(FIELDS, fields, targetClass);
     Reflect.defineProperty(targetClass, FIELDS, {
       enumerable: false,

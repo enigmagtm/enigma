@@ -9,6 +9,16 @@ import { ModelAccessBase } from './model-access-base';
 
 export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements DataAccess<T> {
 
+  buildQueryFields(fields?: string[]): string[] {
+    let sfields = this.fields;
+    if (fields) {
+      sfields = this.fields.filter((key: FieldInfo) => {
+        return fields.find((field: string) => field === key.name);
+      });
+    }
+    return sfields.map((key: FieldInfo) => `"${key.map || key.name}" AS "${key.name}"`);
+  }
+
   async validate(data: T, _$trx?: Transaction): Promise<T> {
     return data;
   }
@@ -68,13 +78,13 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
   }
 
   async getAll(params: GetAllParams, $trx: Transaction): Promise<T[]> {
-    const { sfields = this.fields.map((key: FieldInfo) => key.name),
+    const { sfields,
       offset = 0,
       limit = 10,
       useLimit = true,
       where } = params;
     let query = this.db
-      .select(sfields)
+      .select(this.buildQueryFields(sfields))
       .from<T>(this.table)
       .orderBy(this.orderBy)
       .transacting($trx);
@@ -103,14 +113,14 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
   }
 
   async getById(params: any, $trx: Transaction): Promise<T> {
-    const { sfields = this.fields.map((key: FieldInfo) => key.name) } = params;
+    const { sfields } = params;
     if (this.primaryKeys.reduce((valid: boolean, field: FieldInfo) => valid || isNil(params[field.name]), false)) {
       throw new Error(`Primary keys not found ${this.primaryKeys.map((key: FieldInfo) => key.name).join(',')}`);
     }
 
     const where = copyFields({}, this.primaryKeys, params);
     const query = this.db
-      .select(sfields)
+      .select(this.buildQueryFields(sfields))
       .from(this.table)
       .where(where)
       .transacting($trx);
@@ -143,15 +153,11 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
     try {
       await this.beforeInsert(data, $trx);
       this.assignCreateLog(data, user);
-      const obj = copyObject(this.fields.map((key: FieldInfo) => key.name), data);
-      if (this.primaryKeys.length === 1) {
-        delete obj[this.primaryKeys[0].name];
-      }
-
+      const obj = copyObject(this.fields, data, true);
       const query = this.db
         .insert(obj)
         .table(this.table)
-        .returning(this.fields.map((key: FieldInfo) => key.name))
+        .returning(this.buildQueryFields())
         .transacting($trx);
       let newObj = (await query)[0] as T;
 
@@ -164,7 +170,7 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
             (det.foreignKeys || []).forEach((/* fk: any */) => {
               // detail[fk.local] = newObj[fk.reference];
             });
-            detail = copyObject($details.fields, detail);
+            detail = copyObject($details.fields, detail, true);
             details.push(detail);
           }
 
@@ -185,18 +191,15 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
     try {
       const { data, user } = params;
       const oldData = await this.getById(data, $trx);
-      let newData = copyObject(this.fields.map((key: FieldInfo) => key.name), data);
       const where = copyFields({}, this.primaryKeys, data);
-      const query = this.db
-        .update(newData)
+      let newData = await this.beforeUpdate(oldData, data, $trx);
+      this.assignUpdateLog(newData, user);
+      newData = (await this.db
+        .update(copyObject(this.fields, newData, true))
         .table(this.table)
         .where(where)
-        .returning(this.fields.map((key: FieldInfo) => key.name))
-        .transacting($trx);
-      newData = await this.beforeUpdate(oldData, newData, $trx);
-      this.assignUpdateLog(newData, user);
-      newData = await query;
-      newData = newData[0];
+        .returning(this.buildQueryFields())
+        .transacting($trx))[0] as T;
 
       for (const detOneToMany of (this.oneToMany || [])) {
         if (!isNil(data[detOneToMany.detail]) && data[detOneToMany.detail].length > 0) {
@@ -212,7 +215,7 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
           if (detailsToInsert.length > 0) {
             for (let detail of detailsToInsert) {
               (detOneToMany.foreignKeys || []).forEach((fk: any) => {
-                detail[fk.local] = newData[fk.reference];
+                detail[fk.local] = (newData as any)[fk.reference];
               });
               detail = copyObject($details.fields, detail);
               details.push(detail);
@@ -274,7 +277,7 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
             details.push(newDet);
           }
 
-          newData[detOneToMany.detail] = details;
+          (newData as any)[detOneToMany.detail] = details;
         }
       }
       newData = await this.afterUpdate(newData, $trx);
@@ -294,20 +297,19 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
       delete data.userUpdateId;
       delete data.updatedAt;
       let patchData = {
-        ...copyObject(this.fields.map((key: FieldInfo) => key.name), oldData),
-        ...copyObject(this.fields.map((key: FieldInfo) => key.name), data)
+        ...oldData,
+        ...data
       };
       const where = copyFields({}, this.primaryKeys, data);
       const query = this.db
-        .update(patchData)
+        .update(copyObject(this.fields, patchData, true))
         .table(this.table)
         .where(where)
-        .returning(this.fields.map((key: FieldInfo) => key.name))
+        .returning(this.buildQueryFields())
         .transacting($trx);
       patchData = await this.beforePatch(oldData, patchData, $trx);
       this.assignUpdateLog(patchData, user);
-      patchData = await query;
-      patchData = patchData[0];
+      patchData = (await query)[0] as T;
       const patchedData = await this.update({ data: patchData, user }, $trx) as T;
       patchData = await this.afterPatch(patchedData, $trx);
       return patchData;

@@ -1,3 +1,3 @@
 export interface ColumnOptions {
-  mapTo?: string;
+  map?: string;
 }

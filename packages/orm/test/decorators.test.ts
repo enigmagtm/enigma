@@ -12,10 +12,10 @@ describe('decorators', () => {
     expect(ModelStub.fields.length).toBe(2);
     expect(ModelStub.fields[0].name).toBe('id');
     expect(ModelStub.fields[0].type).toBe('number');
-    expect(ModelStub.fields[0].mapTo).toBeUndefined();
+    expect(ModelStub.fields[0].map).toBeUndefined();
     expect(ModelStub.fields[1].name).toBe('name');
     expect(ModelStub.fields[1].type).toBe('string');
-    expect(ModelStub.fields[1].mapTo).toBe('test_name');
+    expect(ModelStub.fields[1].map).toBe('test_name');
     expect(ModelStub.orderBy.length).toBe(1);
     expect(ModelStub.orderBy[0]).toBe('id');
   });

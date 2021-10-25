@@ -6,6 +6,6 @@ export class ModelStub extends Model {
   @Field()
   @OrderBy()
   id!: number;
-  @Field({ mapTo: 'test_name'})
+  @Field({ map: 'test_name'})
   name!: string;
 }

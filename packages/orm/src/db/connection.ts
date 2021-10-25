@@ -27,5 +27,6 @@ export const transaction = async (config?: TransactionConfig): Promise<Transacti
   if ($db === undefined) {
     throw new Error('Connection not initialized.');
   }
+
   return await $db.transaction.bind($db)(config);
 };

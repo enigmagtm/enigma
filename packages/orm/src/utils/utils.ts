@@ -5,20 +5,22 @@ import { FieldInfo, Param, QueryBuilder } from '../types';
  * @param fields Array of fields to set
  * @param obj Object with the fields to be set to new object
  */
-export const copyObject = (fields: string[], obj: any): any => {
+export const copyObject = (fields: FieldInfo[], obj: any, mapped?: boolean): any => {
   if (obj instanceof Array) {
     return obj.map((object: any) => {
-      return fields.reduce((newObject: any, field: string) => {
-        if (object[field] !== undefined) {
-          newObject[field] = object[field];
+      return fields.reduce((newObject: any, fieldInfo: FieldInfo) => {
+        const field = mapped ? (fieldInfo.map || fieldInfo.name) : fieldInfo.name;
+        if (object[fieldInfo.name] !== undefined) {
+          newObject[field] = object[fieldInfo.name];
         }
         return newObject;
       }, {});
     });
   } else {
-    return fields.reduce((object: any, field: string) => {
-      if (obj[field] !== undefined) {
-        object[field] = obj[field];
+    return fields.reduce((object: any, fieldInfo: FieldInfo) => {
+      if (obj[fieldInfo.name] !== undefined) {
+        const field = mapped ? (fieldInfo.map || fieldInfo.name) : fieldInfo.name;
+        object[field] = obj[fieldInfo.name];
       }
       return object;
     }, {});
@@ -67,8 +69,8 @@ export const validateField = (data: any, field: string, greaterThanZero = false)
  * @returns object with assigned values
  */
 export const copyFields = (destination: any, fields: FieldInfo[], source: any): any => {
-  fields.forEach((field: FieldInfo) => {
-    destination[field.name] = source[field.name];
+  fields.forEach((fieldInfo: FieldInfo) => {
+    destination[fieldInfo.map || fieldInfo.name] = source[fieldInfo.name];
   });
   return destination;
 };
