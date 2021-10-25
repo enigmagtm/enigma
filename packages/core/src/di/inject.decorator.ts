@@ -7,8 +7,7 @@ export const Inject = (): PropertyDecorator => {
     const metadataKey = `${INJECT}${targetClass.name}`;
     const properties: Property[] = Reflect.getOwnMetadata(metadataKey, targetClass) || [];
     const type = Reflect.getMetadata('design:type', target, property);
-    const fieldType = type.name.toLowerCase();
-    properties.push({ name: String(property), type, fieldType });
+    properties.push({ name: String(property), type });
     Reflect.defineMetadata(metadataKey, properties, targetClass);
   }
   return InjectDecorator;
