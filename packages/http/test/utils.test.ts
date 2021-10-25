@@ -1,10 +1,9 @@
-import { FieldInfo } from '@enigmagtm/orm';
 import { createRouter, HttpVerb, NextFunction, Request, Response, Router } from '../src/types';
 import { buildKeyValue, buildPathParams, registerMethod } from '../src/utils';
 
 describe('utils', () => {
-  let fieldsTest1: FieldInfo[];
-  let fieldsTest2: FieldInfo[];
+  let fieldsTest1: { name: string; regex?: string; }[];
+  let fieldsTest2: { name: string; regex?: string; }[];
   let data: any;
   let router: Router;
 
@@ -17,8 +16,8 @@ describe('utils', () => {
   });
 
   beforeEach(() => {
-    fieldsTest1 = [{ name: 'id', type: 'number', regex: '(^[^-](\\d+))' }];
-    fieldsTest2 = [{ name: 'id', type: 'number' }, { name: 'name', type: 'string' }];
+    fieldsTest1 = [{ name: 'id', regex: '(^[^-](\\d+))' }];
+    fieldsTest2 = [{ name: 'id' }, { name: 'name' }];
   });
 
   it('should build path params', () => {

@@ -1,5 +1,9 @@
-import { FieldInfo } from '@enigmagtm/orm';
 import { asyncHandler, HttpVerb, RequestHandler, Router } from '../types';
+
+interface FieldInfo {
+  name: string;
+  regex?: string;
+}
 
 /**
  * @param fields keys to be set as a path param
