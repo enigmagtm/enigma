@@ -6,26 +6,29 @@ describe('utils', () => {
   let copyObj: any;
 
   beforeEach(() => {
-    obj = { id: 1, name: 'name', desc: 'desc', test: 0 };
-    newObj = copyObject(['id', 'name'], obj);
-    copyObj = copyObject(['desc'], obj);
+    obj = { id: 1, name: 'name', description: 'desc', test: 0 };
+    newObj = copyObject([{ name: 'id', type: 'number' }, { name: 'name', type: 'string' }], obj);
+    copyObj = copyObject([{ name: 'description', type: 'string', map: 'desc' }], obj, true);
   });
 
   it('should copy fields and create new object', () => {
     expect(newObj.id === 1).toBeTruthy();
     expect(newObj.name === 'name').toBeTruthy();
-    expect(newObj.desc === 'desc').toBeFalsy();
+    expect(newObj.description === 'desc').toBeFalsy();
+    expect(newObj.test === undefined).toBeTruthy();
     expect(newObj === obj).toBeFalsy();
 
     expect(copyObj.id === 1).toBeFalsy();
     expect(copyObj.name === 'name').toBeFalsy();
+    expect(copyObj.description === 'desc').toBeFalsy();
     expect(copyObj.desc === 'desc').toBeTruthy();
     expect(copyObj.test === undefined).toBeTruthy();
+    expect(copyObj === obj).toBeFalsy();
   });
 
   it('should compare objects by fields', () => {
     expect(compareObj(['id', 'name'], obj, newObj)).toBeTruthy();
-    expect(compareObj(['id', 'name', 'desc'], obj, newObj)).toBeFalsy();
+    expect(compareObj(['id', 'name', 'description'], obj, newObj)).toBeFalsy();
   });
 
   it('should validate fields', () => {
