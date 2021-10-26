@@ -16,7 +16,17 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
         return fields.find((field: string) => field === key.name);
       });
     }
-    return sfields.map((key: FieldInfo) => `"${key.map || key.name}" AS "${key.name}"`);
+    return sfields.map((key: FieldInfo) => `${key.map || key.name} AS ${key.name}`);
+  }
+
+  buildOrderByFields(fields?: string[]): string[] {
+    let sfields = this.primaryKeys;
+    if (fields) {
+      sfields = this.primaryKeys.filter((key: FieldInfo) => {
+        return fields.find((field: string) => field === key.name);
+      });
+    }
+    return sfields.map((key: FieldInfo) => `${key.map || key.name}`);
   }
 
   async validate(data: T, _$trx?: Transaction): Promise<T> {
@@ -86,7 +96,7 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
     let query = this.db
       .select(this.buildQueryFields(sfields))
       .from<T>(this.table)
-      .orderBy(this.orderBy)
+      .orderBy(this.buildOrderByFields(this.orderBy))
       .transacting($trx);
     if (where) {
       query = parseWhere(query, where);
