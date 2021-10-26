@@ -1,6 +1,7 @@
+import { NextFunction, Request, Response } from '@enigmagtm/core';
 import {
-  BODY_PARAM, CustomHttpMethod, HeaderParameter, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, NextFunction, Parameter,
-  PathParameter, PATH_PARAMS, QueryParameter, QUERY_PARAMS, Request, RESOURCE_METHOD, Response
+  BODY_PARAM, CustomHttpMethod, HeaderParameter, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, Parameter,
+  PathParameter, PATH_PARAMS, QueryParameter, QUERY_PARAMS, RESOURCE_METHOD
 } from '../types';
 import { HttpMethodDecorator } from './http-method.decorator';
 

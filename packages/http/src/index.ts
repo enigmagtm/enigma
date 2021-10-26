@@ -1,4 +1,4 @@
-export * from 'reflect-metadata';
+import 'reflect-metadata';
 export * from './decorators';
 export * from './middleware';
 export * from './types';

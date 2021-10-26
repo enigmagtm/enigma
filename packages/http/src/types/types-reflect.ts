@@ -1,4 +1,4 @@
-import { Router } from '../types';
+import { Router } from '@enigmagtm/core';
 
 export type RegisterMethod = (router: Router) => Router;
 

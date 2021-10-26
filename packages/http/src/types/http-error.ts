@@ -1,4 +1,4 @@
-import { HttpStatus } from '../types';
+import { HttpStatus } from './http-status';
 
 export interface StatusError extends Error {
   code: HttpStatus;

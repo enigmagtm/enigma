@@ -6,8 +6,8 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "prepack": "npm run build"
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "prepack": "rm -rf enigmagtm-http-1.0.0.tgz npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "http"
   ],
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
+    "@enigmagtm/core": "file:../core/enigmagtm-core-1.0.0.tgz",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"

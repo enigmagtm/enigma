@@ -1,4 +1,3 @@
-export * from 'reflect-metadata';
 export * from './body.decorator';
 export * from './delete.decorator';
 export * from './get.decorator';

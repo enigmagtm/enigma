@@ -1,4 +1,5 @@
-import { asyncHandler, HttpVerb, RequestHandler, Router } from '../types';
+import { asyncHandler, RequestHandler, Router } from '@enigmagtm/core';
+import { HttpVerb } from '../types';
 
 interface FieldInfo {
   name: string;

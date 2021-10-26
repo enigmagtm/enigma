@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from '../types';
+import { NextFunction, Request, Response } from '@enigmagtm/core';
 
 export const parseRequest = async (req: Request, res: Response, next: NextFunction) => {
   if (req.query.sfields) {

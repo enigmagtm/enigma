@@ -1,6 +1,7 @@
+import { NextFunction, Request, Response } from '@enigmagtm/core';
 import {
-  BODY_PARAM, CustomHttpMethod, HeaderParameter, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, NextFunction, Parameter,
-  PathParameter, PATH_PARAMS, QueryParameter, QUERY_PARAMS, Request, RESOURCE_METHOD, Response
+  BODY_PARAM, CustomHttpMethod, HeaderParameter, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, Parameter,
+  PathParameter, PATH_PARAMS, QueryParameter, QUERY_PARAMS, RESOURCE_METHOD
 } from '../types';
 import { HttpMethodDecorator } from './http-method.decorator';
 
@@ -18,7 +19,8 @@ export const configureDeleteMethod = (method: CustomHttpMethod) => {
 };
 
 export const Del = (options?: any): MethodDecorator => {
-  const DeleteDecorator = (target: Object, property: string | symbol, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> | void => {
+  const DeleteDecorator = (target: Object, property: string | symbol, descriptor: TypedPropertyDescriptor<any>):
+    TypedPropertyDescriptor<any> | void => {
     const method = descriptor.value;
     if (method) {
       const name = `${String(property)}${RESOURCE_METHOD}`;
