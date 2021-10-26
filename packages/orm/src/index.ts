@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 export * from './access';
 export * from './db';
 export * from './decorators';

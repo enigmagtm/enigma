@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 export * from './constants';
 export * from './field.decorator';
 export * from './id.decorator';

@@ -6,7 +6,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
     "prepack": "npm run build"
   },
   "repository": {
@@ -20,14 +20,12 @@
     "orm"
   ],
   "peerDependencies": {
-    "@enigmagtm/core": "^1.0.0"
-  },
-  "license": "MIT",
-  "dependencies": {
+    "@enigmagtm/core": "file:../core/enigmagtm-core-1.0.0.tgz",
     "knex": "^0.95.11",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
   },
+  "license": "MIT",
   "devDependencies": {
     "@types/lodash": "^4.14.175"
   }
