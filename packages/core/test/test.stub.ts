@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { Inject, Injectable } from '../src/di';
+import { Inject, Injectable } from '../src';
 
 export class TestInjectable {
 }
