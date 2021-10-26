@@ -1,4 +1,5 @@
-import { Router } from '@enigmagtm/core';
+import { NextFunction, Request, Response, Router } from '@enigmagtm/core';
+import { HttpStatus } from './http-status';
 
 export type RegisterMethod = (router: Router) => Router;
 
@@ -33,3 +34,17 @@ export interface Method {
   name: string;
   path?: string;
 }
+
+export interface HttpOptions {
+  name: string;
+  status: HttpStatus;
+}
+
+export interface HttpParams {
+  res: Response;
+  req: Request;
+  next: NextFunction;
+  options?: HttpOptions;
+}
+
+export type CustomHttpMethod = (target: Object, method: any, args: any[], params: HttpParams) => Promise<void> | void;

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from '@enigmagtm/core';
 import { HttpError, HttpStatus } from '../types';
 
-export const errorHandlingRequest = async (err: any, _req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+export const ErrorHandler = async (err: any, _req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   if (res.headersSent) {
     next(err);
   }
