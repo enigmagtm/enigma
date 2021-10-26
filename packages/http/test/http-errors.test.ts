@@ -1,4 +1,4 @@
-import { HttpError, HttpStatus } from '../src/types';
+import { HttpError, HttpStatus } from '../src';
 
 const error = new HttpError(HttpStatus.BAD_REQUEST, 'This is an error message');
 

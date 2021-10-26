@@ -1,5 +1,5 @@
-import { createRouter, HttpVerb, NextFunction, Request, Response, Router } from '../src/types';
-import { buildKeyValue, buildPathParams, registerMethod } from '../src/utils';
+import { createRouter, NextFunction, Request, Response, Router } from '@enigmagtm/core';
+import { buildKeyValue, buildPathParams, HttpVerb, registerMethod } from '../src';
 
 describe('utils', () => {
   let fieldsTest1: { name: string; regex?: string; }[];

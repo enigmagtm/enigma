@@ -1,5 +1,4 @@
-import { Body, Del, Get, HeaderParam, Patch, PathParam, Post, Put, QueryParam } from '../src/decorators';
-import { HttpStatus } from '../src/types';
+import { Body, Del, Get, HeaderParam, HttpStatus, Patch, PathParam, Post, Put, QueryParam } from '../src';
 
 export class HTTPResourceStub {
   @Get({ status: HttpStatus.PARTIAL_CONTENT })

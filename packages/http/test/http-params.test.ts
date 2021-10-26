@@ -1,7 +1,7 @@
 import {
   BODY_PARAM, HeaderParameter, HEADER_PARAMS, METHOD, Parameter, PathParameter, PATH_PARAMS, QueryParameter,
   QUERY_PARAMS
-} from '../src/types';
+} from '../src';
 import { HTTPResourceStub } from './http-resource.stub';
 
 const target = HTTPResourceStub.prototype;

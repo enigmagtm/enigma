@@ -1,4 +1,4 @@
-import { HttpVerb, Method, METHODS } from '../src/types';
+import { HttpVerb, Method, METHODS } from '../src';
 import { HTTPResourceStub } from './http-resource.stub';
 
 const target = HTTPResourceStub.prototype;
