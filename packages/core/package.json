@@ -7,7 +7,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "prepack": "npm run build"
+    "prepack": "rm -rf enigmagtm-core-1.0.0.tgz && npm run build"
   },
   "repository": {
     "type": "git",
