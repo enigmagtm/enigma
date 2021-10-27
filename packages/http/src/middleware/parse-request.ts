@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from '@enigmagtm/core';
 
-export const parseRequest = async (req: Request, res: Response, next: NextFunction) => {
+export const ParseRequest = async (req: Request, res: Response, next: NextFunction) => {
   if (req.query.sfields) {
     try {
       (req.query as any).sfields = JSON.parse((req.query as any).sfields);
