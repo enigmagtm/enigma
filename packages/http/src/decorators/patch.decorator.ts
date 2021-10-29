@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from '@enigmagtm/core';
 import {
   BODY_PARAM, CustomHttpMethod, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, Parameter, PATH_PARAMS, QueryParameter,
   QUERY_PARAMS, RESOURCE_METHOD
 } from '../types';
 import { HttpMethodDecorator } from './http-method.decorator';
+import { createResourceMethod } from './resource-method';
 
 let customMethod: CustomHttpMethod = async (target: Object, method: any, args: any[], params: HttpParams): Promise<void> => {
   try {
@@ -12,6 +12,10 @@ let customMethod: CustomHttpMethod = async (target: Object, method: any, args: a
   } catch (e) {
     params.next(e);
   }
+};
+
+const httpStrategyMethod: CustomHttpMethod = async (target: Object, method: any, args: any[], params: HttpParams): Promise<void> => {
+  return customMethod(target, method, args, params);
 };
 
 export const configurePatchMethod = (method: CustomHttpMethod) => {
@@ -31,23 +35,7 @@ export const Patch = (options?: any): MethodDecorator => {
       const bodyParamDef: Parameter = Reflect.getOwnMetadata(`${METHOD}${BODY_PARAM}${String(property)}`, target);
       Reflect.defineProperty(target, name, {
         configurable: false,
-        value: async function (res: Response, req: Request, next: NextFunction): Promise<void> {
-          req = (req as any);
-          const headerParams = headerParamsDef.map((param: Parameter) => ({ ...param, value: req.get(param.name) }));
-          const pathParams = pathParamsDef.map((param: Parameter) => ({ ...param, value: req.params[param.name] }));
-          const queryParams = queryParamsDef.map((param: Parameter) => ({ ...param, value: req.query[param.name] }));
-          const orderedParams: Parameter[] = [...headerParams, ...pathParams, ...queryParams];
-          if (bodyParamDef) {
-            orderedParams.push(bodyParamDef);
-          }
-
-          const args = [];
-          for (const param of orderedParams.sort((a: Parameter, b: Parameter) => a.index - b.index)) {
-            args.push(param.value);
-          }
-
-          await customMethod(this, method, args, { res, req, next, options });
-        },
+        value: createResourceMethod(this, httpStrategyMethod, method, options, headerParamsDef, pathParamsDef, queryParamsDef, bodyParamDef),
         writable: false
       });
     }
