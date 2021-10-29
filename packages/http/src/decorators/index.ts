@@ -8,3 +8,4 @@ export * from './path-param.decorator';
 export * from './post.decorator';
 export * from './put.decorator';
 export * from './query-param.decorator';
+export * from './resource-method';

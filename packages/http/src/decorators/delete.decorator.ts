@@ -1,9 +1,6 @@
-import {
-  BODY_PARAM, CustomHttpMethod, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, Parameter, PATH_PARAMS, QueryParameter,
-  QUERY_PARAMS, RESOURCE_METHOD
-} from '../types';
+import { CustomHttpMethod, HttpParams, HttpStatus, HttpVerb, RESOURCE_METHOD } from '../types';
 import { HttpMethodDecorator } from './http-method.decorator';
-import { createResourceMethod } from './resource-method';
+import { createResourceMethod, getResourceParameters } from './resource-method';
 
 let customMethod: CustomHttpMethod = async (target: Object, method: any, args: any[], params: HttpParams): Promise<void> => {
   try {
@@ -30,13 +27,10 @@ export const Del = (options?: any): MethodDecorator => {
       const name = `${String(property)}${RESOURCE_METHOD}`;
       options = { ...{ name }, ...options };
       HttpMethodDecorator(target, name, HttpVerb.DELETE, options);
-      const headerParamsDef: Parameter[] = Reflect.getOwnMetadata(`${METHOD}${HEADER_PARAMS}${String(property)}`, target) || [];
-      const pathParamsDef: Parameter[] = Reflect.getOwnMetadata(`${METHOD}${PATH_PARAMS}${String(property)}`, target) || [];
-      const queryParamsDef: QueryParameter[] = Reflect.getOwnMetadata(`${METHOD}${QUERY_PARAMS}${String(property)}`, target) || [];
-      const bodyParamDef: Parameter = Reflect.getOwnMetadata(`${METHOD}${BODY_PARAM}${String(property)}`, target);
+      const params = getResourceParameters(target, String(property));
       Reflect.defineProperty(target, name, {
         configurable: false,
-        value: createResourceMethod(this, httpStrategyMethod, method, options, headerParamsDef, pathParamsDef, queryParamsDef, bodyParamDef),
+        value: createResourceMethod(this, httpStrategyMethod, method, options, params),
         writable: false
       });
     }
