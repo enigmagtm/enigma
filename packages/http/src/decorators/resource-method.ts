@@ -25,7 +25,7 @@ export const createResourceMethod = (target: any, httpMethod: CustomHttpMethod, 
     const queryParams = queryParamsDef?.map((param: Parameter) => ({ ...param, value: req.query[param.name] })) || [];
     const orderedParams: Parameter[] = [...headerParams, ...pathParams, ...queryParams];
     if (bodyParamDef) {
-      orderedParams.push(bodyParamDef);
+      orderedParams.push({ ...bodyParamDef, value: req.body});
     }
 
     const args = [];
