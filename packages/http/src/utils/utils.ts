@@ -1,5 +1,6 @@
 import { asyncHandler, RequestHandler, Router } from '@enigmagtm/core';
-import { HttpVerb } from '../types';
+import { RequestConsumer } from '../resources';
+import { HttpVerb, Method, METHODS } from '../types';
 
 interface FieldInfo {
   name: string;
@@ -52,5 +53,22 @@ export const registerMethod = (httpVerb: HttpVerb, path: string, request: Reques
 
     default: router.get(path, resolvers, asyncHandler(request));
       break;
+  }
+}
+
+/**
+ * @param target instance of object to get defined methods
+ * @param resource name of the resrouce to be used as api path
+ * @param httpVerb http verb to use in http resource
+ * @param router router to assigned http resource
+ * @param consumer consumer to get middleware funtions to be use hbefore http resource
+ */
+export const registerMethods = (target: unknown, resource: string, httpVerb: HttpVerb, router: Router, consumer?: RequestConsumer): void => {
+  const methods: Method[] = Reflect.getOwnMetadata(`${METHODS}${httpVerb}`, Object.getPrototypeOf(target)) || [];
+  for (const method of methods) {
+    const bindedMethod: RequestHandler = (target as any)[method.name].bind(target);
+    const path = `/${resource}${method.path || ''}`;
+    const resolvers = consumer?.resolve(target, path, httpVerb) || [];
+    registerMethod(httpVerb, path, bindedMethod, resolvers, router);
   }
 }
