@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from '@enigmagtm/core';
 import {
-  BODY_PARAM, CustomHttpMethod, HeaderParameter, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, Parameter,
-  PathParameter, PATH_PARAMS, QueryParameter, QUERY_PARAMS, RESOURCE_METHOD
+  BODY_PARAM, CustomHttpMethod, HEADER_PARAMS, HttpParams, HttpStatus, HttpVerb, METHOD, Parameter, PATH_PARAMS, QueryParameter,
+  QUERY_PARAMS, RESOURCE_METHOD
 } from '../types';
 import { HttpMethodDecorator } from './http-method.decorator';
 
@@ -25,8 +25,8 @@ export const Patch = (options?: any): MethodDecorator => {
       const name = `${String(property)}${RESOURCE_METHOD}`;
       options = { ...{ name }, ...options };
       HttpMethodDecorator(target, name, HttpVerb.PATCH, options);
-      const headerParamsDef: HeaderParameter[] = Reflect.getOwnMetadata(`${METHOD}${HEADER_PARAMS}${String(property)}`, target) || [];
-      const pathParamsDef: PathParameter[] = Reflect.getOwnMetadata(`${METHOD}${PATH_PARAMS}${String(property)}`, target) || [];
+      const headerParamsDef: Parameter[] = Reflect.getOwnMetadata(`${METHOD}${HEADER_PARAMS}${String(property)}`, target) || [];
+      const pathParamsDef: Parameter[] = Reflect.getOwnMetadata(`${METHOD}${PATH_PARAMS}${String(property)}`, target) || [];
       const queryParamsDef: QueryParameter[] = Reflect.getOwnMetadata(`${METHOD}${QUERY_PARAMS}${String(property)}`, target) || [];
       const bodyParamDef: Parameter = Reflect.getOwnMetadata(`${METHOD}${BODY_PARAM}${String(property)}`, target);
       Reflect.defineProperty(target, name, {

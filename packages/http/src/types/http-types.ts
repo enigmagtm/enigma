@@ -18,21 +18,16 @@ export interface Parameter {
   value?: any;
 }
 
-export interface HeaderParameter extends Parameter {
-  name: string;
-}
-
-export interface PathParameter extends Parameter {
-  name: string;
-}
-
 export interface QueryParameter extends Parameter {
   default: any;
 }
 
-export interface Method {
-  name: string;
+export interface Path {
   path?: string;
+}
+
+export interface Method extends Path {
+  name: string;
 }
 
 export interface HttpOptions {
