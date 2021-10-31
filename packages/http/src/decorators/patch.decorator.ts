@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from '@enigmagtm/core';
 import { CustomHttpMethod, HttpParams, HttpStatus, HttpVerb, RESOURCE_METHOD } from '../types';
 import { HttpMethodDecorator } from './http-method.decorator';
 import { createResourceMethod, getResourceParameters } from './resource-method';
@@ -29,7 +30,9 @@ export const Patch = (options?: any): MethodDecorator => {
       const params = getResourceParameters(target, String(property));
       Reflect.defineProperty(target, name, {
         configurable: false,
-        value: createResourceMethod(target, httpStrategyMethod, method, options, params),
+        value: function (req: Request, res: Response, next: NextFunction): void {
+          createResourceMethod(this, httpStrategyMethod, method, options, params)(req, res, next);
+        },
         writable: false
       });
     }
