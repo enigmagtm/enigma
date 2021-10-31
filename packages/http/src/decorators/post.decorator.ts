@@ -29,7 +29,7 @@ export const Post = (options?: any): MethodDecorator => {
       const params = getResourceParameters(target, String(property));
       Reflect.defineProperty(target, name, {
         configurable: false,
-        value: createResourceMethod(this, httpStrategyMethod, method, options, params),
+        value: createResourceMethod(target, httpStrategyMethod, method, options, params),
         writable: false
       });
     }
