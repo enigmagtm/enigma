@@ -89,7 +89,7 @@ export class ModelResourceController<T extends Model> extends ResourceController
   }
 
   private registerDeleteMethod(router: Router, consumer?: RequestConsumer): void {
-    const name = this.update.name;
+    const name = this.delete.name;
     const options = { name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}` };
     const resolvers = consumer?.resolve(this, options.path, HttpVerb.DELETE) || [];
     const params: ResourceParameters = {
@@ -98,7 +98,7 @@ export class ModelResourceController<T extends Model> extends ResourceController
         { name: 'credentials', index: 1 }]
     };
     const httpMethod = createTransactionalMethod(HttpStatus.OK);
-    const resourceMethod = createResourceMethod(this, httpMethod, this.update, options, params);
+    const resourceMethod = createResourceMethod(this, httpMethod, this.delete, options, params);
     registerMethod(HttpVerb.DELETE, options.path, resourceMethod, resolvers, router);
   }
 
