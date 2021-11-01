@@ -1,5 +1,5 @@
 {
-  "name": "@enigmagtm/resource",
+  "name": "@enigmagtm/rsc",
   "version": "1.0.0",
   "description": "Enigma resource framework",
   "main": "dist/src/index.js",
@@ -7,17 +7,17 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "prepack": "rm -rf enigmagtm-resource-1.0.0.tgz && npm run build"
+    "prepack": "rm -rf enigmagtm-rsc-1.0.0.tgz && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enigmagtm/enigma.git",
-    "directory": "packages/resource"
+    "directory": "packages/rsc"
   },
   "keywords": [
     "ngm",
     "enigma",
-    "resource"
+    "rsc"
   ],
   "license": "MIT",
   "peerDependencies": {
@@ -34,7 +34,6 @@
     "@types/lodash": "^4.14.175"
   },
   "dependencies": {
-    "@enigmagtm/http": "file:../http/enigmagtm-http-1.0.0.tgz",
     "express": "^4.17.1"
   }
 }
