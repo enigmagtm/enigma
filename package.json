@@ -14,9 +14,12 @@
     "pack-http": "cd packages/http && npm pack",
     "install-http": "cd packages/http && npm i",
     "build-http": "cd packages/http && npm run build",
-    "install-all": "npm run install-core && npm run install-orm && npm run install-http",
-    "build-all": "npm run build-core && npm run build-orm && npm run build-http",
-    "pack-all": "npm run pack-core && npm run pack-orm && npm run pack-http"
+    "pack-rsc": "cd packages/resource && npm pack",
+    "install-rsc": "cd packages/resource && npm i",
+    "build-rsc": "cd packages/resource && npm run build",
+    "install-all": "npm run install-core && npm run install-orm && npm run install-http && npm run install-rsc",
+    "build-all": "npm run build-core && npm run build-orm && npm run build-http && npm run build-rsc",
+    "pack-all": "npm run pack-core && npm run pack-orm && npm run pack-http && npm run pack-rsc"
   },
   "repository": {
     "type": "git",
