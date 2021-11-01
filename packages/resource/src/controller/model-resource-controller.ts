@@ -15,8 +15,13 @@ export class ModelResourceController<T extends Model> extends ResourceController
     const options = { name, path: `/${this.resource}` };
     const resolvers = consumer?.resolve(this, options.path, HttpVerb.GET) || [];
     const params: ResourceParameters = {
-      headerParamsDef: [{ name: 'credentials', index: 0 }],
-      queryParamsDef: [{ name: 'where', index: 1, default: {} }]
+      headerParamsDef: [{ name: 'credentials', index: 4 }],
+      queryParamsDef: [
+        { name: 'offset', index: 0, default: {} },
+        { name: 'limit', index: 1, default: {} },
+        { name: 'sfields', index: 2, default: {} },
+        { name: 'where', index: 3, default: {} }
+      ]
     };
     const httpMethod = createTransactionalMethod(HttpStatus.PARTIAL_CONTENT);
     const resourceMethod = createResourceMethod(this, httpMethod, this.find, options, params);
@@ -97,8 +102,8 @@ export class ModelResourceController<T extends Model> extends ResourceController
     registerMethod(HttpVerb.DELETE, options.path, resourceMethod, resolvers, router);
   }
 
-  async find(credentials: Credentials, where: any, trxn: Transaction): Promise<FindResult<T>> {
-    const params = { where, ...credentials };
+  async find(offset: number, limit: number, sfields: any, where: any, credentials: Credentials, trxn: Transaction): Promise<FindResult<T>> {
+    const params = { offset, limit, sfields, where, ...credentials };
     const data = await Promise.all([this.dao.getAll(params, trxn), this.dao.getCount(where)]);
     return {
       data: data[0],
