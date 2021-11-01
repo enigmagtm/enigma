@@ -1,6 +1,6 @@
-import { BaseRecord, Router } from '@enigmagtm/core';
+import { Router } from '@enigmagtm/core';
 import {
-  buildKeyValue, buildPathParams, createResourceMethod, HttpError, HttpStatus, HttpVerb, registerMethod, RequestConsumer,
+  buildKeyValue, buildPathParams, createResourceMethod, Credentials, HttpError, HttpStatus, HttpVerb, registerMethod, RequestConsumer,
   ResourceParameters
 } from '@enigmagtm/http';
 import { copyFields, FindResult, Model, ModelAccess, Transaction } from '@enigmagtm/orm';
@@ -15,7 +15,7 @@ export class ModelResourceController<T extends Model> extends ResourceController
     const options = { name, path: `/${this.resource}` };
     const resolvers = consumer?.resolve(this, options.path, HttpVerb.GET) || [];
     const params: ResourceParameters = {
-      headerParamsDef: [{ name: 'info', index: 0 }],
+      headerParamsDef: [{ name: 'credentials', index: 0 }],
       queryParamsDef: [{ name: 'where', index: 1, default: {} }]
     };
     const httpMethod = createTransactionalMethod(HttpStatus.PARTIAL_CONTENT);
@@ -30,7 +30,7 @@ export class ModelResourceController<T extends Model> extends ResourceController
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
-        { name: 'info', index: 1 }
+        { name: 'credentials', index: 1 }
       ]
     };
     const httpMethod = createTransactionalMethod(HttpStatus.OK);
@@ -43,7 +43,7 @@ export class ModelResourceController<T extends Model> extends ResourceController
     const options = { name, path: `/${this.resource}` };
     const resolvers = consumer?.resolve(this, options.path, HttpVerb.POST) || [];
     const params: ResourceParameters = {
-      headerParamsDef: [{ name: 'info', index: 0 }],
+      headerParamsDef: [{ name: 'credentials', index: 0 }],
       bodyParamDef: { name: 'data', index: 1 }
     };
     const httpMethod = createTransactionalMethod(HttpStatus.OK);
@@ -58,7 +58,7 @@ export class ModelResourceController<T extends Model> extends ResourceController
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
-        { name: 'info', index: 1 }
+        { name: 'credentials', index: 1 }
       ],
       bodyParamDef: { name: 'data', index: 2 }
     };
@@ -74,7 +74,7 @@ export class ModelResourceController<T extends Model> extends ResourceController
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
-        { name: 'info', index: 1 }
+        { name: 'credentials', index: 1 }
       ],
       bodyParamDef: { name: 'data', index: 2 }
     };
@@ -90,15 +90,15 @@ export class ModelResourceController<T extends Model> extends ResourceController
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
-        { name: 'info', index: 1 }]
+        { name: 'credentials', index: 1 }]
     };
     const httpMethod = createTransactionalMethod(HttpStatus.OK);
     const resourceMethod = createResourceMethod(this, httpMethod, this.update, options, params);
     registerMethod(HttpVerb.DELETE, options.path, resourceMethod, resolvers, router);
   }
 
-  async find(info: BaseRecord<number>, where: any, trxn: Transaction): Promise<FindResult<T>> {
-    const params = { where, ...info };
+  async find(credentials: Credentials, where: any, trxn: Transaction): Promise<FindResult<T>> {
+    const params = { where, ...credentials };
     const data = await Promise.all([this.dao.getAll(params, trxn), this.dao.getCount(where)]);
     return {
       data: data[0],
@@ -106,34 +106,34 @@ export class ModelResourceController<T extends Model> extends ResourceController
     };
   }
 
-  async findById(params: any, info: BaseRecord<number>, trxn: Transaction): Promise<T> {
-    const data = await this.dao.getById({ ...params, ...info }, trxn);
+  async findById(params: any, credentials: Credentials, trxn: Transaction): Promise<T> {
+    const data = await this.dao.getById({ ...params, ...credentials }, trxn);
     if (isNil(data)) {
       throw new HttpError(HttpStatus.NOT_FOUND, `Record ${buildKeyValue(params, this.dao.primaryKeys)} not found in ${this.dao.table}`);
     }
     return data;
   }
 
-  async insert(info: BaseRecord<number>, data: T, trxn: Transaction): Promise<T> {
-    return await this.dao.insert({ data, ...info }, trxn);
+  async insert(credentials: Credentials, data: T, trxn: Transaction): Promise<T> {
+    return await this.dao.insert({ data, ...credentials }, trxn);
   }
 
-  async update(params: any, info: BaseRecord<number>, data: T, trxn: Transaction): Promise<T> {
+  async update(params: any, credentials: Credentials, data: T, trxn: Transaction): Promise<T> {
     data = copyFields(data, this.dao.primaryKeys, params);
-    const newData = await this.dao.update({ data, ...info }, trxn);
+    const newData = await this.dao.update({ data, ...credentials }, trxn);
     params.rowsAffected = 1;
     return newData;
   }
 
-  async patch(params: any, info: BaseRecord<number>, data: T, trxn: Transaction): Promise<T> {
+  async patch(params: any, credentials: Credentials, data: T, trxn: Transaction): Promise<T> {
     data = copyFields(data, this.dao.primaryKeys, params);
-    const newData = await this.dao.patch({ data, ...info }, trxn);
+    const newData = await this.dao.patch({ data, ...credentials }, trxn);
     params.rowsAffected = 1;
     return newData;
   }
 
-  async delete(params: any, info: BaseRecord<number>, trxn: Transaction): Promise<T | T[]> {
-    return await this.dao.delete({ ...params, ...info }, trxn);
+  async delete(params: any, credentials: Credentials, trxn: Transaction): Promise<T | T[]> {
+    return await this.dao.delete({ ...params, ...credentials }, trxn);
   }
 
   register(router: Router, consumer?: RequestConsumer): Router {
