@@ -161,6 +161,11 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
   async insert(params: any, $trx: Transaction): Promise<T> {
     const { data, user } = params;
     try {
+      this.primaryKeys.forEach((fieldInfo: FieldInfo) => {
+        if (isNil(data[fieldInfo.name])) {
+          delete data[fieldInfo.name];
+        }
+      });
       await this.beforeInsert(data, $trx);
       this.assignCreateLog(data, user);
       const obj = copyObject(this.fields, data, true);
