@@ -330,7 +330,6 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
 
   async delete(params: any, $trx: Transaction): Promise<T | T[]> {
     try {
-      const { where = {} } = params;
       const details = [];
       for (const det of (this.oneToMany || [])) {
         const queryfk = connection(det.schema)
@@ -343,7 +342,7 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
         details.push(queryfk);
       }
 
-      copyFields(where, this.primaryKeys, params);
+      const where = copyFields({}, this.primaryKeys, params);
       const query = this.db
         .table<T>(this.table)
         .where(where)
@@ -354,6 +353,7 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
       for (const detail of details) {
         await detail.del();
       }
+
       const item = (await query.del<T | T[]>() as T | T[]) as T;
       await this.afterDelete(item, $trx);
       return item;

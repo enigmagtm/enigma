@@ -119,15 +119,15 @@ export class ModelResourceController<T extends Model> extends ResourceController
   }
 
   async update(params: any, info: BaseRecord<number>, data: T, trxn: Transaction): Promise<T> {
-    params.data = copyFields(params.data, this.dao.primaryKeys, data);
-    const newData = await this.dao.update({ data, ...params, ...info }, trxn);
+    data = copyFields(data, this.dao.primaryKeys, params);
+    const newData = await this.dao.update({ data, ...info }, trxn);
     params.rowsAffected = 1;
     return newData;
   }
 
   async patch(params: any, info: BaseRecord<number>, data: T, trxn: Transaction): Promise<T> {
-    params.data = copyFields(params.data, this.dao.primaryKeys, data);
-    const newData = await this.dao.patch({ data, ...params, ...info }, trxn);
+    data = copyFields(data, this.dao.primaryKeys, params);
+    const newData = await this.dao.patch({ data, ...info }, trxn);
     params.rowsAffected = 1;
     return newData;
   }
