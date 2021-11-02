@@ -3,9 +3,16 @@ import { HttpVerb } from '../types';
 import { RequestResource } from './request-resource';
 import { TypeRule } from './request-rule';
 
+interface ResolveOptions {
+  controller: unknown;
+  name: string;
+  path: string;
+  verb: HttpVerb;
+}
+
 export interface RequestConsumer {
   apply(...requests: RequestHandler[]): RequestResource;
-  resolve(controller: unknown, path: string, httpVerb: HttpVerb): RequestHandler[];
+  resolve(options: ResolveOptions): RequestHandler[];
 }
 
 export class RequestBuilder implements RequestConsumer {
@@ -16,22 +23,26 @@ export class RequestBuilder implements RequestConsumer {
     return requestResource;
   }
 
-  resolve(controller: unknown, path: string, httpVerb: HttpVerb): RequestHandler[] {
+  resolve(options: ResolveOptions): RequestHandler[] {
     const requests: RequestHandler[] = [];
     for (const request of this.#requestResources) {
       let resolved = true;
       // Add logic for controller
       const ctlrs = request.controllers;
       if (ctlrs) {
-        resolved = !!(ctlrs.length === 0 || ctlrs.some((ctrl: TypeRef<unknown>) => controller instanceof ctrl));
+        resolved = !!(ctlrs.length === 0 || ctlrs.some((ctrl: TypeRef<unknown>) => options.controller instanceof ctrl));
+      }
+
+      if (resolved && request.methods) {
+        resolved = request.methods.includes(options.name);
       }
 
       if (resolved && request.rules) {
         for (const rule of request.rules) {
           const regex = RegExp(rule.pathRegex);
           const verbs = rule.httpVerbs;
-          const isValid = regex.test(path) && (verbs.length === 0 ||
-            verbs.some((verb: HttpVerb) => httpVerb === verb));
+          const isValid = regex.test(options.path) && (verbs.length === 0 ||
+            verbs.some((verb: HttpVerb) => options.verb === verb));
           switch (rule.type) {
             case TypeRule.EXCLUDE:
               resolved = !isValid;
@@ -41,7 +52,9 @@ export class RequestBuilder implements RequestConsumer {
               break;
           }
 
-          if (!resolved) break;
+          if (!resolved) {
+            break;
+          }
         }
       }
 

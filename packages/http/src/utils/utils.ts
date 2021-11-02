@@ -26,15 +26,15 @@ export const buildKeyValue = (data: any, fields: FieldInfo[]): string => {
 };
 
 /**
- * @param httpVerb http verb to register
+ * @param verb http verb to register
  * @param path path for the resource, empty string base resource
  * @param request function to be execute for the specific path
  * @param resolvers middleware funtions to be set before calling request
  * @param router router to register resource
  */
-export const registerMethod = (httpVerb: HttpVerb, path: string, request: RequestHandler, resolvers: RequestHandler[],
+export const registerMethod = (verb: HttpVerb, path: string, request: RequestHandler, resolvers: RequestHandler[],
   router: Router): void => {
-  switch (httpVerb) {
+  switch (verb) {
     case HttpVerb.GET:
       router.get(path, ...resolvers, asyncHandler(request));
       break;
@@ -57,18 +57,18 @@ export const registerMethod = (httpVerb: HttpVerb, path: string, request: Reques
 }
 
 /**
- * @param target instance of object to get defined methods
+ * @param controller instance of object to get defined methods
  * @param resource name of the resrouce to be used as api path
- * @param httpVerb http verb to use in http resource
+ * @param verb http verb to use in http resource
  * @param router router to assigned http resource
  * @param consumer consumer to get middleware funtions to be use hbefore http resource
  */
-export const registerMethods = (target: unknown, resource: string, httpVerb: HttpVerb, router: Router, consumer?: RequestConsumer): void => {
-  const methods: Method[] = Reflect.getOwnMetadata(`${METHODS}${httpVerb}`, Object.getPrototypeOf(target)) || [];
+export const registerMethods = (controller: unknown, resource: string, verb: HttpVerb, router: Router, consumer?: RequestConsumer): void => {
+  const methods: Method[] = Reflect.getOwnMetadata(`${METHODS}${verb}`, Object.getPrototypeOf(controller)) || [];
   for (const method of methods) {
-    const bindedMethod: RequestHandler = (target as any)[method.name].bind(target);
+    const bindedMethod: RequestHandler = (controller as any)[method.name].bind(controller);
     const path = `/${resource}${method.path || ''}`;
-    const resolvers = consumer?.resolve(target, path, httpVerb) || [];
-    registerMethod(httpVerb, path, bindedMethod, resolvers, router);
+    const resolvers = consumer?.resolve({ controller, name: method.name, path, verb }) || [];
+    registerMethod(verb, path, bindedMethod, resolvers, router);
   }
 }
