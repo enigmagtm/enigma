@@ -12,8 +12,8 @@ export class ModelResourceController<T extends Model> extends ResourceController
   readonly dao!: ModelAccess<T>;
   private registerFindMethod(router: Router, consumer?: RequestConsumer): void {
     const name = this.find.name;
-    const options = { name, path: `/${this.resource}` };
-    const resolvers = consumer?.resolve(this, options.path, HttpVerb.GET) || [];
+    const options = { controller: this, name, path: `/${this.resource}`, verb: HttpVerb.GET };
+    const resolvers = consumer?.resolve(options) || [];
     const params: ResourceParameters = {
       headerParamsDef: [{ name: 'credentials', index: 4 }],
       queryParamsDef: [
@@ -30,8 +30,8 @@ export class ModelResourceController<T extends Model> extends ResourceController
 
   private registerFindByIdMethod(router: Router, consumer?: RequestConsumer): void {
     const name = this.findById.name;
-    const options = { name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}` };
-    const resolvers = consumer?.resolve(this, options.path, HttpVerb.GET) || [];
+    const options = { controller: this, name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}`, verb: HttpVerb.GET };
+    const resolvers = consumer?.resolve(options) || [];
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
@@ -45,8 +45,8 @@ export class ModelResourceController<T extends Model> extends ResourceController
 
   private registerCreateMethod(router: Router, consumer?: RequestConsumer): void {
     const name = this.insert.name;
-    const options = { name, path: `/${this.resource}` };
-    const resolvers = consumer?.resolve(this, options.path, HttpVerb.POST) || [];
+    const options = { controller: this, name, path: `/${this.resource}`, verb: HttpVerb.POST };
+    const resolvers = consumer?.resolve(options) || [];
     const params: ResourceParameters = {
       headerParamsDef: [{ name: 'credentials', index: 0 }],
       bodyParamDef: { name: 'data', index: 1 }
@@ -58,8 +58,8 @@ export class ModelResourceController<T extends Model> extends ResourceController
 
   private registerUpdateMethod(router: Router, consumer?: RequestConsumer): void {
     const name = this.update.name;
-    const options = { name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}` };
-    const resolvers = consumer?.resolve(this, options.path, HttpVerb.PUT) || [];
+    const options = { controller: this, name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}`, verb: HttpVerb.PUT };
+    const resolvers = consumer?.resolve(options) || [];
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
@@ -74,8 +74,8 @@ export class ModelResourceController<T extends Model> extends ResourceController
 
   private registerPatchMethod(router: Router, consumer?: RequestConsumer): void {
     const name = this.patch.name;
-    const options = { name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}` };
-    const resolvers = consumer?.resolve(this, options.path, HttpVerb.PATCH) || [];
+    const options = { controller: this, name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}`, verb: HttpVerb.PATCH };
+    const resolvers = consumer?.resolve(options) || [];
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
@@ -90,8 +90,8 @@ export class ModelResourceController<T extends Model> extends ResourceController
 
   private registerDeleteMethod(router: Router, consumer?: RequestConsumer): void {
     const name = this.delete.name;
-    const options = { name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}` };
-    const resolvers = consumer?.resolve(this, options.path, HttpVerb.DELETE) || [];
+    const options = { controller: this, name, path: `/${this.resource}${buildPathParams(this.dao.primaryKeys)}`, verb: HttpVerb.DELETE };
+    const resolvers = consumer?.resolve(options) || [];
     const params: ResourceParameters = {
       pathParams: { name: 'params', index: 0 },
       headerParamsDef: [
