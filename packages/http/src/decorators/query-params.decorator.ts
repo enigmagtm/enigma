@@ -1,9 +1,8 @@
 import { METHOD, QUERY_PARAMS } from '../types';
 
-export const QueryParams = (): ParameterDecorator => {
+export const QueryParams = (name: string): ParameterDecorator => {
   const QueryParamsDecorator = (target: Object, property: string | symbol, index: number): void => {
-    const name = String(property);
-    const metadataKey = `${METHOD}${QUERY_PARAMS}${name}`;
+    const metadataKey = `${METHOD}${QUERY_PARAMS}${String(property)}`;
     Reflect.defineMetadata(metadataKey, { name, index }, target);
   }
   return QueryParamsDecorator;

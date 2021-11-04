@@ -32,9 +32,8 @@ describe('http params', () => {
     expect(pathParamsDef.length).toBe(1);
     expect(pathParamsDef[0].name).toBe('id');
     expect(pathParamsDef[0].index).toBe(0);
-    expect(pathParams).toBe(1);
     expect(pathParams.name).toBe('params');
-    expect(pathParams.index).toBe(2);
+    expect(pathParams.index).toBe(1);
   });
 
   it('should register query params', () => {

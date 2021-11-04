@@ -2,12 +2,13 @@ import { Body, Del, Get, HeaderParam, HttpStatus, Patch, PathParam, PathParams, 
 
 export class HTTPResourceStub {
   @Get({ status: HttpStatus.PARTIAL_CONTENT })
-  get(@QueryParam('value') value: string, @HeaderParam('autorization') autorization: string, @QueryParams() query: any): string {
+  get(@QueryParam('value') value: string, @HeaderParam('autorization') autorization: string,
+    @QueryParams('query') query: any): string {
     return `all objects with params ${value} with ${autorization} in ${query}`;
   }
 
   @Get({ path: '/:id(^[^-](\\d+)' })
-  getById(@PathParam('id') id: number, @PathParams() params: any): string {
+  getById(@PathParam('id') id: number, @PathParams('params') params: any): string {
     return `one object ${id} in params ${params}`;
   }
 
