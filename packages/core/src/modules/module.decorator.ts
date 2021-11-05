@@ -1,8 +1,7 @@
-import { RequestHandler, RequestHandlerError, Server } from '../types';
-import { BaseModule } from './base-module';
+import { RequestHandler, RequestHandlerError, Server, ServerTypeRef } from '../types';
 
 export interface ModuleOptions {
-  imports: BaseModule[];
+  imports: ServerTypeRef<any>[];
   middlewares?: RequestHandler[];
   errorMiddlewares?: RequestHandlerError[];
 }

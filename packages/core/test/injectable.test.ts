@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { BaseRecord, Property } from '../src';
-import { TestClass, TestInjectable } from './test.stub';
+import { TestClass, TestInjectable } from './injectable-test.stub';
 
 describe('injectable', () => {
   let properties: Property[];

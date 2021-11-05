@@ -2,10 +2,13 @@
  * Enigma core types
  */
 
-import { NextFunction, Request, Response } from './e-types';
+import { NextFunction, Request, Response, Server } from './e-types';
 
 export interface TypeRef<T> extends Function {
   new(...args: any[]): T;
+}
+export interface ServerTypeRef<T> extends Function {
+  new(server: Server): T;
 }
 
 export type RequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<Response | void> | Response | void;
