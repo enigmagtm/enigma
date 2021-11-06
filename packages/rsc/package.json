@@ -22,8 +22,8 @@
   "license": "MIT",
   "peerDependencies": {
     "@enigmagtm/core": "file:../core/enigmagtm-core-1.0.0.tgz",
-    "@enigmagtm/http": "file:../core/enigmagtm-http-1.0.0.tgz",
-    "@enigmagtm/orm": "file:../core/enigmagtm-orm-1.0.0.tgz",
+    "@enigmagtm/http": "file:../http/enigmagtm-http-1.0.0.tgz",
+    "@enigmagtm/orm": "file:../orm/enigmagtm-orm-1.0.0.tgz",
     "express": "^4.17.1",
     "knex": "^0.95.11",
     "lodash": "^4.17.21",
