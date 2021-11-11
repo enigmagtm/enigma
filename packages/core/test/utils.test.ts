@@ -7,7 +7,7 @@ describe('utils test', () => {
 
   it('should encrypt data', () => {
     expect(cryptoTest.randomBytes()).toBeTruthy();
-    expect(cryptoTest.encrypt('testKey', 'passWord')).toBe('jcs7s4mHFcOHgVKPxKA/eA==');
-    expect(cryptoTest.decrypt('testKey', 'jcs7s4mHFcOHgVKPxKA/eA==')).toBe('passWord');
+    expect(cryptoTest.encrypt('testKey', 'passWord')).toBe('Eb4/mCubH2/69KaLvE5DUg==');
+    expect(cryptoTest.decrypt('testKey', 'Eb4/mCubH2/69KaLvE5DUg==')).toBe('passWord');
   });
 });
