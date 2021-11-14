@@ -1,21 +1,24 @@
 import fs from 'fs';
 import { capitalize } from 'lodash';
+import { join } from 'path';
 
-export const createDAO = (folderPath: string, modulePath: string) => {
-  if (!fs.existsSync(`${folderPath}/${modulePath}.dao.ts`)) {
-    const mdlCap = capitalize(modulePath);
-    const mdlContent =
-      `import { ModelAccess } from '@enigmagtm/orm';
-import { ${mdlCap} } from './${modulePath}.model';
+export const createDataAccessObject = (folderPath: string, model: string) => {
+  const filename = join(folderPath, `${model}.dao.ts`);
+  if (fs.existsSync(filename)) {
+    fs.rmSync(filename);
+  }
 
-export class ${mdlCap}DAO extends ModelAccess<${mdlCap}> {
+  const className = capitalize(model);
+  const file =
+    `import { ModelAccess } from '@enigmagtm/orm';
+import { ${className} } from './${model}.model';
+
+export class ${className}DAO extends ModelAccess<${className}> {
   constructor() {
-    super(${mdlCap});
+    super(${className});
   }
 }
 
 `;
-    console.log('Writting file for data access object ...');
-    fs.writeFileSync(`${folderPath}/${modulePath}.dao.ts`, mdlContent);
-  }
-}
+  fs.writeFileSync(filename, file);
+};

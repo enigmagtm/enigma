@@ -1,9 +1,10 @@
 import fs from 'fs';
 import { knex } from 'knex';
 import { capitalize } from 'lodash';
+import { join } from 'path';
 import { getType } from './type';
 
-export const createModel = async (folderPath: string, modulePath: string, schema: string, tableName: string) => {
+export const createModel = async (folderPath: string, model: string, schema: string, table: string) => {
   let fields = ``;
   let importId = '';
   const dbString = process.env.ENIGMA_DB;
@@ -19,19 +20,21 @@ export const createModel = async (folderPath: string, modulePath: string, schema
       }
     };
     const db = knex(config);
-    console.log('Getting info from database ...');
-    const columnInfo: any = await db(tableName).withSchema(schema).columnInfo();
-    console.log('Creating class fields ...');
-    for (const field of Object.keys(columnInfo)) {
-      const info = columnInfo[field];
-      if (field === 'id') {
-        importId = 'Id, ';
-        fields = fields + `
+    try {
+      const columnInfo: any = await db(table).withSchema(schema).columnInfo();
+      for (const field of Object.keys(columnInfo)) {
+        const info = columnInfo[field];
+        if (field === 'id') {
+          importId = 'Id, ';
+          fields = fields + `
   @Id()`;
-      }
-      fields = fields + `
+        }
+        fields = fields + `
   @Field()
   ${field}${info.nullable ? '?' : '!'}: ${getType(client, info.type)};`;
+      }
+    } finally {
+      db.destroy();
     }
   } else {
     importId = 'Id, ';
@@ -50,15 +53,17 @@ export const createModel = async (folderPath: string, modulePath: string, schema
   `
   }
 
-  if (!fs.existsSync(`${folderPath}/${modulePath}.model.ts`)) {
-    const mdlContent =
-      `import { Field, ${importId}Model, Table } from '@enigmagtm/orm';
+  const filename = join(folderPath, `${model}.model.ts`);
+  if (fs.existsSync(filename)) {
+    fs.rmSync(filename);
+  }
 
-@Table('${tableName}', '${schema}')
-export class ${capitalize(modulePath)} extends Model {${fields}
+  const file =
+    `import { Field, ${importId}Model, Table } from '@enigmagtm/orm';
+
+@Table('${table}', '${schema}')
+export class ${capitalize(model)} extends Model {${fields}
 }
 `;
-    console.log('Writting file for model ...');
-    fs.writeFileSync(`${folderPath}/${modulePath}.model.ts`, mdlContent);
-  }
+  fs.writeFileSync(filename, file);
 };
