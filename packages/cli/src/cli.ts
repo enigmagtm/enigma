@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { normalize } from 'path';
 import { createControllerResource } from './controller';
-import { createApp } from './utils';
+import { createApp } from './create';
 
 const [, , command, type, ...args] = process.argv;
 switch (command) {
