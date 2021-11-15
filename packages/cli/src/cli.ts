@@ -6,7 +6,12 @@ import { createApp } from './utils';
 const [, , command, type, ...args] = process.argv;
 switch (command) {
   case 'new':
-    createApp(args[0]);
+    if (!type) {
+      console.log('Must provide name for app');
+      process.exit();
+    }
+
+    createApp(type, ...args);
     break;
   case 'g':
     switch (type) {
