@@ -4,8 +4,8 @@ import { join } from 'path';
 import { createFolders } from '../utils';
 import { createPackageJson } from './create-package';
 import { createTsconfigJson } from './create-tsconfig';
-import { appModuleFile, connectionFile, dotGitignoreFile, entryFile, readmeFile } from './files';
-import { format } from './format';
+import { appModuleFile, connectionFile, dotGitignoreFile, entryFile, readmeFile } from '../utils/files';
+import { format } from '../utils/format';
 
 export const createApp = (name: string, ...options: string[]) => {
   console.log(`Creating new app ${name}`);
