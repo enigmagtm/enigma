@@ -1,3 +1,3 @@
-export * from './create-app';
-export * from './create-package';
-export * from './create-tsconfig';
+export * from './app';
+export * from './package';
+export * from './tsconfig';

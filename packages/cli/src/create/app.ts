@@ -2,8 +2,8 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import { join } from 'path';
 import { createFolders } from '../utils';
-import { createPackageJson } from './create-package';
-import { createTsconfigJson } from './create-tsconfig';
+import { createPackageJson } from './package';
+import { createTsconfigJson } from './tsconfig';
 import { appModuleFile, connectionFile, dotGitignoreFile, entryFile, readmeFile } from '../utils/files';
 import { format } from '../utils/format';
 
