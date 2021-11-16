@@ -5,6 +5,9 @@
   "scripts": {
     "lint": "eslint packages/**/*.ts --fix",
     "test": "jest",
+    "pack-cli": "cd packages/cli && npm pack",
+    "install-cli": "cd packages/cli && npm i --no-save && npm-install-peers && npm pack",
+    "build-cli": "cd packages/cli && npm run build",
     "pack-core": "cd packages/core && npm pack",
     "install-core": "cd packages/core && npm i --no-save && npm-install-peers && npm pack",
     "build-core": "cd packages/core && npm run build",
@@ -17,9 +20,9 @@
     "pack-rsc": "cd packages/rsc && npm pack",
     "install-rsc": "cd packages/rsc && npm i --no-save && npm-install-peers && npm pack",
     "build-rsc": "cd packages/rsc && npm run build",
-    "install-all": "npm run install-core && npm run install-orm && npm run install-http && npm run install-rsc",
-    "build-all": "npm run build-core && npm run build-orm && npm run build-http && npm run build-rsc",
-    "pack-all": "npm run pack-core && npm run pack-orm && npm run pack-http && npm run pack-rsc"
+    "install-all": "npm run install-core && npm run install-orm && npm run install-http && npm run install-rsc && npm run install-cli",
+    "build-all": "npm run build-core && npm run build-orm && npm run build-http && npm run build-rsc && npm run build-cli",
+    "pack-all": "npm run pack-core && npm run pack-orm && npm run pack-http && npm run pack-rsc && npm run pack-cli"
   },
   "repository": {
     "type": "git",
