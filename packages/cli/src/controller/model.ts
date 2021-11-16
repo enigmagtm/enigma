@@ -2,7 +2,7 @@ import fs from 'fs';
 import { knex } from 'knex';
 import { capitalize } from 'lodash';
 import { join } from 'path';
-import { getType } from './type';
+import { getType } from '../utils/type';
 
 export const createModel = async (folderPath: string, model: string, schema: string, table: string) => {
   let fields = ``;

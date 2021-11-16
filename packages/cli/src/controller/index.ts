@@ -1,7 +1,7 @@
 export * from './controller';
 export * from './dao';
 export * from './model';
-export * from './type';
+export * from '../utils/type';
 
 import fs from 'fs';
 import { sep } from 'path';

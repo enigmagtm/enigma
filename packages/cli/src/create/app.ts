@@ -2,13 +2,12 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import { join } from 'path';
 import { createFolders } from '../utils';
-import { createPackageJson } from './package';
-import { createTsconfigJson } from './tsconfig';
 import { appModuleFile, connectionFile, dotGitignoreFile, entryFile, readmeFile } from '../utils/files';
 import { format } from '../utils/format';
+import { createPackageJson } from './package';
+import { createTsconfigJson } from './tsconfig';
 
 export const createApp = (name: string, ...options: string[]) => {
-  console.log(`Creating new app ${name}`);
   const source = 'src';
   const app = 'app';
   const config = 'config';

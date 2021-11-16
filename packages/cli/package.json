@@ -21,14 +21,12 @@
   "bin": {
     "ngm": "./dist/src/cli.js"
   },
-  "deependencies": {
-    "knex": "^0.95.14",
-    "pg": "^8.7.1"
-  },
   "dependencies": {
+    "knex": "^0.95.14",
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
+    "@types/knex": "^0.16.1",
     "@types/prompt-sync": "^4.1.1"
   }
 }

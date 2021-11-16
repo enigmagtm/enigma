@@ -1,16 +1,7 @@
 import fs from 'fs';
 import { join, sep } from 'path';
-import { createController, createControllerResource, createDataAccessObject, createModel, getType } from '../src/controller';
+import { createController, createControllerResource, createDataAccessObject, createModel } from '../src/controller';
 import { createFolders } from '../src/utils';
-
-describe('controller', () => {
-  it('get pg types', () => {
-    expect(getType('pg', 'text')).toBe('string');
-    expect(getType('pg', 'character varying')).toBe('string');
-    expect(getType('pg', 'integer')).toBe('number');
-    expect(getType('pg', 'bigint')).toBe('number');
-  });
-});
 
 describe('controller file', () => {
   let folderPath: string;
@@ -19,9 +10,9 @@ describe('controller file', () => {
   const model = 'folders';
   beforeAll(async () => {
     folderPath = createFolders(join(folder1, folder2, model).split(sep));
+    delete process.env.ENIGMA_DB;
     createController(folderPath, model);
     createDataAccessObject(folderPath, model);
-    delete process.env.ENIGMA_DB;
     await createModel(folderPath, model, model, model);
   });
 
@@ -38,14 +29,14 @@ describe('controller file', () => {
   });
 });
 
-
-describe('commnad line', () => {
+describe('command line', () => {
   const folder1 = 'test';
   const folder2 = 'create';
   const model = 'folders';
   const folderPath = join(__dirname, folder1, folder2, model);
   beforeAll(async () => {
-    createControllerResource(join(__dirname, folder1, folder2, model), model)
+    delete process.env.ENIGMA_DB;
+    createControllerResource(join(__dirname, folder1, folder2, model), model);
   });
 
   afterAll(() => {
