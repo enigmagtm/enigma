@@ -207,14 +207,15 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
       const { data, user } = params;
       const oldData = await this.getById(data, $trx);
       const where = copyFields({}, this.primaryKeys, data);
-      let newData = await this.beforeUpdate(oldData, data, $trx);
-      this.assignUpdateLog(newData, user);
-      newData = (await this.db
-        .update(copyObject(this.fields, newData, true))
+      const beforeUpdateData = await this.beforeUpdate(oldData, data, $trx);
+      this.assignUpdateLog(beforeUpdateData, user);
+      const query = this.db
+        .update(copyObject(this.fields, beforeUpdateData, true))
         .table(this.table)
         .where(where)
         .returning(this.buildQueryFields())
-        .transacting($trx))[0] as T;
+        .transacting($trx);
+      let newData = (await query)[0] as T
 
       for (const detOneToMany of (this.oneToMany || [])) {
         if (!isNil(data[detOneToMany.detail]) && data[detOneToMany.detail].length > 0) {
@@ -311,20 +312,19 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
       delete data.createdAt;
       delete data.userUpdateId;
       delete data.updatedAt;
-      let patchData = {
+      const beforePatchData = await this.beforePatch(oldData, {
         ...oldData,
         ...data
-      };
+      }, $trx);
+      this.assignUpdateLog(beforePatchData, user);
       const where = copyFields({}, this.primaryKeys, data);
       const query = this.db
-        .update(copyObject(this.fields, patchData, true))
+        .update(copyObject(this.fields, beforePatchData, true))
         .table(this.table)
         .where(where)
         .returning(this.buildQueryFields())
         .transacting($trx);
-      patchData = await this.beforePatch(oldData, patchData, $trx);
-      this.assignUpdateLog(patchData, user);
-      patchData = (await query)[0] as T;
+      let patchData = (await query)[0] as T;
       const patchedData = await this.update({ data: patchData, user }, $trx) as T;
       patchData = await this.afterPatch(patchedData, $trx);
       return patchData;
@@ -335,18 +335,6 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
 
   async delete(params: any, $trx: Transaction): Promise<T | T[]> {
     try {
-      const details = [];
-      for (const det of (this.oneToMany || [])) {
-        const queryfk = connection(det.schema)
-          .table(det.table)
-          .where((det.foreignKeys || []).reduce((wherefk: any, fk: any) => {
-            wherefk[fk.local] = params[fk.reference];
-            return wherefk;
-          }, {}))
-          .transacting($trx);
-        details.push(queryfk);
-      }
-
       const where = copyFields({}, this.primaryKeys, params);
       const query = this.db
         .table<T>(this.table)
@@ -355,10 +343,6 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
         .transacting($trx);
 
       await this.beforeDelete(params, $trx);
-      for (const detail of details) {
-        await detail.del();
-      }
-
       const item = (await query.del<T | T[]>() as T | T[]) as T;
       await this.afterDelete(item, $trx);
       return item;
