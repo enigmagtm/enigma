@@ -9,7 +9,7 @@ export const createModel = async (folderPath: string, model: string, schema: str
   let importId = '';
   const dbString = process.env.ENIGMA_DB;
   if (dbString) {
-    const { client, version, connectionOptions: connection, pool } = JSON.parse(dbString);
+    const { client, version, connection, pool } = JSON.parse(dbString);
     const config = {
       client,
       version,
