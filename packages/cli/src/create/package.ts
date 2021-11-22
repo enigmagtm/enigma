@@ -37,7 +37,7 @@ export const createPackageJson = (basePath: string) => {
     'cors',
     'helmet',
     'knex',
-    'refelct-metadata'
+    'reflect-metadata'
   );
   packageJson.devDependencies = createPackages(
     '@types/express',
