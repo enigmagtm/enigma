@@ -6,7 +6,7 @@
     "lint": "eslint packages/**/*.ts --fix",
     "test": "jest",
     "pack-cli": "cd packages/cli && npm pack",
-    "install-cli": "cd packages/cli && npm i --no-save && npm-install-peers",
+    "install-cli": "cd packages/cli && npm i --no-save",
     "build-cli": "cd packages/cli && npm run build",
     "publish-cli": "cd packages/cli && npm run build && npm publish --access public",
     "pack-core": "cd packages/core && npm pack",
