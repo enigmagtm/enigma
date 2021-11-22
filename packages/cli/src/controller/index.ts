@@ -9,10 +9,10 @@ import prompt from 'prompt-sync';
 import { createFolders } from '../utils';
 import { createController, createDataAccessObject, createModel } from './';
 
-export const createControllerResource = async (directory: string, schema: string, table?: string) => {
+export const createControllerResource = async (folderPath: string, schema: string, table?: string) => {
   try {
-    const directories = directory.split(sep);
-    const folder = createFolders(directories);
+    const folders = folderPath.split(sep);
+    const folder = createFolders(folders);
     if (fs.readdirSync(folder).length > 0) {
       const ask = prompt({ sigint: true });
       const yesNo = ask('Directory is not empty, replace existing files? y/n ') || 'n';
@@ -21,7 +21,8 @@ export const createControllerResource = async (directory: string, schema: string
         process.exit();
       }
     }
-    const model = directories[directories.length - 1];
+
+    const model = folders[folders.length - 1];
     createDataAccessObject(folder, model);
     createController(folder, model);
     await createModel(folder, model, schema, table || model);

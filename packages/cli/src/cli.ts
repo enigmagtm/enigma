@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { createModule } from './module';
 import { normalize } from 'path';
 import { createControllerResource } from './controller';
 import { createApp } from './create';
@@ -16,8 +17,12 @@ switch (command) {
   case 'g':
     switch (type) {
       case 'c':
+        const folderPath = normalize(args[0]);
+        createControllerResource(folderPath, args[1], args[2]);
+        break;
+      case 'm':
         const directories = normalize(args[0]);
-        createControllerResource(directories, args[1], args[2]);
+        createModule(directories, args[1]);
         break;
       default: console.log('Command type not recognized');
     }

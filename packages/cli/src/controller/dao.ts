@@ -18,7 +18,6 @@ export class ${className}DAO extends ModelAccess<${className}> {
     super(${className});
   }
 }
-
 `;
   fs.writeFileSync(filename, file);
 };

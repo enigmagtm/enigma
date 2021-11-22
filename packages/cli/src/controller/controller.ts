@@ -19,7 +19,6 @@ import { ${className} } from './${model}.model';
 export class ${className}Ctrl extends ModelResourceController<${className}> implements ModelController<${className}> {
   @Inject() readonly dao: ${className}DAO;
 }
-
 `;
   fs.writeFileSync(filename, file);
 };
