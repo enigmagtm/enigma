@@ -15,7 +15,6 @@ try {
 } catch (e) {
   console.log(e);
 }
-
 `;
 
 export const appModuleFile = `import { Module } from '@enigmagtm/core';
@@ -42,7 +41,6 @@ import '../config/connection';
 })
 export class AppModule {
 }
-
 `;
 
 export const connectionFile =
@@ -61,7 +59,6 @@ const config: Config = {
 };
 
 initializeConnection(config);
-
 `;
 
 export const dotGitignoreFile =
