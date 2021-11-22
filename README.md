@@ -31,6 +31,11 @@ cd PROJECT_NAME
 npm run start
 ```
 
+Create a module for resource controllers:
+```
+ngm g m DIRECTORY [MODULE]
+```
+
 Create a resource controller:
 ```
 ngm g c DIRECTORY SCHEMA [TABLE]
