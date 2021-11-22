@@ -5,9 +5,9 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "build": "rm -rf dist && tsc -p tsconfig.json",
-    "prepack": "rm -rf enigmagtm-core-1.0.0.tgz && npm run build"
+    "install-pkg": "npm i --no-save && npm-install-peers",
+    "build": "rm -rf dist && tsc -p tsconfig.json && cp {README.md,package.json,LICENSE.md} dist",
+    "publish-pkg": "npm run build && cd dist && npm publish --access public"
   },
   "repository": {
     "type": "git",

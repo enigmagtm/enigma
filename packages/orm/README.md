@@ -1,5 +1,5 @@
-# Enigma
-Enigma - Framework for node server applications with expressjs and knex, with command line tool
+# Enigma ORM Library
+Enigma - ORM framework for node server applications with expressjs and knex, with command line tool
 
 ## Documentation
 
