@@ -28,15 +28,22 @@ export const createPackageJson = (basePath: string) => {
   };
   packageJson.license = 'UNLICENSED';
   packageJson.dependencies = createPackages(
+    '@enigmagtm/core',
+    '@enigmagtm/orm',
+    '@enigmagtm/http',
+    '@enigmagtm/rsc',
     'express',
     'compression',
     'cors',
-    'helmet'
+    'helmet',
+    'knex',
+    'refelct-metadata'
   );
   packageJson.devDependencies = createPackages(
     '@types/express',
     '@types/compression',
     '@types/cors',
+    '@types/node',
     '@typescript-eslint/eslint-plugin',
     '@typescript-eslint/eslint-plugin',
     '@typescript-eslint/parser',
