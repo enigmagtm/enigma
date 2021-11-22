@@ -23,6 +23,8 @@ Create new application:
 ngm new PROJECT_NAME
 ```
 
+After create the application, you should install one of the following database packages so your application can run, detailed instructions at the installation section [Knexjs.org][knex]
+
 Run the application:
 ```
 cd PROJECT_NAME
@@ -36,3 +38,4 @@ ngm g c DIRECTORY SCHEMA [TABLE]
 
 [Node.js]: https://nodejs.org/
 [npm]: https://www.npmjs.com/get-npm
+[knex]: https://knexjs.org/#Installation-node
