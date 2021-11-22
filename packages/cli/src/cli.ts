@@ -17,12 +17,12 @@ switch (command) {
   case 'g':
     switch (type) {
       case 'c':
-        const folderPath = normalize(args[0]);
-        createControllerResource(folderPath, args[1], args[2]);
+        const folderPathController = normalize(args[0]);
+        createControllerResource(folderPathController, args[1], args[2]);
         break;
       case 'm':
-        const directories = normalize(args[0]);
-        createModule(directories, args[1]);
+        const folderPathModule = normalize(args[0]);
+        createModule(folderPathModule, args[1]);
         break;
       default: console.log('Command type not recognized');
     }

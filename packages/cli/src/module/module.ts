@@ -8,12 +8,11 @@ export const createModule = (folderPath: string, module: string) => {
   try {
     const folders = folderPath.split(sep);
     const folder = createFolders(folders);
-    module = module || folderPath[folderPath.length - 1];
+    module = module || folders[folders.length - 1];
     const filename = join(folder, `${module}.module.ts`);
-    console.log(filename);
     if (fs.existsSync(filename)) {
       const ask = prompt({ sigint: true });
-      const yesNo = ask('Directory is not empty, replace existing file? y/n ') || 'n';
+      const yesNo = ask('File already exists, replace existing file? y/n ') || 'n';
       if (yesNo.toLowerCase() !== 'y') {
         console.log('Process aborted');
         process.exit();
@@ -26,9 +25,9 @@ export const createModule = (folderPath: string, module: string) => {
 
     const className = capitalize(module);
     const file =
-      `import { HttpResourceModule, ResourceOptions } from '@enigmagtm/http';
+    `import { HttpResourceModule, ResourceController, ResourceOptions } from '@enigmagtm/http';
 
-const resources = [];
+const resources: ResourceController[] = [];
 
 @ResourceOptions({
   path: '/${module}',
