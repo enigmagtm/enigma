@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+export * from './common';
 export * from './di';
 export * from './modules';
 export * from './server';
