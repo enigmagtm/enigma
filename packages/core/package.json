@@ -2,12 +2,12 @@
   "name": "@enigmagtm/core",
   "version": "1.0.0",
   "description": "Enigma core framework",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
-    "install-pkg": "npm i --no-save && npm-install-peers",
+    "install:pkg": "npm i --no-save && npm-install-peers",
     "build": "rm -rf dist && tsc -p tsconfig.json && cp {*.md,package.json} dist",
-    "publish-pkg": "npm run build && cd dist && npm publish --access public"
+    "publish:pkg": "npm run build && cd dist && npm publish --access public"
   },
   "repository": {
     "type": "git",

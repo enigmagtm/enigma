@@ -1,5 +1,5 @@
 import express from 'express';
-import { NextFunction, Request, Response, ServerTypeRef } from './types';
+import { NextFunction, Request, Response, ServerTypeRef } from '../types';
 
 interface ServerOptions {
   port?: number;

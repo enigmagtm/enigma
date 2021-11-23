@@ -2,12 +2,12 @@
   "name": "@enigmagtm/orm",
   "version": "1.0.0",
   "description": "Enigma ORM framework",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
-    "install-pkg": "npm i --no-save && npm-install-peers",
+    "install:pkg": "npm i --no-save && npm-install-peers",
     "build": "rm -rf dist && tsc -p tsconfig.json && cp {*.md,package.json} dist",
-    "publish-pkg": "npm run build && cd dist && npm publish --access public"
+    "publish:pkg": "npm run build && cd dist && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -21,12 +21,13 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@enigmagtm/core": "file:../core/enigmagtm-core-1.0.0.tgz",
+    "@enigmagtm/core": "^1.0.0",
     "knex": "^0.95.11",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
+    "@types/knex": "^0.16.1",
     "@types/lodash": "^4.14.177",
     "@types/node": "^16.11.7"
   }
