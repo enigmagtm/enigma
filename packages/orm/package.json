@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enigmagtm/enigma.git",
-    "directory": "pacakges/orm"
+    "directory": "packages/orm"
   },
   "keywords": [
     "ngm",
