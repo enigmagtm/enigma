@@ -1,6 +1,6 @@
 {
   "name": "@enigmagtm/http",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enigma HTTP framework",
   "main": "src/index.js",
   "types": "src/index.d.ts",
