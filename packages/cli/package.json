@@ -27,10 +27,12 @@
   },
   "dependencies": {
     "knex": "^0.95.14",
+    "lodash": "^4.17.21",
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
     "@types/knex": "^0.16.1",
+    "@types/lodash": "^4.14.177",
     "@types/prompt-sync": "^4.1.1"
   }
 }
