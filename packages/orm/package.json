@@ -22,7 +22,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@enigmagtm/core": "^1.2.0",
+    "@enigmagtm/core": "^1.2.2",
     "knex": "^0.95.11",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
