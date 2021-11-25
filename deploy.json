@@ -9,6 +9,21 @@
       "rootDir": "./packages/core",
       "tsconfigFile": "tsconfig.json",
       "updateVersion": false
+    },
+    "@enigmagtm/orm": {
+      "rootDir": "./packages/orm",
+      "tsconfigFile": "tsconfig.json",
+      "updateVersion": false
+    },
+    "@enigmagtm/http": {
+      "rootDir": "./packages/http",
+      "tsconfigFile": "tsconfig.json",
+      "updateVersion": false
+    },
+    "@enigmagtm/rsc": {
+      "rootDir": "./packages/rsc",
+      "tsconfigFile": "tsconfig.json",
+      "updateVersion": false
     }
   }
 }
