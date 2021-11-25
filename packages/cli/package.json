@@ -5,11 +5,12 @@
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "install:pkg": "npm i --no-save",
     "build": "rm -rf dist && tsc -p tsconfig.json && cp {*.md,package.json} dist",
+    "install:pkg": "npm i --no-save",
     "link": "npm run build && npm link",
+    "publish:pkg": "npm run build && cd dist && npm publish --access public",
     "unlink": "npm unlink",
-    "publish:pkg": "npm run build && cd dist && npm publish --access public"
+    "version:pkg": "npm version"
   },
   "repository": {
     "type": "git",
