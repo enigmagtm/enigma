@@ -1,21 +1,28 @@
 #!/usr/bin/env node
-import { createModule } from './module';
 import { normalize } from 'path';
 import { createControllerResource } from './controller';
 import { createApp } from './create';
+import { createModule } from './module';
+import { deploy } from './scripts';
 
-const [, , command, type, ...args] = process.argv;
+const [, , command, option, ...args] = process.argv;
 switch (command) {
+  case 'deploy':
+    const [file, ...argsDeploy] = args;
+    deploy(option, file, ...argsDeploy);
+    break;
+
   case 'new':
-    if (!type) {
+    if (!option) {
       console.log('Must provide name for app');
       process.exit();
     }
 
-    createApp(type, ...args);
+    createApp(option, ...args);
     break;
+
   case 'g':
-    switch (type) {
+    switch (option) {
       case 'c':
         const folderPathController = normalize(args[0]);
         createControllerResource(folderPathController, args[1], args[2]);

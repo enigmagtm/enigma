@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "@enigmagtm/cli": {
+      "rootDir": ".",
+      "tsconfigFile": "tsconfig.json"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@enigmagtm/rsc",
-  "version": "1.2.0",
+  "version": "0.0.0",
   "description": "Enigma resource framework",
   "main": "src/index.js",
   "types": "src/index.d.ts",

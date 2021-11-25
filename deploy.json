@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "@enigmagtm/cli": {
+      "rootDir": "./packages/cli",
+      "tsconfigFile": "tsconfig.json",
+      "updateVersion": false
+    },
+    "@enigmagtm/core": {
+      "rootDir": "./packages/core",
+      "tsconfigFile": "tsconfig.json",
+      "updateVersion": false
+    }
+  }
+}

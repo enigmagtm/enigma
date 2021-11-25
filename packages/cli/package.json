@@ -1,9 +1,7 @@
 {
   "name": "@enigmagtm/cli",
-  "version": "1.2.0",
+  "version": "0.0.0",
   "description": "Enigma command line tool",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json && cp {*.md,package.json} dist",
     "install:pkg": "npm i --no-save",

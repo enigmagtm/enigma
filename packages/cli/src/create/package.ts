@@ -1,14 +1,12 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 import { join } from 'path';
+import { getPackageVersion } from '../scripts';
 
-const addPackage = (target: any, name: string): void => {
-  target[name] = `^${execSync(`npm show ${name} version`, { encoding: 'utf-8' }).replace('\n', '')}`;
-};
 const createPackages = (...names: string[]): any => {
   const packages: any = {};
   for (const name of names) {
-    addPackage(packages, name);
+    packages[name] = getPackageVersion(name);
   }
 
   return packages;
