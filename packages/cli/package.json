@@ -1,6 +1,6 @@
 {
   "name": "@enigmagtm/cli",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Enigma command line tool",
   "main": "src/index.js",
   "types": "src/index.d.ts",

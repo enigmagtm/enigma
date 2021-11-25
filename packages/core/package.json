@@ -1,6 +1,6 @@
 {
   "name": "@enigmagtm/core",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "description": "Enigma core framework",
   "main": "src/index.js",
   "types": "src/index.d.ts",
