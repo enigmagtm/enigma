@@ -1,6 +1,6 @@
 {
   "name": "@enigma-srcs",
-  "rootDir": ".",
+  "rootDir": "./",
   "tsconfig": "tsconfig.json",
   "updateVersion": true,
   "projects": {
