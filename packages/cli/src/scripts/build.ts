@@ -4,7 +4,7 @@ import { normalize } from 'path';
 import { buildCompilerOptions } from './compiler-options';
 
 export const generateBuild = (config: any) => {
-  console.log(`Building project/package ${config.name}`, cyan);
+  console.log(`Building project/package ${config.name}`.cyan);
   const path = normalize(config.rootDir);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
   execSync(`cd ${path} && rm -rf ${compilerOptions?.outDir || '.'}`);

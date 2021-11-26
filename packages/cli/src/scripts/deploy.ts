@@ -16,7 +16,7 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
 
   const [execCommand, projectNameCommand] = command.split(':');
   if (!file || !fs.existsSync(normalize(file))) {
-    console.log('Deploy file not found.', red);
+    console.log('Deploy file not found.'.red);
     process.exit();
   }
 
@@ -24,7 +24,7 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
   try {
     config = JSON.parse(fs.readFileSync(file, 'utf8'));
   } catch (e: any) {
-    console.log(`Not a valid json configuration ${e.message}.`, red);
+    console.log(`Not a valid json configuration ${e.message}.`.red);
   }
 
   const execute = (configuration: any) => {
@@ -56,14 +56,14 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
         const newVersion = updateVersion(config, releaseVersion);
         publishPackages(configuration, `-v=${newVersion}`, ...args);
         break;
-      default: console.log('Command not recognized for scripts.', red);
+      default: console.log('Command not recognized for scripts.'.red);
     }
   };
 
   if (projectNameCommand) {
     const project = config.projects[projectNameCommand];
     if (!project) {
-      console.log(`Project with name ${projectNameCommand} not found.`, red);
+      console.log(`Project with name ${projectNameCommand} not found.`.red);
       process.exit();
     }
 
