@@ -3,7 +3,7 @@ import fs from 'fs';
 import { normalize } from 'path';
 import { generateBuild } from './build';
 import { installPackages } from './install';
-import { publishPackages } from './publish';
+import { publishPackage } from './publish';
 import { generateTags } from './tag';
 import { updateVersion } from './version';
 
@@ -15,7 +15,7 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
 
   const [execCommand, projectNameCommand] = command.split(':');
   if (!file || !fs.existsSync(normalize(file))) {
-    console.log('Deploy file not found.'.red);
+    console.log('Deploy file not found.');
     process.exit();
   }
 
@@ -23,11 +23,10 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
   try {
     config = JSON.parse(fs.readFileSync(file, 'utf8'));
   } catch (e: any) {
-    console.log(`Not a valid json configuration ${e.message}.`.red);
+    console.log(`Not a valid json configuration ${e.message}`.red);
   }
 
-  const execute = (configuration: any) => {
-    const releaseVersion = args.find((arg: string) => new RegExp(/(-v=).+\w/g).test(arg)) || '-v=patch';
+  const execute = (configuration: any, version = '-v=patch') => {
     switch (execCommand) {
       case 'install':
       case 'i':
@@ -42,7 +41,7 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
       case 'version':
       case 'v':
         // Update version package
-        updateVersion(configuration, releaseVersion);
+        updateVersion(configuration, ...args);
         break;
       case 'tag':
       case 't':
@@ -52,10 +51,9 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
       case 'publish':
       case 'p':
         // Publish package
-        const newVersion = updateVersion(config, releaseVersion);
-        publishPackages(configuration, `-v=${newVersion}`, ...args);
+        publishPackage(configuration, version, ...args);
         break;
-      default: console.log('Command not recognized for scripts.'.red);
+      default: console.log('Command not recognized for scripts'.red);
     }
   };
 
@@ -66,11 +64,13 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
       process.exit();
     }
 
-    execute(project);
+    const newVersion = updateVersion(config, ...args).replace('v', '');
+    execute(project, `-v=${newVersion}`);
     process.exit();
   }
 
+  const newVersionAll = updateVersion(config, ...args).replace('v', '');
   for (const projectName of Object.keys(config.projects)) {
-    execute(config.projects[projectName])
+    execute(config.projects[projectName], `-v=${newVersionAll}`);
   }
 };

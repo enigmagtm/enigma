@@ -1,22 +1,23 @@
 import fs from 'fs';
-import { normalize } from 'path';
+import { join, resolve } from 'path';
 
-export const buildCompilerOptions = (tsconfig = 'tsconfig.json'): any => {
+export const buildCompilerOptions = (tsconfig = 'tsconfig.json', rootDir = ''): any => {
   let config: any;
   let compilerOptions: any = {};
-  if (!fs.existsSync(normalize(tsconfig))) {
-    console.log('Typescript configutration file not found.'.red);
+  const tsconfigFile = join(rootDir, tsconfig);
+  if (!fs.existsSync(tsconfigFile)) {
+    console.log('Typescript configuration file not found.'.red);
     process.exit();
   }
 
-  const tsconfigData = fs.readFileSync(tsconfig, 'utf8');
+  const tsconfigData = fs.readFileSync(tsconfigFile, 'utf8');
   config = JSON.parse(tsconfigData);
   compilerOptions = config?.compilerOptions;
   while (config.extends) {
     const tsconfigExtends = config.extends;
     delete config.extends;
-    config = JSON.parse(fs.readFileSync(normalize(tsconfigExtends), 'utf8'));
-    compilerOptions = { ...compilerOptions, ...config?.compilerOptions }
+    config = JSON.parse(fs.readFileSync(resolve(join(rootDir, tsconfigExtends)), 'utf8'));
+    compilerOptions = { ...compilerOptions, ...config?.compilerOptions };
   }
 
   return compilerOptions;
