@@ -2,7 +2,8 @@
   "projects": {
     "@enigmagtm/cli": {
       "rootDir": ".",
-      "tsconfigFile": "tsconfig.json"
+      "tsconfig": "tsconfig.json",
+      "updateVersion": false
     }
   }
 }

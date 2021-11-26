@@ -1,29 +1,40 @@
 {
   "projects": {
-    "@enigmagtm/cli": {
+    "cli": {
       "rootDir": "./packages/cli",
-      "tsconfigFile": "tsconfig.json",
+      "tsconfig": "tsconfig.json",
       "updateVersion": false
     },
-    "@enigmagtm/core": {
+    "core": {
       "rootDir": "./packages/core",
-      "tsconfigFile": "tsconfig.json",
+      "tsconfig": "tsconfig.json",
       "updateVersion": false
     },
-    "@enigmagtm/orm": {
+    "orm": {
       "rootDir": "./packages/orm",
-      "tsconfigFile": "tsconfig.json",
-      "updateVersion": false
+      "tsconfig": "tsconfig.json",
+      "updateVersion": false,
+      "dependencies": [
+        "@enigmagtm/core"
+      ]
     },
-    "@enigmagtm/http": {
+    "http": {
       "rootDir": "./packages/http",
-      "tsconfigFile": "tsconfig.json",
-      "updateVersion": false
+      "tsconfig": "tsconfig.json",
+      "updateVersion": false,
+      "dependencies": [
+        "@enigmagtm/core"
+      ]
     },
-    "@enigmagtm/rsc": {
+    "rsc": {
       "rootDir": "./packages/rsc",
-      "tsconfigFile": "tsconfig.json",
-      "updateVersion": false
+      "tsconfig": "tsconfig.json",
+      "updateVersion": false,
+      "dependencies": [
+        "@enigmagtm/core",
+        "@enigmagtm/orm",
+        "@enigmagtm/http"
+      ]
     }
   }
 }

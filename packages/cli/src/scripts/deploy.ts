@@ -3,6 +3,7 @@ import fs from 'fs';
 import { normalize } from 'path';
 import { generateBuild } from './build';
 import { installPackages } from './install';
+import { publishPackages } from './publish';
 import { generateTags } from './tag';
 import { updateVersion } from './version';
 
@@ -50,6 +51,7 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
       case 'publish':
       case 'p':
         // Publish package
+        publishPackages(configuration, ...args);
         break;
       default: console.log('Command not recognized for scripts');
     }
