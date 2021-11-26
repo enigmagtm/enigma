@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { join } from 'path';
+import { join, normalize } from 'path';
 
 export const createFolders = (dirArr: string[]) => {
   let folderPath = '.';
@@ -9,5 +9,5 @@ export const createFolders = (dirArr: string[]) => {
       fs.mkdirSync(folderPath);
     }
   }
-  return folderPath;
+  return normalize(folderPath);
 };
