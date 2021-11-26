@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { exec } from '../utils';
 import fs from 'fs';
 import { join } from 'path';
 import { createFolders } from '../utils';
@@ -34,13 +34,13 @@ export const createApp = (name: string, ...options: string[]) => {
   createTsconfigJson(basePath);
   createPackageJson(basePath);
   if (options.indexOf('--skip-npm') === -1) {
-    execSync(`cd ${basePath} && npm i`);
+    exec(`cd ${basePath} && npm i`);
   }
 
   if (options.indexOf('--skip-git') === -1) {
-    execSync(`cd ${basePath} && git init`);
+    exec(`cd ${basePath} && git init`);
     if (options.indexOf('--skip-commit') === -1) {
-      execSync(`cd ${basePath} && git add . && git commit -m ":tada: initial commit`);
+      exec(`cd ${basePath} && git add . && git commit -m ":tada: initial commit`);
     }
   }
 };

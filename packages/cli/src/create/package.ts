@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { exec } from '../utils';
 import fs from 'fs';
 import { join } from 'path';
 import { getPackageVersion } from '../scripts';
@@ -14,7 +14,7 @@ const createPackages = (...names: string[]): any => {
 
 export const createPackageJson = (basePath: string) => {
   const filename = 'package.json';
-  execSync(`cd ${basePath} && npm init --yes`);
+  exec(`cd ${basePath} && npm init --yes`);
   const packageJson: any = JSON.parse(fs.readFileSync(join(basePath, filename), { encoding: 'utf-8' }));
   packageJson.main = 'dist/index.js';
   packageJson.scripts = {

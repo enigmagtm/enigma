@@ -1,5 +1,5 @@
-import { execSync } from 'child_process';
+import { exec } from '../utils';
 
 export const getPackageVersion = (packageName: string): string => {
-  return `^${execSync(`npm show ${packageName} version`, { encoding: 'utf-8' }).replace('\n', '')}`;
+  return `^${exec(`npm show ${packageName} version`).replace('\n', '')}`;
 };

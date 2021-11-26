@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { exec } from '../utils';
 import fs from 'fs';
 import { join, normalize } from 'path';
 
@@ -13,5 +13,5 @@ export const generateTags = (config: any, ..._args: string[]) => {
   }
 
   const packageJson = JSON.parse(fs.readFileSync(file, 'utf8'));
-  execSync(`cd ${path} && git tag v${packageJson.version} && git push --tags`);
+  exec(`cd ${path} && git tag v${packageJson.version} && git push --tags`);
 };

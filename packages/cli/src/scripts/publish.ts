@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { exec } from '../utils';
 import { join, normalize } from 'path';
 import { generateBuild } from './build';
 import { buildCompilerOptions } from './compiler-options';
@@ -8,12 +8,12 @@ export const publishPackages = (config: any, version: string, ...args: string[])
   console.log(`Publish to package manager ${config.name}`.blue);
   const path = normalize(config.rootDir)
   for (const dep of config?.dependencies || []) {
-    execSync(`cd ${path} && npm i ${dep}@latest`);
+    exec(`cd ${path} && npm i ${dep}@latest`);
   }
 
   updateVersion(config, version);
   generateBuild(config);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
-  execSync(`cd ${join(path, compilerOptions?.outDir || '.')} && npm publish ${args.join(' ')}`);
-  execSync(`cd ${path} && git reset --hard HEAD`);
+  exec(`cd ${join(path, compilerOptions?.outDir || '.')} && npm publish ${args.join(' ')}`);
+  exec(`cd ${path} && git reset --hard HEAD`);
 };

@@ -1,6 +1,6 @@
-import { execSync } from 'child_process';
 import fs from 'fs';
 import { join, normalize } from 'path';
+import { exec } from '../utils';
 import { getPackageVersion } from './pkg-version';
 
 const updateDependencies = (deps: any): void => {
@@ -36,8 +36,8 @@ export const installPackages = (config: any, ...args: string[]) => {
   if (clean > -1) {
     args.splice(clean, 1);
     console.log('Cleaning node_modules'.yellow);
-    execSync(`rm -rf ${join(path, 'node_modules')}`);
+    exec(`rm -rf ${join(path, 'node_modules')}`);
   }
 
-  execSync(`cd ${path} && npm i ${args.join(' ')}`);
+  exec(`cd ${path} && npm i ${args.join(' ')}`);
 };
