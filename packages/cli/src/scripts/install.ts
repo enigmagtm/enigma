@@ -1,4 +1,5 @@
 import { execSync } from 'child_process';
+import { cyan, yellow } from 'colors';
 import fs from 'fs';
 import { join, normalize } from 'path';
 import { getPackageVersion } from './pkg-version';
@@ -6,14 +7,14 @@ import { getPackageVersion } from './pkg-version';
 const updateDependencies = (deps: any): void => {
   if (deps) {
     for (const dep of Object.keys(deps)) {
-      console.log(`Getting version [${dep}]`)
+      console.log(`Getting version [${dep}]`, yellow)
       deps[dep] = getPackageVersion(dep);
     }
   }
 };
 
 const updatePackagesDependencies = (config: any, filename: string) => {
-  console.log(`Update ${filename} dependencies to latest version`);
+  console.log(`Update ${filename} dependencies to latest version`, cyan);
   const packageJson = JSON.parse(fs.readFileSync(filename, 'utf8'));
   const { dependencies: deps, devDependencies: devDeps, peerDependencies: peerDeps } = packageJson;
   updateDependencies(deps);
@@ -23,7 +24,7 @@ const updatePackagesDependencies = (config: any, filename: string) => {
 };
 
 export const installPackages = (config: any, ...args: string[]) => {
-  console.log('Install package manager dependencies');
+  console.log(`Install package manager dependencies for ${config.name}`, cyan);
   const path = normalize(config.rootDir);
   const filename = 'package.json';
   const latest = args.indexOf('--latest');
@@ -35,7 +36,7 @@ export const installPackages = (config: any, ...args: string[]) => {
   const clean = args.indexOf('--clean');
   if (clean > -1) {
     args.splice(clean, 1);
-    console.log('Cleaning node_modules');
+    console.log('Cleaning node_modules', yellow);
     execSync(`rm -rf ${join(path, 'node_modules')}`);
   }
 

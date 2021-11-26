@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { red } from 'colors';
 import fs from 'fs';
 import { normalize } from 'path';
 import { generateBuild } from './build';
@@ -15,18 +16,19 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
 
   const [execCommand, projectNameCommand] = command.split(':');
   if (!file || !fs.existsSync(normalize(file))) {
-    console.log('Deploy file not found.');
+    console.log('Deploy file not found.', red);
     process.exit();
   }
 
-  let config;
+  let config: any;
   try {
     config = JSON.parse(fs.readFileSync(file, 'utf8'));
   } catch (e: any) {
-    console.log(`Not a valid json configuration ${e.message}`);
+    console.log(`Not a valid json configuration ${e.message}.`, red);
   }
 
   const execute = (configuration: any) => {
+    const releaseVersion = args.find((arg: string) => new RegExp(/(-v=).+\w/g).test(arg)) || '-v=patch';
     switch (execCommand) {
       case 'install':
       case 'i':
@@ -36,12 +38,12 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
       case 'build':
       case 'b':
         // build project to publish
-        generateBuild(configuration, ...args);
+        generateBuild(configuration);
         break;
       case 'version':
       case 'v':
         // Update version package
-        updateVersion(configuration, ...args);
+        updateVersion(configuration, releaseVersion);
         break;
       case 'tag':
       case 't':
@@ -51,16 +53,17 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
       case 'publish':
       case 'p':
         // Publish package
-        publishPackages(configuration, ...args);
+        const newVersion = updateVersion(config, releaseVersion);
+        publishPackages(configuration, `-v=${newVersion}`, ...args);
         break;
-      default: console.log('Command not recognized for scripts');
+      default: console.log('Command not recognized for scripts.', red);
     }
   };
 
   if (projectNameCommand) {
     const project = config.projects[projectNameCommand];
     if (!project) {
-      console.log(`Project with name ${projectNameCommand} not found.`);
+      console.log(`Project with name ${projectNameCommand} not found.`, red);
       process.exit();
     }
 

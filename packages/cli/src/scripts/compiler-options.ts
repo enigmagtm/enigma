@@ -1,3 +1,4 @@
+import { red } from 'colors';
 import fs from 'fs';
 import { normalize } from 'path';
 
@@ -5,7 +6,7 @@ export const buildCompilerOptions = (tsconfig = 'tsconfig.json'): any => {
   let config: any;
   let compilerOptions: any = {};
   if (!fs.existsSync(normalize(tsconfig))) {
-    console.log('Typescript configutration file not found');
+    console.log('Typescript configutration file not found.', red);
     process.exit();
   }
 
