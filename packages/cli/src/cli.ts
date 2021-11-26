@@ -8,11 +8,6 @@ import { deploy } from './scripts';
 
 const [, , command, option, ...args] = process.argv;
 switch (command) {
-  case 'deploy':
-    const [file, ...argsDeploy] = args;
-    deploy(option, file, ...argsDeploy);
-    break;
-
   case 'new':
     if (!option) {
       console.log('Must provide name for app');
@@ -22,13 +17,22 @@ switch (command) {
     createApp(option, ...args);
     break;
 
+  case 'd':
+  case 'deploy':
+    const [file, ...argsDeploy] = args;
+    deploy(option, file, ...argsDeploy);
+    break;
+
   case 'g':
+  case 'generate':
     switch (option) {
       case 'c':
+      case 'controller':
         const folderPathController = normalize(args[0]);
         createControllerResource(folderPathController, args[1], args[2]);
         break;
       case 'm':
+      case 'module':
         const folderPathModule = normalize(args[0]);
         createModule(folderPathModule, args[1]);
         break;

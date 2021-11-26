@@ -2,25 +2,21 @@
   "name": "@enigma-srcs",
   "rootDir": ".",
   "tsconfig": "tsconfig.json",
-  "updateVersion": true,
   "projects": {
     "cli": {
       "name": "@enigmagtm/cli",
       "rootDir": "./packages/cli",
-      "tsconfig": "tsconfig.json",
-      "updateVersion": false
+      "tsconfig": "tsconfig.json"
     },
     "core": {
       "name": "@enigmagtm/core",
       "rootDir": "./packages/core",
-      "tsconfig": "tsconfig.json",
-      "updateVersion": false
+      "tsconfig": "tsconfig.json"
     },
     "orm": {
       "name": "@enigmagtm/orm",
       "rootDir": "./packages/orm",
       "tsconfig": "tsconfig.json",
-      "updateVersion": false,
       "dependencies": [
         "@enigmagtm/core"
       ]
@@ -29,7 +25,6 @@
       "name": "@enigmagtm/http",
       "rootDir": "./packages/http",
       "tsconfig": "tsconfig.json",
-      "updateVersion": false,
       "dependencies": [
         "@enigmagtm/core"
       ]
@@ -38,7 +33,6 @@
       "name": "@enigmagtm/rsc",
       "rootDir": "./packages/rsc",
       "tsconfig": "tsconfig.json",
-      "updateVersion": false,
       "dependencies": [
         "@enigmagtm/core",
         "@enigmagtm/orm",
