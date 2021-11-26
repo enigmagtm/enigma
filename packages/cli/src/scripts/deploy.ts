@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { red } from 'colors';
 import fs from 'fs';
 import { normalize } from 'path';
 import { generateBuild } from './build';

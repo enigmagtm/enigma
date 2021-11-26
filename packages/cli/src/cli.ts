@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import 'colors';
 import { normalize } from 'path';
 import { createControllerResource } from './controller';
 import { createApp } from './create';

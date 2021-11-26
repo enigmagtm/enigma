@@ -1,10 +1,9 @@
 import { execSync } from 'child_process';
-import { cyan, red } from 'colors';
 import fs from 'fs';
 import { join, normalize } from 'path';
 
 export const generateTags = (config: any, ..._args: string[]) => {
-  console.log(`Create tag and update project/package ${config.name}`.cyan);
+  console.log(`Create tag and update project/package ${config.name}`.blue);
   const filename = 'package.json';
   const path = normalize(config.rootDir);
   const file = join(path, filename);

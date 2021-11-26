@@ -1,5 +1,4 @@
 import { execSync } from 'child_process';
-import { cyan, yellow } from 'colors';
 import fs from 'fs';
 import { join, normalize } from 'path';
 import { getPackageVersion } from './pkg-version';
@@ -14,7 +13,7 @@ const updateDependencies = (deps: any): void => {
 };
 
 const updatePackagesDependencies = (config: any, filename: string) => {
-  console.log(`Update ${filename} dependencies to latest version`.cyan);
+  console.log(`Update ${filename} dependencies to latest version`.blue);
   const packageJson = JSON.parse(fs.readFileSync(filename, 'utf8'));
   const { dependencies: deps, devDependencies: devDeps, peerDependencies: peerDeps } = packageJson;
   updateDependencies(deps);
@@ -24,7 +23,7 @@ const updatePackagesDependencies = (config: any, filename: string) => {
 };
 
 export const installPackages = (config: any, ...args: string[]) => {
-  console.log(`Install package manager dependencies for ${config.name}`.cyan);
+  console.log(`Install package manager dependencies for ${config.name}`.blue);
   const path = normalize(config.rootDir);
   const filename = 'package.json';
   const latest = args.indexOf('--latest');

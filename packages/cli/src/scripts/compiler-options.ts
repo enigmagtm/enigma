@@ -1,4 +1,3 @@
-import { red } from 'colors';
 import fs from 'fs';
 import { normalize } from 'path';
 
