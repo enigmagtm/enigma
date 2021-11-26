@@ -64,12 +64,26 @@ export const deploy = (command: string, file: string, ...args: string[]): void =
       process.exit();
     }
 
-    const newVersion = updateVersion(config, ...args).replace('v', '');
+    let newVersion = 'patch';
+    switch (execCommand) {
+      case 'publish':
+      case 'p':
+        newVersion = updateVersion(config, ...args).replace('v', '');
+        break;
+    }
+
     execute(project, `-v=${newVersion}`);
     process.exit();
   }
 
-  const newVersionAll = updateVersion(config, ...args).replace('v', '');
+  let newVersionAll = 'patch';
+  switch (execCommand) {
+    case 'publish':
+    case 'p':
+      newVersionAll = updateVersion(config, ...args).replace('v', '');
+      break;
+  }
+
   for (const projectName of Object.keys(config.projects)) {
     execute(config.projects[projectName], `-v=${newVersionAll}`);
   }

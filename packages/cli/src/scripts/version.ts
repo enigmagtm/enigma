@@ -1,5 +1,5 @@
-import { exec } from '../utils';
 import { normalize } from 'path';
+import { exec } from '../utils';
 
 export const updateVersion = (config: any, ...args: string[]) => {
   console.log(`Update project/package version ${config.name}`.blue);
@@ -8,5 +8,5 @@ export const updateVersion = (config: any, ...args: string[]) => {
   const path = normalize(config.rootDir);
   const newVersion = exec(`cd ${path} && npm version ${versionId}`);
   exec(`cd ${path} && git reset --hard HEAD`);
-  return newVersion;
+  return newVersion.replace('\n', '');
 };

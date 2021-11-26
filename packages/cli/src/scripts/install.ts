@@ -6,20 +6,43 @@ import { getPackageVersion } from './pkg-version';
 const updateDependencies = (deps: any): void => {
   if (deps) {
     for (const dep of Object.keys(deps)) {
-      console.log(`Getting version [${dep}]`.yellow)
+      console.log(`Getting version [${dep}]`.yellow);
       deps[dep] = getPackageVersion(dep);
+    }
+  }
+};
+
+const updateDependenciesZero = (deps: any, pkgDeps: string[]): void => {
+  if (deps) {
+    for (const dep of Object.keys(deps)) {
+      if (pkgDeps.indexOf(dep) !== -1) {
+        console.log(`Setting version [${dep}] to 0`.yellow);
+        deps[dep] = '0.0.0';
+      }
     }
   }
 };
 
 const updatePackagesDependencies = (config: any, filename: string) => {
   console.log(`Update ${filename} dependencies to latest version`.blue);
-  const packageJson = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  const packageJsonFile = join(config.rootDir, filename);
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'));
   const { dependencies: deps, devDependencies: devDeps, peerDependencies: peerDeps } = packageJson;
   updateDependencies(deps);
   updateDependencies(devDeps);
   updateDependencies(peerDeps);
-  fs.writeFileSync(join(config.rootDir, filename), JSON.stringify(packageJson, null, 2));
+  fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2));
+};
+
+const updatePackagesDependenciesZero = (config: any, filename: string) => {
+  console.log(`Update ${filename} dependencies to latest version`.blue);
+  const packageJsonFile = join(config.rootDir, filename);
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'));
+  const { dependencies: deps, devDependencies: devDeps, peerDependencies: peerDeps } = packageJson;
+  updateDependenciesZero(deps, config.dependencies || []);
+  updateDependenciesZero(devDeps, config.dependencies || []);
+  updateDependenciesZero(peerDeps, config.dependencies || []);
+  fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2));
 };
 
 export const installPackages = (config: any, ...args: string[]) => {
@@ -40,4 +63,8 @@ export const installPackages = (config: any, ...args: string[]) => {
   }
 
   exec(`cd ${path} && npm i ${args.join(' ')}`);
+
+  if (latest > -1) {
+    updatePackagesDependenciesZero(config, filename);
+  }
 };
