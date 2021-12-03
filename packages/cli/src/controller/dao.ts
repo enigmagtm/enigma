@@ -1,23 +1,14 @@
 import fs from 'fs';
 import { capitalize } from 'lodash';
 import { join } from 'path';
+import { format } from '../utils';
 
-export const createDataAccessObject = (folderPath: string, model: string) => {
-  const filename = join(folderPath, `${model}.dao.ts`);
+export const createDataAccessObject = (path: string, model: string) => {
+  const filename = join(path, `${model}.dao.ts`);
   if (fs.existsSync(filename)) {
     fs.rmSync(filename);
   }
 
-  const className = capitalize(model);
-  const file =
-    `import { ModelAccess } from '@enigmagtm/orm';
-import { ${className} } from './${model}.model';
-
-export class ${className}DAO extends ModelAccess<${className}> {
-  constructor() {
-    super(${className});
-  }
-}
-`;
-  fs.writeFileSync(filename, file);
+  const file = fs.readFileSync(join(__dirname, '../assets/dao.file'), 'utf8');
+  fs.writeFileSync(filename, format(file, model, capitalize(model)), { encoding: 'utf8' });
 };

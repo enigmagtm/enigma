@@ -1,0 +1,8 @@
+import { ModelAccess } from '@enigmagtm/orm';
+import { {1} } from './{0}.model';
+
+export class {1}DAO extends ModelAccess<{1}> {
+  constructor() {
+    super({1});
+  }
+}

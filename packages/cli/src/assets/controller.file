@@ -1,0 +1,9 @@
+import { Inject, Injectable } from '@enigmagtm/core';
+import { ModelController, ModelResourceController } from '@enigmagtm/rsc';
+import { {1}DAO } from './{0}.dao';
+import { {1} } from './{0}.model';
+
+@Injectable()
+export class {1}Ctrl extends ModelResourceController<{1}> implements ModelController<{1}> {
+  @Inject() readonly dao: {1}DAO;
+}

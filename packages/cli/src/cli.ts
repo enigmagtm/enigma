@@ -1,43 +1,22 @@
 #!/usr/bin/env node
 import 'colors';
-import { normalize } from 'path';
-import { createControllerResource } from './controller';
-import { createApp } from './create';
-import { createModule } from './module';
-import { deploy } from './scripts';
+import { program } from 'commander';
+import { main } from './main';
+import {
+  createBuildCommand, createGenerateCommand, createInstallCommand, createNewCommand, createPublishCommand,
+  createTagsCommand, createVersionCommand
+} from './scripts';
 
-const [, , command, option, ...args] = process.argv;
-switch (command) {
-  case 'new':
-    if (!option) {
-      console.log('Must provide name for app');
-      process.exit();
-    }
+program
+  .version(main.version)
+  .option('-vb --verbose', 'Show commands and steps been executed.');
 
-    createApp(option, ...args);
-    break;
+createNewCommand();
+createBuildCommand();
+createInstallCommand();
+createPublishCommand();
+createTagsCommand();
+createVersionCommand();
+createGenerateCommand();
 
-  case 'd':
-  case 'deploy':
-    const [file, ...argsDeploy] = args;
-    deploy(option, file, ...argsDeploy);
-    break;
-
-  case 'g':
-  case 'generate':
-    switch (option) {
-      case 'c':
-      case 'controller':
-        const folderPathController = normalize(args[0]);
-        createControllerResource(folderPathController, args[1], args[2]);
-        break;
-      case 'm':
-      case 'module':
-        const folderPathModule = normalize(args[0]);
-        createModule(folderPathModule, args[1]);
-        break;
-      default: console.log('Command type not recognized');
-    }
-    break;
-  default: console.log('Command not recognized');
-}
+program.parse(process.argv);

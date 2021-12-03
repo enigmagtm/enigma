@@ -1,12 +1,13 @@
 import fs from 'fs';
 import { join, resolve } from 'path';
+import { log } from '../utils';
 
 export const buildCompilerOptions = (tsconfig = 'tsconfig.json', rootDir = ''): any => {
   let config: any;
   let compilerOptions: any = {};
   const tsconfigFile = join(rootDir, tsconfig);
   if (!fs.existsSync(tsconfigFile)) {
-    console.log('Typescript configuration file not found.'.red);
+    log('Typescript configuration file not found.'.red);
     process.exit();
   }
 

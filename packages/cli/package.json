@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Enigma command line tool",
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json && cp {*.md,package.json} dist",
+    "build": "rm -rf dist && tsc -p tsconfig.json && cp {*.md,package.json} dist && mkdir dist\\src\\assets && cp src/assets/{*.*} dist/src/assets",
     "install:pkg": "npm i --no-save",
     "link": "npm run build && npm link",
     "publish:pkg": "npm run build && cd dist && npm publish --access public",
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "colors": "^1.4.0",
+    "commander": "^8.3.0",
     "knex": "^0.95.14",
     "lodash": "^4.17.21",
     "prompt-sync": "^4.2.0"

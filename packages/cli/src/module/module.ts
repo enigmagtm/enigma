@@ -2,19 +2,19 @@ import fs from 'fs';
 import { capitalize } from 'lodash';
 import { join, sep } from 'path';
 import prompt from 'prompt-sync';
-import { createFolders } from '../utils';
+import { createFolders, format, log } from '../utils';
 
-export const createModule = (folderPath: string, module: string) => {
+export const createModule = (path: string, name: string) => {
   try {
-    const folders = folderPath.split(sep);
+    const folders = path.split(sep);
     const folder = createFolders(folders);
-    module = module || folders[folders.length - 1];
-    const filename = join(folder, `${module}.module.ts`);
+    name = (name || folders[folders.length - 1]).toLowerCase();
+    const filename = join(folder, `${name}.module.ts`);
     if (fs.existsSync(filename)) {
       const ask = prompt({ sigint: true });
       const yesNo = ask('File already exists, replace existing file? y/n ') || 'n';
       if (yesNo.toLowerCase() !== 'y') {
-        console.log('Process aborted');
+        log('Process aborted'.red);
         process.exit();
       }
     }
@@ -23,21 +23,11 @@ export const createModule = (folderPath: string, module: string) => {
       fs.rmSync(filename);
     }
 
-    const className = capitalize(module);
-    const file =
-    `import { HttpResourceModule, ResourceController, ResourceOptions } from '@enigmagtm/http';
-
-const resources: ResourceController[] = [];
-
-@ResourceOptions({
-  path: '/${module}',
-  resources
-})
-export class ${className}Module extends HttpResourceModule { }
-
-`;
-    fs.writeFileSync(filename, file);
+    const currentDir = __filename.split(sep);
+    currentDir.pop();
+    const file = fs.readFileSync(join(currentDir.join(sep), 'module'), 'utf8');
+    fs.writeFileSync(filename, format(file, name, capitalize(name)), { encoding: 'utf8' });
   } catch (e: any) {
-    console.log(`Error in process ${e.message}`);
+    log(`Error in process ${e.message}`);
   }
 };

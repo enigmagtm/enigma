@@ -1,0 +1,9 @@
+import { HttpResourceModule, ResourceController, ResourceOptions } from '@enigmagtm/http';
+
+const resources: ResourceController[] = [];
+
+@ResourceOptions({
+  path: '/{0}',
+  resources
+})
+export class {1}Module extends HttpResourceModule { }

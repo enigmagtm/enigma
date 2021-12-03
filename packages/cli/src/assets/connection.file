@@ -1,0 +1,15 @@
+import { Config, initializeConnection } from '@enigmagtm/orm';
+
+const db = process.env.ENIGMA_DB || '';
+const { client, version, connection, pool } = JSON.parse(db);
+const config: Config = {
+  client,
+  version,
+  connection,
+  pool: {
+    min: pool?.min || 1,
+    max: pool?.max || 50
+  }
+};
+
+initializeConnection(config);

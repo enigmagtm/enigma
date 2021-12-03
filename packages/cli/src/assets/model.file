@@ -1,0 +1,5 @@
+import { Field, {0}Model, Table } from '@enigmagtm/orm';
+
+@Table('{1}', '{2}')
+export class {3} extends Model {{4}
+}

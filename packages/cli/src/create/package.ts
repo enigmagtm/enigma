@@ -1,18 +1,18 @@
-import { exec } from '../utils';
 import fs from 'fs';
 import { join } from 'path';
 import { getPackageVersion } from '../scripts';
+import { exec } from '../utils';
 
 const createPackages = (...names: string[]): any => {
   const packages: any = {};
-  for (const name of names) {
+  for (const name of names.sort()) {
     packages[name] = getPackageVersion(name);
   }
 
   return packages;
 };
 
-export const createPackageJson = (basePath: string) => {
+export const createPackageJson = (basePath: string, database: string): void => {
   const filename = 'package.json';
   exec(`cd ${basePath} && npm init --yes`);
   const packageJson: any = JSON.parse(fs.readFileSync(join(basePath, filename), { encoding: 'utf-8' }));
@@ -35,7 +35,8 @@ export const createPackageJson = (basePath: string) => {
     'cors',
     'helmet',
     'knex',
-    'reflect-metadata'
+    'reflect-metadata',
+    database
   );
   packageJson.devDependencies = createPackages(
     '@types/express',
@@ -52,4 +53,8 @@ export const createPackageJson = (basePath: string) => {
     'typescript'
   );
   fs.writeFileSync(join(basePath, filename), JSON.stringify(packageJson, null, 2));
+};
+
+export const loadPackageJson = (filename: string): any => {
+  return JSON.parse(fs.readFileSync(filename, 'utf8'));
 };

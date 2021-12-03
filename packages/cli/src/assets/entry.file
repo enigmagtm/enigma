@@ -1,0 +1,12 @@
+import { enigmaServer } from '@enigmagtm/core';
+import { routerLog } from '@enigmagtm/rsc';
+import { AppModule } from './app/app.module';
+import './config/connection';
+
+try {
+  const portServer = parseInt(process.argv[2] || process.env.ENIGMA_PORT || '4300', 10);
+  enigmaServer.bootstrap(AppModule, { port: portServer, poweredBy: false, runServer: true });
+  routerLog.display();
+} catch (e) {
+  console.log(e);
+}

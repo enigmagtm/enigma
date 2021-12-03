@@ -1,7 +1,8 @@
 import { execSync, ExecSyncOptionsWithStringEncoding } from 'child_process';
+import { debugLog } from './log';
 
 
 export const exec = (cmd: string, options: ExecSyncOptionsWithStringEncoding = { encoding: 'utf8' }): string => {
-  console.log(`Executing command [${cmd}].`.bgMagenta.cyan.bold);
+  debugLog(`Executing command [${cmd}].`.yellow);
   return execSync(cmd, options).replaceAll('\n', '');
 };
