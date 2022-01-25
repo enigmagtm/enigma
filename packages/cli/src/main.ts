@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import { loadPackageJson } from './create';
+import { loadPackageJson } from './create/package';
 
 const packageJson = loadPackageJson('package.json');
 

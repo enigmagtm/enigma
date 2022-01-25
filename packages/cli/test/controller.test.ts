@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { join, sep } from 'path';
-import { createController, createControllerResource, createDataAccessObject, createModel } from '../src/controller';
+import { createController, createDataAccessObject, createModel, createResourceController } from '../src/controller';
 import { createFolders } from '../src/utils';
 
 describe('controller file', () => {
@@ -17,7 +17,7 @@ describe('controller file', () => {
   });
 
   afterAll(() => {
-    fs.rmdirSync(join('.', folder1), { recursive: true });
+    fs.rmSync(join('.', folder1), { recursive: true });
   });
 
   it('create controller file', () => {
@@ -36,11 +36,11 @@ describe('command line', () => {
   const folderPath = join(__dirname, folder1, folder2, model);
   beforeAll(async () => {
     delete process.env.ENIGMA_DB;
-    createControllerResource(join(__dirname, folder1, folder2, model), model);
+    createResourceController(join(__dirname, folder1, folder2, model), model, model, { database: 'pg' });
   });
 
   afterAll(() => {
-    fs.rmdirSync(join(__dirname, folder1), { recursive: true });
+    fs.rmSync(join(__dirname, folder1), { recursive: true });
   });
 
   it('create controller file', () => {

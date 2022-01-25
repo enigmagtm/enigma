@@ -12,7 +12,7 @@ describe('command line', () => {
   });
 
   afterAll(() => {
-    fs.rmdirSync(join(__dirname, folder1), { recursive: true });
+    fs.rmSync(join(__dirname, folder1), { recursive: true });
   });
 
   it('create module file', () => {

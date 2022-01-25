@@ -7,11 +7,11 @@ describe('app structure', () => {
   const folderPath = join('.', appName);
   beforeAll(() => {
     delete process.env.ENIGMA_DB;
-    createApp(appName, '--skip-npm');
+    createApp(appName, { database: 'pg', skipInstall: true });
   });
 
   afterAll(() => {
-    fs.rmdirSync(join('.', appName), { recursive: true });
+    fs.rmSync(join('.', appName), { recursive: true });
   });
 
   it('create folders', () => {

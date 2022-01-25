@@ -11,7 +11,7 @@ describe('utils', () => {
   });
 
   afterAll(() => {
-    fs.rmdirSync(join('.', folder1), { recursive: true });
+    fs.rmSync(join('.', folder1), { recursive: true });
   });
 
   it('create folders', () => {
