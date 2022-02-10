@@ -25,13 +25,13 @@
     "@enigmagtm/core": "0.0.0",
     "@enigmagtm/http": "0.0.0",
     "@enigmagtm/orm": "0.0.0",
-    "express": "^4.17.1",
-    "knex": "^1.0.1",
-    "lodash": "^4.17.21",
-    "reflect-metadata": "^0.1.13"
+    "express": "4.17.1",
+    "knex": "1.0.1",
+    "lodash": "4.17.21",
+    "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/lodash": "^4.14.177"
+    "@types/express": "4.17.13",
+    "@types/lodash": "4.14.177"
   }
 }
