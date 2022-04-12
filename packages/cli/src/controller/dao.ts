@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { capitalize } from 'lodash';
-import { join } from 'path';
+import { join, sep } from 'path';
 import { format } from '../utils';
 
 export const createDataAccessObject = (path: string, model: string) => {
@@ -9,6 +9,8 @@ export const createDataAccessObject = (path: string, model: string) => {
     fs.rmSync(filename);
   }
 
-  const file = fs.readFileSync(join(__dirname, '../assets/dao.file'), 'utf8');
+  const currentDir = __dirname.split(sep);
+  currentDir.pop();
+  const file = fs.readFileSync(join(currentDir.join(sep), 'assets', 'dao.file'), 'utf8');
   fs.writeFileSync(filename, format(file, model, capitalize(model)), { encoding: 'utf8' });
 };

@@ -21,10 +21,9 @@ export const createModule = (path: string, name: string) => {
       fs.rmSync(filename);
     }
 
-    const currentDir = __filename.split(sep);
-    currentDir[currentDir.length - 2] = 'assets';
-    currentDir[currentDir.length - 1] = 'module.file';
-    const file = fs.readFileSync(join(currentDir.join(sep)), 'utf8');
+    const currentDir = __dirname.split(sep);
+    currentDir.pop();
+    const file = fs.readFileSync(join(currentDir.join(sep), 'assets', 'module.file'), 'utf8');
     fs.writeFileSync(filename, format(file, name, capitalize(name)), { encoding: 'utf8' });
   } catch (e: any) {
     log(`Error in process ${e.message}`);

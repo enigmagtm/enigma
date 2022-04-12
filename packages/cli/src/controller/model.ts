@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { knex } from 'knex';
 import { capitalize } from 'lodash';
-import { join } from 'path';
+import { join, sep } from 'path';
 import { format } from '../utils';
 import { getType } from '../utils/type';
 
@@ -67,6 +67,8 @@ export const createModel = async (path: string, model: string, schema: string, t
     fs.rmSync(filename);
   }
 
-  const file = fs.readFileSync(join(__dirname, '../assets/model.file'), 'utf8');
+  const currentDir = __dirname.split(sep);
+  currentDir.pop();
+  const file = fs.readFileSync(join(currentDir.join(sep), 'assets', 'model.file'), 'utf8');
   fs.writeFileSync(filename, format(file, importId, schema, model, capitalize(model), fields), { encoding: 'utf8' });
 };
