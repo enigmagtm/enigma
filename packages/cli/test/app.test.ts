@@ -11,7 +11,7 @@ describe('app structure', () => {
   });
 
   afterAll(() => {
-    fs.rmSync(join('.', appName), { recursive: true });
+    fs.rmSync(folderPath, { recursive: true });
   });
 
   it('create folders', () => {
