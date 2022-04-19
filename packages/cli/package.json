@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "colors": "1.4.0",
-    "commander": "8.3.0",
-    "knex": "1.0.1",
+    "commander": "^9.2.0",
+    "knex": "^1.0.7",
     "lodash": "4.17.21",
     "prompt-sync": "4.2.0"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.177",
+    "@types/lodash": "^4.14.182",
     "@types/prompt-sync": "4.1.1"
   }
 }

@@ -28,6 +28,9 @@
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.177"
+    "@types/lodash": "^4.14.182"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
   }
 }
