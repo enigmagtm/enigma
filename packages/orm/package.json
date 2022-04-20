@@ -23,12 +23,12 @@
   "license": "MIT",
   "peerDependencies": {
     "@enigmagtm/core": "0.0.0",
-    "express": "^4.17.3",
+    "express": "4.17.3",
     "knex": "1.0.7",
     "lodash": "4.17.21",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.182"
+    "@types/lodash": "4.14.182"
   }
 }
