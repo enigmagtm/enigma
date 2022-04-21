@@ -10,8 +10,10 @@ export const createTagsCommand = (): void => {
     .action((name: string): void => {
       const config = loadDeployConfig();
       const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+      const cwd = process.cwd();
       for (const project of projects) {
         generateTags(config.projects[project]);
+        process.chdir(cwd);
       }
     });
 };

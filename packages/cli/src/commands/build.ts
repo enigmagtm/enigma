@@ -18,23 +18,24 @@ export const createBuildCommand = (): void => {
     .action((name: string, options: BuildOptions): void => {
       const config = loadDeployConfig();
       const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+      const cwd = process.cwd();
       for (const project of projects) {
         generateBuild(config.projects[project], options);
+        process.chdir(cwd);
       }
     });
 };
 
 export const generateBuild = (config: any, options: BuildOptions) => {
   log(`Building project/package ${config.name}`.blue.bold);
-  const path = normalize(config.rootDir);
-  const compilerOptions = buildCompilerOptions(config.tsconfig, config.rootDir);
+  process.chdir(normalize(config.rootDir));
+  const compilerOptions = buildCompilerOptions(config.tsconfig, process.cwd());
   if (compilerOptions.outDir) {
-    exec(`rm -rf ${join(path, compilerOptions.outDir)}`);
+    exec(`rm -rf ${compilerOptions.outDir}`);
   }
 
-  exec(`tsc -p ${join(path, config.tsconfig || 'tsconfig.json')}`);
+  exec(`tsc -p ${config.tsconfig || 'tsconfig.json'}`);
   if (compilerOptions.outDir) {
-    process.chdir(path);
     if (options.version) {
       exec(`npm version ${options.version}`);
     }

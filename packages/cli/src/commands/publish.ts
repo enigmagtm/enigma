@@ -17,8 +17,10 @@ export const createPublishCommand = (): void => {
       const version = generateVersion(config, options);
       options.version = version;
       const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+      const cwd = process.cwd();
       for (const project of projects) {
         publishPackage(config.projects[project], options);
+        process.chdir(cwd);
       }
     });
 };
@@ -29,7 +31,7 @@ export const publishPackage = (config: any, options: VersionOptions) => {
   updatePackagesDependencies(config, join(process.cwd(), 'package.json'), ...(config.dependencies || []));
   exec(`npm i --force`);
   generateBuild(config, options);
-  const compilerOptions = buildCompilerOptions(config.tsconfig, config.rootDir);
+  const compilerOptions = buildCompilerOptions(config.tsconfig, process.cwd());
   exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
   exec(`git reset --hard HEAD`);
   log(`Published on package manager ${config.name}`.green.bold);

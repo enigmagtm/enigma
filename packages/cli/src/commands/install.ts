@@ -17,8 +17,10 @@ export const createInstallCommand = (): void => {
     .action((name: string, options: InstallOptions): void => {
       const config = loadDeployConfig();
       const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+      const cwd = process.cwd();
       for (const project of projects) {
         installPackages(config.projects[project], options);
+        process.chdir(cwd);
       }
     });
 };
@@ -27,8 +29,13 @@ const installPackages = (config: any, options: InstallOptions) => {
   log(`Install dependencies for ${config.name}`.blue.bold);
   process.chdir(normalize(config.rootDir));
   const filename = join(process.cwd(), 'package.json');
-  const deps = options.latest ? [] : config.dependencies || [];
-  updatePackagesDependencies(config, filename, ...deps);
+  if (options.latest) {
+    updatePackagesDependencies(config, filename);
+  }
+
+  if (config.dependencies) {
+    updatePackagesDependencies(config, filename, ...config.dependencies);
+  }
 
   if (options.clean) {
     debugLog('Cleaning node_modules'.yellow);
@@ -36,6 +43,6 @@ const installPackages = (config: any, options: InstallOptions) => {
   }
 
   exec(`npm i`);
-  updatePackagesDependenciesZero(config, filename, ...(config.dependencies || []));
+  updatePackagesDependenciesZero(config, filename);
   log('Dependencies installed.'.green.bold);
 };

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { join, resolve } from 'path';
+import { join } from 'path';
 import { log } from '../utils';
 
 export const buildCompilerOptions = (tsconfig = 'tsconfig.json', rootDir = ''): any => {
@@ -17,7 +17,7 @@ export const buildCompilerOptions = (tsconfig = 'tsconfig.json', rootDir = ''): 
   while (config.extends) {
     const tsconfigExtends = config.extends;
     delete config.extends;
-    config = JSON.parse(fs.readFileSync(resolve(join(rootDir, tsconfigExtends)), 'utf8'));
+    config = JSON.parse(fs.readFileSync(tsconfigExtends, 'utf8'));
     compilerOptions = { ...compilerOptions, ...config?.compilerOptions };
   }
 
