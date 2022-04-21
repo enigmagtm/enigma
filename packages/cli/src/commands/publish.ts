@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import { normalize } from 'path';
+import { join, normalize } from 'path';
 import { buildCompilerOptions } from '../scripts/compiler-options';
 import { loadDeployConfig } from '../scripts/config';
 import { updatePackagesDependencies } from '../scripts/update-deps';
@@ -26,7 +26,7 @@ export const createPublishCommand = (): void => {
 export const publishPackage = (config: any, options: VersionOptions) => {
   log(`Publish to package manager ${config.name}`.blue.bold);
   process.chdir(normalize(config.rootDir));
-  updatePackagesDependencies(config, 'package.json', ...config.dependencies || []);
+  updatePackagesDependencies(config, join(process.cwd(), 'package.json'), ...(config.dependencies || []));
   exec(`npm i --force`);
   generateBuild(config, options);
   const compilerOptions = buildCompilerOptions(config.tsconfig, config.rootDir);

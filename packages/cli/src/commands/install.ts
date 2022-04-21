@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import { normalize } from 'path';
+import { join, normalize } from 'path';
 import { loadDeployConfig } from '../scripts/config';
 import { updatePackagesDependencies, updatePackagesDependenciesZero } from '../scripts/update-deps';
 import { debugLog, exec, log } from '../utils';
@@ -12,7 +12,7 @@ interface InstallOptions {
 export const createInstallCommand = (): void => {
   program
     .command('install [projectName]').alias('i')
-    .option('-lst --latest', 'Install latest versions in project')
+    .option('-l --latest', 'Install latest versions in project')
     .option('-c --clean', 'Delete node_modules directory')
     .action((name: string, options: InstallOptions): void => {
       const config = loadDeployConfig();
@@ -26,10 +26,9 @@ export const createInstallCommand = (): void => {
 const installPackages = (config: any, options: InstallOptions) => {
   log(`Install dependencies for ${config.name}`.blue.bold);
   process.chdir(normalize(config.rootDir));
-  const filename = 'package.json';
-  if (options.latest) {
-    updatePackagesDependencies(config, filename);
-  }
+  const filename = join(process.cwd(), 'package.json');
+  const deps = options.latest ? [] : config.dependencies || [];
+  updatePackagesDependencies(config, filename, ...deps);
 
   if (options.clean) {
     debugLog('Cleaning node_modules'.yellow);
@@ -37,9 +36,6 @@ const installPackages = (config: any, options: InstallOptions) => {
   }
 
   exec(`npm i`);
-  if (options.latest) {
-    updatePackagesDependenciesZero(config, filename, ...config.dependencies || []);
-  }
-
-  console.log('Dependencies installed.'.green.bold);
+  updatePackagesDependenciesZero(config, filename, ...(config.dependencies || []));
+  log('Dependencies installed.'.green.bold);
 };
