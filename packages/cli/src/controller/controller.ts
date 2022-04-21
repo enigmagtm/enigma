@@ -12,6 +12,6 @@ export const createController = (path: string, model: string) => {
 
   const currentDir = __dirname.split(sep);
   currentDir.pop();
-  const file = fs.readFileSync(join(currentDir.join(sep), 'assets', 'controller.file'), 'utf8');
+  const file = fs.readFileSync(join(currentDir.join(), 'assets', 'controller.file'), 'utf8');
   fs.writeFileSync(filename, format(file, model, capitalize(model)), { encoding: 'utf8' });
 };
