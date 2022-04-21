@@ -45,14 +45,15 @@ export const createApp = (name: string, options: NewAppOptions) => {
   fs.writeFileSync(join(basePath, dotGitignoreFilename), dotGitignoreFile);
   createTsconfigJson(basePath);
   createPackageJson(basePath, options.database);
+  process.chdir(basePath);
   if (!options.skipInstall) {
-    exec(`cd ${basePath} && npm i`);
+    exec(`npm i`);
   }
 
   if (!options.skipGit) {
-    exec(`cd ${basePath} && git init`);
+    exec(`git init`);
     if (!options.skipCommit) {
-      exec(`cd ${basePath} && git add . && git commit -m ":tada: initial commit`);
+      exec(`git add . && git commit -m ":tada: initial commit`);
     }
   }
 };

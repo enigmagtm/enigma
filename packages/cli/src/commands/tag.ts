@@ -1,8 +1,8 @@
 import { program } from 'commander';
 import fs from 'fs';
 import { join, normalize } from 'path';
-import { exec, log } from '../utils';
 import { loadDeployConfig } from '../scripts/config';
+import { exec, log } from '../utils';
 
 export const createTagsCommand = (): void => {
   program
@@ -20,6 +20,8 @@ const generateTags = (config: any) => {
   log(`Create tag and update project/package ${config.name}`.blue);
   const filename = 'package.json';
   const path = normalize(config.rootDir);
+  process.chdir(path);
+
   const file = join(path, filename);
   if (!fs.existsSync(file)) {
     log(`Package configuration file not found. [${file}].`.red);
@@ -27,5 +29,5 @@ const generateTags = (config: any) => {
   }
 
   const packageJson = JSON.parse(fs.readFileSync(file, 'utf8'));
-  exec(`cd ${path} && git tag v${packageJson.version} && git push --tags`);
+  exec(`git tag v${packageJson.version} && git push --tags`);
 };

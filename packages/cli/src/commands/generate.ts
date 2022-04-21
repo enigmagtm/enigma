@@ -13,6 +13,6 @@ export const createGenerateCommand = (): void => {
     .argument('<path>', 'Path to generate resource controller')
     .argument('<schema>', 'Schema for the resoruce controller model')
     .argument('[model]', 'Model or table name for the resource controller model')
-    .option('-db --database [database]', 'Connect to database from ENV variable', )
+    .option('-db --database [database]', 'Connect to database from ENV variable',)
     .action(createResourceController);
 };

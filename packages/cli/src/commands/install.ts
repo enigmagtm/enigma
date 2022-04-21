@@ -1,8 +1,8 @@
 import { program } from 'commander';
-import { join, normalize } from 'path';
-import { debugLog, exec, log } from '../utils';
+import { normalize } from 'path';
 import { loadDeployConfig } from '../scripts/config';
 import { updatePackagesDependencies, updatePackagesDependenciesZero } from '../scripts/update-deps';
+import { debugLog, exec, log } from '../utils';
 
 interface InstallOptions {
   latest?: boolean;
@@ -25,7 +25,7 @@ export const createInstallCommand = (): void => {
 
 const installPackages = (config: any, options: InstallOptions) => {
   log(`Install dependencies for ${config.name}`.blue.bold);
-  const path = normalize(config.rootDir);
+  process.chdir(normalize(config.rootDir));
   const filename = 'package.json';
   if (options.latest) {
     updatePackagesDependencies(config, filename);
@@ -33,10 +33,10 @@ const installPackages = (config: any, options: InstallOptions) => {
 
   if (options.clean) {
     debugLog('Cleaning node_modules'.yellow);
-    exec(`rm -rf ${join(path, 'node_modules')}`);
+    exec(`rm -rf node_modules`);
   }
 
-  exec(`cd ${path} && npm i`);
+  exec(`npm i`);
   if (options.latest) {
     updatePackagesDependenciesZero(config, filename, ...config.dependencies || []);
   }

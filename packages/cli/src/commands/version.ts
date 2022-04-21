@@ -20,7 +20,7 @@ export const createVersionCommand = (): void => {
 
 export const generateVersion = (config: any, options: VersionOptions) => {
   log(`Update project/package version ${config.name}`.blue.bold);
-  const path = normalize(config.rootDir);
-  const newVersion = exec(`cd ${path} && npm version ${options.version}`);
+  process.chdir(normalize(config.rootDir));
+  const newVersion = exec(`npm version ${options.version}`);
   return newVersion.replace('\n', '');
 };

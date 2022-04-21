@@ -1,9 +1,9 @@
 import { program } from 'commander';
 import fs from 'fs';
 import { join, normalize } from 'path';
-import { exec, log } from '../utils';
 import { buildCompilerOptions } from '../scripts/compiler-options';
 import { loadDeployConfig } from '../scripts/config';
+import { exec, log } from '../utils';
 import { VersionOptions } from './version';
 
 export interface BuildOptions extends VersionOptions {
@@ -34,15 +34,16 @@ export const generateBuild = (config: any, options: BuildOptions) => {
 
   exec(`tsc -p ${join(path, config.tsconfig || 'tsconfig.json')}`);
   if (compilerOptions.outDir) {
+    process.chdir(path);
     if (options.version) {
-      exec(`cd ${path} && npm version ${options.version}`);
+      exec(`npm version ${options.version}`);
     }
 
-    exec(`cp {*.md,package.json} ${join(path, compilerOptions.outDir)}`);
+    exec(`cp {*.md,package.json} ${normalize(compilerOptions.outDir)}`);
     if (options.assets) {
-      const assets = join(path, compilerOptions.baseUrl, options.assets);
+      const assets = join(compilerOptions.baseUrl, options.assets);
       if (fs.existsSync(assets)) {
-        const assetsDist = join(path, compilerOptions.outDir, compilerOptions.baseUrl, options.assets);
+        const assetsDist = join(compilerOptions.outDir, compilerOptions.baseUrl, options.assets);
         exec(`cp -r ${assets} ${assetsDist}`);
       }
     }

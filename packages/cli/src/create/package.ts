@@ -14,7 +14,8 @@ const createPackages = (...names: string[]): any => {
 
 export const createPackageJson = (basePath: string, database: string): void => {
   const filename = 'package.json';
-  exec(`cd ${basePath} && npm init --yes`);
+  process.chdir(basePath);
+  exec(`npm init --yes`);
   const packageJson: any = JSON.parse(fs.readFileSync(join(basePath, filename), { encoding: 'utf-8' }));
   packageJson.main = 'dist/index.js';
   packageJson.scripts = {
