@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { join, sep } from 'path';
-import { createFolders, exec } from '../utils';
-import { format } from '../utils/format';
+import PromptSync from 'prompt-sync';
+import { createFolders, exec, format, log } from '../utils';
 import { createPackageJson } from './package';
 import { createTsconfigJson } from './tsconfig';
 
@@ -24,8 +24,14 @@ export const createApp = (name: string, options: NewAppOptions) => {
   const names = name.split(sep);
   const projectPath = createFolders(names);
   if (fs.readdirSync(projectPath).length > 0) {
-    console.log('Directory is not empty, cannot create app');
-    process.exit();
+    const ask = PromptSync({ sigint: true });
+    const yesNo = ask('Folder already exists, create app? y/n ') || 'n';
+    if (yesNo.toLowerCase() !== 'y') {
+      log('Directory is not empty, cannot create app'.red);
+      process.exit();
+    }
+
+    fs.rmSync(projectPath, { recursive: true, force: true });
   }
 
   const basePath = createFolders(names);

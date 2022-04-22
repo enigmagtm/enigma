@@ -18,12 +18,12 @@ export const createModule = (path: string, name: string) => {
         process.exit();
       }
 
-      fs.rmSync(filename);
+      fs.rmSync(filename, { force: true });
     }
 
-    const currentDir = __dirname.split(sep);
-    currentDir.pop();
-    const file = fs.readFileSync(join(currentDir.join(sep), 'assets', 'module.file'), 'utf8');
+    const dirname = __dirname.split(sep);
+    dirname.pop();
+    const file = fs.readFileSync(join(...dirname, 'assets', 'module.file'), 'utf8');
     fs.writeFileSync(filename, format(file, name, capitalize(name)), { encoding: 'utf8' });
   } catch (e: any) {
     log(`Error in process ${e.message}`);
