@@ -44,7 +44,7 @@ export const publishPackage = (config: any, options: PublishOptions) => {
   generateBuild(config, options);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
   if (!options.dryRun) {
-    log('Publishing to package manager');
+    log('Publishing to package manager'.magenta);
     exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
   }
 
