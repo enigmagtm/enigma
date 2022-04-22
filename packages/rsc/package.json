@@ -26,7 +26,7 @@
     "@enigmagtm/http": "0.0.0",
     "@enigmagtm/orm": "0.0.0",
     "express": "4.17.3",
-    "knex": "1.0.7",
+    "knex": "2.0.0",
     "lodash": "4.17.21",
     "reflect-metadata": "0.1.13"
   },

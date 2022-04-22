@@ -8,8 +8,9 @@ describe('controller file', () => {
   const folder1 = 'test';
   const folder2 = 'create';
   const model = 'folders';
+  const cwd = process.cwd();
   beforeAll(async () => {
-    folderPath = createFolders(join(folder1, folder2, model).split(sep));
+    folderPath = createFolders(join(cwd, folder1, folder2, model).split(sep));
     delete process.env.ENIGMA_DB;
     createController(folderPath, model);
     createDataAccessObject(folderPath, model);
@@ -17,12 +18,12 @@ describe('controller file', () => {
   });
 
   afterAll(() => {
-    fs.rmSync(join('.', folder1), { recursive: true });
+    fs.rmSync(join(cwd, folder1), { recursive: true });
   });
 
   it('create controller file', () => {
-    expect(fs.existsSync(join('.', folder1, folder2))).toBeTruthy();
-    expect(fs.existsSync(join('.', folder1, folder2, model))).toBeTruthy();
+    expect(fs.existsSync(join(cwd, folder1, folder2))).toBeTruthy();
+    expect(fs.existsSync(join(cwd, folder1, folder2, model))).toBeTruthy();
     expect(fs.existsSync(join(folderPath, `${model}.controller.ts`))).toBeTruthy();
     expect(fs.existsSync(join(folderPath, `${model}.dao.ts`))).toBeTruthy();
     expect(fs.existsSync(join(folderPath, `${model}.model.ts`))).toBeTruthy();
@@ -33,19 +34,21 @@ describe('command line', () => {
   const folder1 = 'test';
   const folder2 = 'create';
   const model = 'folders';
-  const folderPath = join(__dirname, folder1, folder2, model);
-  beforeAll(async () => {
+  const cwd = process.cwd();
+  const folderPath = join(cwd, folder1, folder2, model);
+  beforeAll(() => {
     delete process.env.ENIGMA_DB;
-    createResourceController(join(__dirname, folder1, folder2, model), model, model, { database: 'pg' });
+    createResourceController(folderPath, model, model, { database: 'pg' });
   });
 
   afterAll(() => {
-    fs.rmSync(join(__dirname, folder1), { recursive: true });
+    fs.rmSync(join(cwd, folder1), { recursive: true });
   });
 
-  it('create controller file', () => {
-    expect(fs.existsSync(join(__dirname, folder1, folder2))).toBeTruthy();
-    expect(fs.existsSync(join(__dirname, folder1, folder2, model))).toBeTruthy();
+  it('create controller file 2', () => {
+    expect(fs.existsSync(join(cwd, folder1))).toBeTruthy();
+    expect(fs.existsSync(join(cwd, folder1, folder2))).toBeTruthy();
+    expect(fs.existsSync(folderPath)).toBeTruthy();
     expect(fs.existsSync(join(folderPath, `${model}.controller.ts`))).toBeTruthy();
     expect(fs.existsSync(join(folderPath, `${model}.dao.ts`))).toBeTruthy();
     expect(fs.existsSync(join(folderPath, `${model}.model.ts`))).toBeTruthy();

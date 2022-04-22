@@ -24,6 +24,14 @@ export const updateDependenciesZero = (deps: any, ...pkgDeps: string[]): void =>
   }
 };
 
+export const updatePackageVersion = (filename: string, version: string) => {
+  log(`Update package.json to version ${version}`.blue.bold);
+  const packageJson = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  packageJson.version = version;
+  fs.writeFileSync(filename, JSON.stringify(packageJson, null, 2));
+  log(`Updated package.json to ${version}`.green.bold);
+};
+
 export const updatePackagesDependencies = (config: any, filename: string, ...include: string[]) => {
   log(`Update ${config.name} package.json dependencies to latest version`.blue.bold);
   const packageJson = JSON.parse(fs.readFileSync(filename, 'utf8'));

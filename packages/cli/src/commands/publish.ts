@@ -1,38 +1,53 @@
 import { program } from 'commander';
 import { join, normalize } from 'path';
-import { buildCompilerOptions } from '../scripts/compiler-options';
-import { loadDeployConfig } from '../scripts/config';
-import { updatePackagesDependencies } from '../scripts/update-deps';
+import { buildCompilerOptions, getPackageVersion, loadDeployConfig, updatePackagesDependencies, updatePackageVersion } from '../scripts';
 import { exec, log } from '../utils';
 import { generateBuild } from './build';
 import { generateVersion, VersionOptions } from './version';
+
+export interface PublishOptions extends VersionOptions {
+  force?: boolean;
+  dryRun?: boolean;
+}
 
 export const createPublishCommand = (): void => {
   program
     .command('publish [name]')
     .alias('p')
     .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
-    .action((name: string, options: VersionOptions): void => {
+    .option('-f --force [force]', 'Force install packages', false)
+    .option('-dr --dry-run [dryRun]', 'Publish pacakge to package manager', false)
+    .action((name: string, options: PublishOptions): void => {
       const config = loadDeployConfig();
       const version = generateVersion(config, options);
       options.version = version;
       const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
       const cwd = process.cwd();
-      for (const project of projects) {
-        publishPackage(config.projects[project], options);
+      try {
+        for (const project of projects) {
+          const configProject = config.projects[project];
+          process.chdir(normalize(join(cwd, configProject.rootDir)));
+          publishPackage(configProject, options);
+        }
+      } finally {
         process.chdir(cwd);
       }
     });
 };
 
-export const publishPackage = (config: any, options: VersionOptions) => {
+export const publishPackage = (config: any, options: PublishOptions) => {
   log(`Publish to package manager ${config.name}`.blue.bold);
-  process.chdir(normalize(config.rootDir));
-  updatePackagesDependencies(config, join(process.cwd(), 'package.json'), ...(config.dependencies || []));
-  exec(`npm i --force`);
+  const packageJsonName = 'package.json';
+  updatePackagesDependencies(config, packageJsonName, ...(config.dependencies || []));
+  exec(`npm i ${options.force ? '-f' : ''}`);
+  updatePackageVersion(packageJsonName, getPackageVersion(config.name));
   generateBuild(config, options);
-  const compilerOptions = buildCompilerOptions(config.tsconfig, process.cwd());
-  exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
+  const compilerOptions = buildCompilerOptions(config.tsconfig);
+  if (!options.dryRun) {
+    log('Publishing to package manager');
+    exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
+  }
+
   exec(`git reset --hard HEAD`);
   log(`Published on package manager ${config.name}`.green.bold);
 };

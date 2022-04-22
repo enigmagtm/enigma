@@ -5,12 +5,9 @@ import { format } from '../utils';
 
 export const createDataAccessObject = (path: string, model: string) => {
   const filename = join(path, `${model}.dao.ts`);
-  if (fs.existsSync(filename)) {
-    fs.rmSync(filename);
-  }
-
-  const currentDir = __dirname.split(sep);
-  currentDir.pop();
-  const file = fs.readFileSync(join(currentDir.join(), 'assets', 'dao.file'), 'utf8');
+  fs.rmSync(filename, { force: true });
+  const dirname = __dirname.split(sep);
+  dirname.pop();
+  const file = fs.readFileSync(join(...dirname, 'assets', 'dao.file'), 'utf8');
   fs.writeFileSync(filename, format(file, model, capitalize(model)), { encoding: 'utf8' });
 };

@@ -1,10 +1,11 @@
 import { program } from 'commander';
-import { normalize } from 'path';
+import { join } from 'path';
 import { loadDeployConfig } from '../scripts/config';
 import { debugLog, exec, log } from '../utils';
 
 export interface VersionOptions {
   version: string;
+  dryRun?: boolean;
 }
 
 export const createVersionCommand = (): void => {
@@ -13,14 +14,20 @@ export const createVersionCommand = (): void => {
     .alias('uv')
     .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
     .action((options: VersionOptions): void => {
-      const version = generateVersion(loadDeployConfig(), options);
-      debugLog(`Update project to version ${version}.`);
+      const cwd = process.cwd();
+      try {
+        const config = loadDeployConfig();
+        process.chdir(join(cwd, config.rootDir));
+        const version = generateVersion(config, options);
+        debugLog(`Update project to version ${version}.`);
+      } finally {
+        process.chdir(cwd);
+      }
     });
 };
 
 export const generateVersion = (config: any, options: VersionOptions) => {
   log(`Update project/package version ${config.name}`.blue.bold);
-  process.chdir(normalize(config.rootDir));
   const newVersion = exec(`npm version ${options.version}`);
   return newVersion.replace('\n', '');
 };

@@ -23,7 +23,7 @@ export const createModule = (path: string, name: string) => {
 
     const currentDir = __dirname.split(sep);
     currentDir.pop();
-    const file = fs.readFileSync(join(currentDir.join(), 'assets', 'module.file'), 'utf8');
+    const file = fs.readFileSync(join(currentDir.join(sep), 'assets', 'module.file'), 'utf8');
     fs.writeFileSync(filename, format(file, name, capitalize(name)), { encoding: 'utf8' });
   } catch (e: any) {
     log(`Error in process ${e.message}`);

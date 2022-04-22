@@ -4,9 +4,10 @@ import { createApp } from '../src/create';
 
 describe('app structure with no git', () => {
   const appName = 'test-no-git-app';
-  const folderPath = join('.', appName);
+  const folderPath = join(process.cwd(), appName);
   beforeAll(() => {
     delete process.env.ENIGMA_DB;
+    fs.rmSync(folderPath, { recursive: true, force: true });
     createApp(appName, { database: 'pg', skipInstall: true, skipGit: true });
   });
 

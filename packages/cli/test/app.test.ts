@@ -3,10 +3,11 @@ import { join } from 'path';
 import { createApp } from '../src/create';
 
 describe('app structure', () => {
-  const appName = 'test-app';
-  const folderPath = join('.', appName);
+  const appName = join('test', 'test-app');
+  const folderPath = join(process.cwd(), appName);
   beforeAll(() => {
     delete process.env.ENIGMA_DB;
+    fs.rmSync(folderPath, { recursive: true, force: true });
     createApp(appName, { database: 'pg', skipInstall: true });
   });
 

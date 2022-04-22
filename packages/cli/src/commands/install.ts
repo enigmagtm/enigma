@@ -5,6 +5,7 @@ import { updatePackagesDependencies, updatePackagesDependenciesZero } from '../s
 import { debugLog, exec, log } from '../utils';
 
 interface InstallOptions {
+  force?: boolean;
   latest?: boolean;
   clean?: boolean;
 }
@@ -12,14 +13,20 @@ interface InstallOptions {
 export const createInstallCommand = (): void => {
   program
     .command('install [projectName]').alias('i')
-    .option('-l --latest', 'Install latest versions in project')
-    .option('-c --clean', 'Delete node_modules directory')
+    .option('-f --force', 'Force install of pacakges', false)
+    .option('-l --latest', 'Install latest versions of pacakges', false)
+    .option('-c --clean', 'Delete node_modules directory', false)
     .action((name: string, options: InstallOptions): void => {
       const config = loadDeployConfig();
       const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
       const cwd = process.cwd();
-      for (const project of projects) {
-        installPackages(config.projects[project], options);
+      try {
+        for (const project of projects) {
+          const configProject = config.projects[project];
+          process.chdir(normalize(join(cwd, configProject.rootDir)));
+          installPackages(configProject, options);
+        }
+      } finally {
         process.chdir(cwd);
       }
     });
@@ -27,8 +34,7 @@ export const createInstallCommand = (): void => {
 
 const installPackages = (config: any, options: InstallOptions) => {
   log(`Install dependencies for ${config.name}`.blue.bold);
-  process.chdir(normalize(config.rootDir));
-  const filename = join(process.cwd(), 'package.json');
+  const filename = 'package.json';
   if (options.latest) {
     updatePackagesDependencies(config, filename);
   }
@@ -42,7 +48,7 @@ const installPackages = (config: any, options: InstallOptions) => {
     exec(`rm -rf node_modules`);
   }
 
-  exec(`npm i`);
+  exec(`npm i ${options.force ? '-f' : ''}`);
   updatePackagesDependenciesZero(config, filename);
   log('Dependencies installed.'.green.bold);
 };

@@ -6,18 +6,20 @@ describe('utils', () => {
   let folderPath: string;
   const folder1 = 'test';
   const folder2 = 'create';
+  const cwd = process.cwd();
   beforeAll(() => {
-    folderPath = createFolders(join(folder1, folder2).split(sep));
+    folderPath = join(cwd, folder1, folder2);
+    folderPath = createFolders(folderPath.split(sep));
   });
 
   afterAll(() => {
-    fs.rmSync(join('.', folder1), { recursive: true });
+    fs.rmSync(join(cwd, folder1), { recursive: true });
   });
 
   it('create folders', () => {
-    expect(folderPath).toBe(join('.', folder1, folder2));
-    expect(fs.existsSync(join('.', folder1))).toBeTruthy();
-    expect(fs.existsSync(join('.', folder1, folder2))).toBeTruthy();
+    expect(folderPath).toBe(join(cwd, folder1, folder2));
+    expect(fs.existsSync(join(cwd, folder1))).toBeTruthy();
+    expect(fs.existsSync(join(cwd, folder1, folder2))).toBeTruthy();
   });
 
   it('get pg types', () => {
