@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { join } from 'path';
 
 const tsconfig = {
   compilerOptions: {
@@ -26,7 +25,7 @@ const tsconfig = {
   ]
 };
 
-export const createTsconfigJson = (basePath: string) => {
+export const createTsconfigJson = (): void => {
   const filename = 'tsconfig.json';
-  fs.writeFileSync(join(basePath, filename), JSON.stringify(tsconfig, null, 2));
+  fs.writeFileSync(filename, JSON.stringify(tsconfig, null, 2));
 };

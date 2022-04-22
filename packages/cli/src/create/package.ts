@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { join } from 'path';
 import { getPackageVersion } from '../scripts';
 import { exec } from '../utils';
 
@@ -12,11 +11,10 @@ const createPackages = (...names: string[]): any => {
   return packages;
 };
 
-export const createPackageJson = (basePath: string, database: string): void => {
+export const createPackageJson = (database: string): void => {
   const filename = 'package.json';
-  process.chdir(basePath);
   exec(`npm init --yes`);
-  const packageJson: any = JSON.parse(fs.readFileSync(join(basePath, filename), { encoding: 'utf-8' }));
+  const packageJson: any = JSON.parse(fs.readFileSync(filename, { encoding: 'utf-8' }));
   packageJson.main = 'dist/index.js';
   packageJson.scripts = {
     test: 'echo \"Error: no test specified\" && exit 1',
@@ -53,7 +51,7 @@ export const createPackageJson = (basePath: string, database: string): void => {
     'nodemon',
     'typescript'
   );
-  fs.writeFileSync(join(basePath, filename), JSON.stringify(packageJson, null, 2));
+  fs.writeFileSync(filename, JSON.stringify(packageJson, null, 2));
 };
 
 export const loadPackageJson = (filename: string): any => {

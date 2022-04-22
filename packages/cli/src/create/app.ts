@@ -33,19 +33,19 @@ export const createApp = (name: string, options: NewAppOptions) => {
   const configPath = createFolders([name, source, config]);
   const currentDir = __dirname.split(sep);
   currentDir.pop();
-  const entryFile = fs.readFileSync(join(currentDir.join(), 'assets', 'entry.file'), 'utf8');
+  const entryFile = fs.readFileSync(join(currentDir.join(sep), 'assets', 'entry.file'), 'utf8');
   fs.writeFileSync(join(sourcePath, entryFilename), entryFile);
-  const appModuleFile = fs.readFileSync(join(currentDir.join(), 'assets', 'app-module.file'), 'utf8');
+  const appModuleFile = fs.readFileSync(join(currentDir.join(sep), 'assets', 'app-module.file'), 'utf8');
   fs.writeFileSync(join(appPath, appFilename), appModuleFile);
-  const connectionFile = fs.readFileSync(join(currentDir.join(), 'assets', 'connection.file'), 'utf8');
+  const connectionFile = fs.readFileSync(join(currentDir.join(sep), 'assets', 'connection.file'), 'utf8');
   fs.writeFileSync(join(configPath, connectionFilename), connectionFile);
-  const readmeFile = fs.readFileSync(join(currentDir.join(), 'assets', 'readme.file'), 'utf8');
+  const readmeFile = fs.readFileSync(join(currentDir.join(sep), 'assets', 'readme.file'), 'utf8');
   fs.writeFileSync(join(basePath, readmeFilename), format(readmeFile, name));
-  const dotGitignoreFile = fs.readFileSync(join(currentDir.join(), 'assets', 'gitignore.file'), 'utf8');
+  const dotGitignoreFile = fs.readFileSync(join(currentDir.join(sep), 'assets', 'gitignore.file'), 'utf8');
   fs.writeFileSync(join(basePath, dotGitignoreFilename), dotGitignoreFile);
-  createTsconfigJson(basePath);
-  createPackageJson(basePath, options.database);
   process.chdir(basePath);
+  createTsconfigJson();
+  createPackageJson(options.database);
   if (!options.skipInstall) {
     exec(`npm i`);
   }
