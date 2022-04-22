@@ -6,7 +6,7 @@ import { exec, log } from '../utils';
 import { VersionOptions } from './version';
 
 export interface BuildOptions extends VersionOptions {
-  assets?: string;
+  assets: string;
 }
 
 export const createBuildCommand = (): void => {
@@ -34,7 +34,7 @@ export const generateBuild = (config: any, options: BuildOptions) => {
   log(`Building project/package ${config.name}`.blue.bold);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
   if (compilerOptions.outDir) {
-    exec(`rm -rf ${compilerOptions.outDir}`);
+    fs.rmSync(compilerOptions.outDir, { recursive: true, force: true });
   }
 
   exec(`tsc -p ${config.tsconfig || 'tsconfig.json'}`);
@@ -47,16 +47,14 @@ export const generateBuild = (config: any, options: BuildOptions) => {
       exec(`cd ${outDir} && npm version ${options.version}`);
     }
 
-    exec(`cp {*.md,package.json} ${normalize(outDir)}`);
+    exec(`cp {*.md,package.json} ${outDir}`);
     updatePackageVersion('package.json', '0.0.0');
     updatePackagesDependenciesZero(config, packageJsonName);
-    if (options.assets) {
-      const baseUrl = normalize(compilerOptions.baseUrl);
-      const assets = join(baseUrl, options.assets);
-      if (fs.existsSync(assets)) {
-        const assetsDist = join(outDir, baseUrl, options.assets);
-        exec(`cp -r ${assets} ${assetsDist}`);
-      }
+    const baseUrl = normalize(compilerOptions.baseUrl);
+    const assets = join(baseUrl, options.assets);
+    if (fs.existsSync(assets)) {
+      const assetsDist = join(outDir, baseUrl, options.assets);
+      fs.cpSync(assets, assetsDist, { recursive: true });
     }
   }
 

@@ -2,12 +2,12 @@ import { program } from 'commander';
 import { join, normalize } from 'path';
 import { buildCompilerOptions, getPackageVersion, loadDeployConfig, updatePackagesDependencies, updatePackageVersion } from '../scripts';
 import { exec, log } from '../utils';
-import { generateBuild } from './build';
+import { BuildOptions, generateBuild } from './build';
 import { generateVersion, VersionOptions } from './version';
 
-export interface PublishOptions extends VersionOptions {
-  force?: boolean;
-  dryRun?: boolean;
+export interface PublishOptions extends BuildOptions, VersionOptions {
+  force: boolean;
+  dryRun: boolean;
 }
 
 export const createPublishCommand = (): void => {

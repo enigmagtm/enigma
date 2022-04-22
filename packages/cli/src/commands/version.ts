@@ -5,10 +5,9 @@ import { debugLog, exec, log } from '../utils';
 
 export interface VersionOptions {
   version: string;
-  dryRun?: boolean;
 }
 
-export const createVersionCommand = (): void => {
+export const createVersionCommand = () => {
   program
     .command('update-version')
     .alias('uv')
@@ -26,7 +25,7 @@ export const createVersionCommand = (): void => {
     });
 };
 
-export const generateVersion = (config: any, options: VersionOptions) => {
+export const generateVersion = (config: any, options: VersionOptions): string => {
   log(`Update project/package version ${config.name}`.blue.bold);
   const newVersion = exec(`npm version ${options.version}`);
   return newVersion.replace('\n', '');

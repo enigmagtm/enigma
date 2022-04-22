@@ -1,7 +1,7 @@
 import { program } from 'commander';
+import fs from 'fs';
 import { join, normalize } from 'path';
-import { loadDeployConfig } from '../scripts/config';
-import { updatePackagesDependencies, updatePackagesDependenciesZero } from '../scripts/update-deps';
+import { loadDeployConfig, updatePackagesDependencies, updatePackagesDependenciesZero } from '../scripts';
 import { debugLog, exec, log } from '../utils';
 
 interface InstallOptions {
@@ -46,7 +46,7 @@ const installPackages = (config: any, options: InstallOptions) => {
 
     if (options.clean) {
       debugLog('Cleaning node_modules'.yellow);
-      exec(`rm -rf node_modules`);
+      fs.rmSync('node_modules', { recursive: true, force: true });
     }
 
     exec(`npm i${options.force ? ' -f' : ''}`);

@@ -53,7 +53,3 @@ export const createPackageJson = (database: string): void => {
   );
   fs.writeFileSync(filename, JSON.stringify(packageJson, null, 2));
 };
-
-export const loadPackageJson = (filename: string): any => {
-  return JSON.parse(fs.readFileSync(filename, 'utf8'));
-};
