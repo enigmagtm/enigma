@@ -35,20 +35,23 @@ export const createInstallCommand = (): void => {
 const installPackages = (config: any, options: InstallOptions) => {
   log(`Install dependencies for ${config.name}`.blue.bold);
   const filename = 'package.json';
-  if (options.latest) {
-    updatePackagesDependencies(config, filename);
-  }
+  try {
+    if (options.latest) {
+      updatePackagesDependencies(config, filename);
+    }
 
-  if (config.dependencies) {
-    updatePackagesDependencies(config, filename, ...config.dependencies);
-  }
+    if (config.dependencies) {
+      updatePackagesDependencies(config, filename, ...config.dependencies);
+    }
 
-  if (options.clean) {
-    debugLog('Cleaning node_modules'.yellow);
-    exec(`rm -rf node_modules`);
-  }
+    if (options.clean) {
+      debugLog('Cleaning node_modules'.yellow);
+      exec(`rm -rf node_modules`);
+    }
 
-  exec(`npm i ${options.force ? '-f' : ''}`);
-  updatePackagesDependenciesZero(config, filename);
-  log('Dependencies installed.'.green.bold);
+    exec(`npm i${options.force ? ' -f' : ''}`);
+    log('Dependencies installed.'.green.bold);
+  } finally {
+    updatePackagesDependenciesZero(config, filename);
+  }
 };

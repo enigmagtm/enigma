@@ -39,7 +39,7 @@ export const publishPackage = (config: any, options: PublishOptions) => {
   log(`Publish to package manager ${config.name}`.blue.bold);
   const packageJsonName = 'package.json';
   updatePackagesDependencies(config, packageJsonName, ...(config.dependencies || []));
-  exec(`npm i ${options.force ? '-f' : ''}`);
+  exec(`npm i${options.force ? ' -f' : ''}`);
   updatePackageVersion(packageJsonName, getPackageVersion(config.name));
   generateBuild(config, options);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
