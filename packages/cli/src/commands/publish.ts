@@ -15,7 +15,7 @@ export const createPublishCommand = (): void => {
     .alias('p')
     .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
     .option('-f --force [force]', 'Force install packages', false)
-    .option('-dr --dry-run [dryRun]', 'Publish pacakge to package manager', false)
+    .option('-dr --dry-run [dryRun]', 'Publish package to package manager', false)
     .action(publishPackages);
 };
 
