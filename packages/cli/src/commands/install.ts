@@ -5,9 +5,10 @@ import { loadDeployConfig, updatePackagesDependencies, updatePackagesDependencie
 import { debugLog, exec, log } from '../utils';
 
 interface InstallOptions {
-  force?: boolean;
-  latest?: boolean;
-  clean?: boolean;
+  force: boolean;
+  latest: boolean;
+  clean: boolean;
+  symlink: boolean;
 }
 
 export const createInstallCommand = (): void => {
@@ -16,6 +17,7 @@ export const createInstallCommand = (): void => {
     .option('-f --force', 'Force install of pacakges', false)
     .option('-l --latest', 'Install latest versions of pacakges', false)
     .option('-c --clean', 'Delete node_modules directory', false)
+    .option('-sl --symlink', 'Symbolic link to project dependencies', false)
     .action((name: string, options: InstallOptions): void => {
       const config = loadDeployConfig();
       const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
@@ -37,10 +39,12 @@ const installPackages = (config: any, options: InstallOptions) => {
   const filename = 'package.json';
   try {
     if (options.latest) {
+      debugLog('Updete dependencies to latest'.yellow);
       updatePackagesDependencies(config, filename);
     }
 
     if (config.dependencies) {
+      debugLog('Update project dependencies'.yellow);
       updatePackagesDependencies(config, filename, ...config.dependencies);
     }
 
@@ -50,6 +54,11 @@ const installPackages = (config: any, options: InstallOptions) => {
     }
 
     exec(`npm i${options.force ? ' -f' : ''}`);
+
+    if (options.symlink) {
+      // Install packages dependencies with symlink
+    }
+
     log('Dependencies installed.'.green.bold);
   } finally {
     updatePackagesDependenciesZero(config, filename);
