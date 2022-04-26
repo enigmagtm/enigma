@@ -14,7 +14,7 @@ interface InstallOptions {
 export const createInstallCommand = (): void => {
   program
     .command('install [projectName]').alias('i')
-    .option('-f --force', 'Force install of pacakges', false)
+    .option('-f --force', 'Force install of packages', false)
     .option('-l --latest', 'Install latest versions of pacakges', false)
     .option('-c --clean', 'Delete node_modules directory', false)
     .option('-sl --symlink', 'Symbolic link to project dependencies', false)

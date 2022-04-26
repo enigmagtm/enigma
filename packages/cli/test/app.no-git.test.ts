@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { join } from 'path';
-import { createApp } from '../src/create';
+import { createApp } from '../src/commands';
 
 describe('app structure with no git', () => {
   const appName = 'test-no-git-app';
@@ -8,7 +8,7 @@ describe('app structure with no git', () => {
   beforeAll(() => {
     delete process.env.ENIGMA_DB;
     fs.rmSync(folderPath, { recursive: true, force: true });
-    createApp(appName, { database: 'pg', skipInstall: true, skipGit: true });
+    createApp(appName, { database: 'pg', skipInstall: true, skipGit: true, skipCommit: false, force: false });
   });
 
   afterAll(() => {

@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import { join } from 'path';
-import { loadDeployConfig } from '../scripts/config';
+import { loadDeployConfig } from '../scripts';
 import { debugLog, exec, log } from '../utils';
 
 export interface VersionOptions {

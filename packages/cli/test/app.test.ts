@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { join } from 'path';
-import { createApp } from '../src/create';
+import { createApp } from '../src/commands';
 
 describe('app structure', () => {
   const appName = 'test-app';
@@ -8,7 +8,7 @@ describe('app structure', () => {
   beforeAll(() => {
     delete process.env.ENIGMA_DB;
     fs.rmSync(folderPath, { recursive: true, force: true });
-    createApp(appName, { database: 'pg', skipInstall: true });
+    createApp(appName, { database: 'pg', skipInstall: true, skipGit: false, skipCommit: false, force: false });
   });
 
   afterAll(() => {

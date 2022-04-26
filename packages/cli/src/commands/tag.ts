@@ -1,7 +1,7 @@
 import { program } from 'commander';
 import fs from 'fs';
 import { join, normalize } from 'path';
-import { loadDeployConfig } from '../scripts/config';
+import { loadDeployConfig } from '../scripts';
 import { exec, log } from '../utils';
 
 export const createTagsCommand = (): void => {
