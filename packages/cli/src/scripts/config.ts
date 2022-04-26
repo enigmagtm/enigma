@@ -1,3 +1,4 @@
+import { red } from 'colors';
 import fs from 'fs';
 import { join, normalize } from 'path';
 import { debugLog, log } from '../utils';
@@ -11,6 +12,23 @@ export interface DeployConfiguration {
 }
 
 let config: DeployConfiguration;
+
+export const mapProjectDependencies = (dependencies: string[]) => {
+  return dependencies?.map((name: string) => {
+    const project = loadProjectConfig(name);
+    return project.name;
+  }) || [];
+};
+
+export const loadProjectConfig = (name: string): DeployConfiguration => {
+  const project = config?.projects[name];
+  if (!project) {
+    log(`Project ${name} not found in configuration projects`, red);
+    process.exit();
+  }
+
+  return project;
+};
 
 export const loadDeployConfig = (): DeployConfiguration => {
   try {

@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import { buildCompilerOptions, getPackageVersion, loadDeployConfig, updatePackagesDependencies, updatePackageVersion } from '../scripts';
+import { buildCompilerOptions, getPackageVersion, loadDeployConfig, mapProjectDependencies, updatePackagesDependencies, updatePackageVersion } from '../scripts';
 import { exec, log } from '../utils';
 import { BuildOptions, generateBuild } from './build';
 import { generateVersion, VersionOptions } from './version';
@@ -39,7 +39,7 @@ const publishPackages = (name: string, options: PublishOptions): void => {
 export const publishPackage = (config: any, options: PublishOptions) => {
   log(`Publish to package manager ${config.name}`.blue.bold);
   const packageJsonName = 'package.json';
-  updatePackagesDependencies(config, packageJsonName, ...(config.dependencies || []));
+  updatePackagesDependencies(config, packageJsonName, ...mapProjectDependencies(config.dsependencies));
   exec(`npm i${options.force ? ' -f' : ''}`);
   updatePackageVersion(packageJsonName, getPackageVersion(config.name));
   generateBuild(config, options);

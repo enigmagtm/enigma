@@ -18,7 +18,7 @@
       "rootDir": "./packages/orm",
       "tsconfig": "tsconfig.json",
       "dependencies": [
-        "@enigmagtm/core"
+        "core"
       ]
     },
     "http": {
@@ -26,7 +26,7 @@
       "rootDir": "./packages/http",
       "tsconfig": "tsconfig.json",
       "dependencies": [
-        "@enigmagtm/core"
+        "core"
       ]
     },
     "rsc": {
@@ -34,9 +34,9 @@
       "rootDir": "./packages/rsc",
       "tsconfig": "tsconfig.json",
       "dependencies": [
-        "@enigmagtm/core",
-        "@enigmagtm/orm",
-        "@enigmagtm/http"
+        "core",
+        "orm",
+        "http"
       ]
     }
   }

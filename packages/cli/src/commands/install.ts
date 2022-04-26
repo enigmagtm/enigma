@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import fs from 'fs';
-import { loadDeployConfig, updatePackagesDependencies, updatePackagesDependenciesZero } from '../scripts';
+import { DeployConfiguration, loadDeployConfig, mapProjectDependencies, updatePackagesDependencies, updatePackagesDependenciesSymLink, updatePackagesDependenciesZero } from '../scripts';
 import { debugLog, exec, log } from '../utils';
 
 interface InstallOptions {
@@ -35,7 +35,7 @@ const installPackages = (name: string, options: InstallOptions): void => {
   }
 };
 
-const installPackage = (config: any, options: InstallOptions) => {
+const installPackage = (config: DeployConfiguration, options: InstallOptions) => {
   log(`Install dependencies for ${config.name}`.blue.bold);
   const filename = 'package.json';
   try {
@@ -46,7 +46,7 @@ const installPackage = (config: any, options: InstallOptions) => {
 
     if (config.dependencies) {
       debugLog('Update project dependencies'.yellow);
-      updatePackagesDependencies(config, filename, ...config.dependencies);
+      updatePackagesDependencies(config, filename, ...mapProjectDependencies(config.dependencies));
     }
 
     if (options.clean) {
@@ -54,11 +54,12 @@ const installPackage = (config: any, options: InstallOptions) => {
       fs.rmSync('node_modules', { recursive: true, force: true });
     }
 
-    exec(`npm i${options.force ? ' -f' : ''}`);
-
     if (options.symlink) {
-      // Install packages dependencies with symlink
+      debugLog('Update dependencies with symlink'.yellow);
+      updatePackagesDependenciesSymLink(config, filename);
     }
+
+    exec(`npm i${options.force ? ' -f' : ''}`);
 
     log('Dependencies installed.'.green.bold);
   } finally {
