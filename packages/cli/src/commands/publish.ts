@@ -13,6 +13,7 @@ export const createPublishCommand = (): void => {
   program
     .command('publish [name]')
     .alias('p')
+    .option('-a --assets [assets]', 'Copy assets folder to out directory', 'assets')
     .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
     .option('-f --force [force]', 'Force install packages', false)
     .option('-dr --dry-run [dryRun]', 'Publish package to package manager', false)

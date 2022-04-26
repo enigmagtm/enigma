@@ -35,16 +35,16 @@ const generateBuilds = (name: string, options: BuildOptions): void => {
 export const generateBuild = (config: any, options: BuildOptions) => {
   log(`Building project/package ${config.name}`.blue.bold);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
-  if (compilerOptions.outDir) {
-    fs.rmSync(compilerOptions.outDir, { recursive: true, force: true });
+  const outDir = compilerOptions.outDir ? normalize(join(config.rootDir, compilerOptions.outDir)) : null;
+  if (outDir) {
+    fs.rmSync(outDir, { recursive: true, force: true });
   }
 
   exec(`tsc -p ${config.tsconfig || 'tsconfig.json'}`);
-  if (compilerOptions.outDir) {
+  if (outDir) {
     const packageJsonName = 'package.json';
     updatePackageVersion(packageJsonName, getPackageVersion(config.name));
     updatePackagesDependencies(config, packageJsonName);
-    const outDir = normalize(compilerOptions.outDir);
     if (options.version) {
       exec(`cd ${outDir} && npm version ${options.version}`);
     }
