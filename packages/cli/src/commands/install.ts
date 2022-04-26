@@ -1,6 +1,5 @@
 import { program } from 'commander';
 import fs from 'fs';
-import { join, normalize } from 'path';
 import { loadDeployConfig, updatePackagesDependencies, updatePackagesDependenciesZero } from '../scripts';
 import { debugLog, exec, log } from '../utils';
 
@@ -28,7 +27,7 @@ const installPackages = (name: string, options: InstallOptions): void => {
   try {
     for (const project of projects) {
       const configProject = config.projects[project];
-      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      process.chdir(configProject.rootDir);
       installPackage(configProject, options);
     }
   } finally {

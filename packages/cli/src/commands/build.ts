@@ -24,7 +24,7 @@ const generateBuilds = (name: string, options: BuildOptions): void => {
   try {
     for (const project of projects) {
       const configProject = config.projects[project];
-      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      process.chdir(configProject.rootDir);
       generateBuild(configProject, options);
     }
   } finally {

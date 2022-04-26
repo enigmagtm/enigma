@@ -1,5 +1,4 @@
 import { program } from 'commander';
-import { join, normalize } from 'path';
 import { buildCompilerOptions, getPackageVersion, loadDeployConfig, updatePackagesDependencies, updatePackageVersion } from '../scripts';
 import { exec, log } from '../utils';
 import { BuildOptions, generateBuild } from './build';
@@ -29,7 +28,7 @@ const publishPackages = (name: string, options: PublishOptions): void => {
   try {
     for (const project of projects) {
       const configProject = config.projects[project];
-      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      process.chdir(configProject.rootDir);
       publishPackage(configProject, options);
     }
   } finally {

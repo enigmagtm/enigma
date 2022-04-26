@@ -1,6 +1,5 @@
 import { program } from 'commander';
 import fs from 'fs';
-import { join, normalize } from 'path';
 import { loadDeployConfig } from '../scripts';
 import { exec, log } from '../utils';
 
@@ -17,7 +16,7 @@ const generateTags = (name: string): void => {
   try {
     for (const project of projects) {
       const configProject = config.projects[project];
-      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      process.chdir(configProject.rootDir);
       generateTag(configProject);
     }
   } finally {
