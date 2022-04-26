@@ -65,7 +65,6 @@ export const createModel = async (path: string, model: string, schema: string, t
   const filename = join(path, `${model}.model.ts`);
   fs.rmSync(filename, { force: true });
   const dirname = __dirname.split(sep);
-  dirname.pop();
-  const file = fs.readFileSync(join(...dirname, 'assets', 'model.file'), 'utf8');
+  const file = fs.readFileSync(join(...dirname, '..', 'assets', 'model.file'), 'utf8');
   fs.writeFileSync(filename, format(file, importId, schema, model, capitalize(model), fields), { encoding: 'utf8' });
 };

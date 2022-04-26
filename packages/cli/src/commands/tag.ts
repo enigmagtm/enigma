@@ -7,23 +7,25 @@ import { exec, log } from '../utils';
 export const createTagsCommand = (): void => {
   program
     .command('tags [name]')
-    .action((name: string): void => {
-      const config = loadDeployConfig();
-      const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
-      const cwd = process.cwd();
-      try {
-        for (const project of projects) {
-          const configProject = config.projects[project];
-          process.chdir(normalize(join(cwd, configProject.rootDir)));
-          generateTags(configProject);
-        }
-      } finally {
-        process.chdir(cwd);
-      }
-    });
+    .action(generateTags);
 };
 
-const generateTags = (config: any) => {
+const generateTags = (name: string): void => {
+  const config = loadDeployConfig();
+  const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const cwd = process.cwd();
+  try {
+    for (const project of projects) {
+      const configProject = config.projects[project];
+      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      generateTag(configProject);
+    }
+  } finally {
+    process.chdir(cwd);
+  }
+};
+
+const generateTag = (config: any) => {
   log(`Create tag and update project/package ${config.name}`.blue);
   const file = 'package.json';
   if (!fs.existsSync(file)) {

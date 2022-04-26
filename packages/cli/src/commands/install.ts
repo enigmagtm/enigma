@@ -18,23 +18,25 @@ export const createInstallCommand = (): void => {
     .option('-l --latest', 'Install latest versions of pacakges', false)
     .option('-c --clean', 'Delete node_modules directory', false)
     .option('-sl --symlink', 'Symbolic link to project dependencies', false)
-    .action((name: string, options: InstallOptions): void => {
-      const config = loadDeployConfig();
-      const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
-      const cwd = process.cwd();
-      try {
-        for (const project of projects) {
-          const configProject = config.projects[project];
-          process.chdir(normalize(join(cwd, configProject.rootDir)));
-          installPackages(configProject, options);
-        }
-      } finally {
-        process.chdir(cwd);
-      }
-    });
+    .action(installPackages);
 };
 
-const installPackages = (config: any, options: InstallOptions) => {
+const installPackages = (name: string, options: InstallOptions): void => {
+  const config = loadDeployConfig();
+  const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const cwd = process.cwd();
+  try {
+    for (const project of projects) {
+      const configProject = config.projects[project];
+      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      installPackage(configProject, options);
+    }
+  } finally {
+    process.chdir(cwd);
+  }
+};
+
+const installPackage = (config: any, options: InstallOptions) => {
   log(`Install dependencies for ${config.name}`.blue.bold);
   const filename = 'package.json';
   try {

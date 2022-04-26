@@ -12,17 +12,19 @@ export const createVersionCommand = () => {
     .command('update-version')
     .alias('uv')
     .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
-    .action((options: VersionOptions): void => {
-      const cwd = process.cwd();
-      try {
-        const config = loadDeployConfig();
-        process.chdir(join(cwd, config.rootDir));
-        const version = generateVersion(config, options);
-        debugLog(`Update project to version ${version}.`);
-      } finally {
-        process.chdir(cwd);
-      }
-    });
+    .action(generateVersions);
+};
+
+const generateVersions = (options: VersionOptions): void => {
+  const cwd = process.cwd();
+  try {
+    const config = loadDeployConfig();
+    process.chdir(join(cwd, config.rootDir));
+    const version = generateVersion(config, options);
+    debugLog(`Update project to version ${version}.`);
+  } finally {
+    process.chdir(cwd);
+  }
 };
 
 export const generateVersion = (config: any, options: VersionOptions): string => {

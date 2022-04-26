@@ -14,20 +14,22 @@ export const createBuildCommand = (): void => {
     .command('build [name]').alias('b')
     .option('-a --assets [assets]', 'Copy assets folder to out directory', 'assets')
     .option('-v --version [version]', 'Type of version according to SemVer')
-    .action((name: string, options: BuildOptions): void => {
-      const config = loadDeployConfig();
-      const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
-      const cwd = process.cwd();
-      try {
-        for (const project of projects) {
-          const configProject = config.projects[project];
-          process.chdir(normalize(join(cwd, configProject.rootDir)));
-          generateBuild(configProject, options);
-        }
-      } finally {
-        process.chdir(cwd);
-      }
-    });
+    .action(generateBuilds);
+};
+
+const generateBuilds = (name: string, options: BuildOptions): void => {
+  const config = loadDeployConfig();
+  const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const cwd = process.cwd();
+  try {
+    for (const project of projects) {
+      const configProject = config.projects[project];
+      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      generateBuild(configProject, options);
+    }
+  } finally {
+    process.chdir(cwd);
+  }
 };
 
 export const generateBuild = (config: any, options: BuildOptions) => {

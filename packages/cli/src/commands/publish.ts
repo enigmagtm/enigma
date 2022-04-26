@@ -17,22 +17,24 @@ export const createPublishCommand = (): void => {
     .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
     .option('-f --force [force]', 'Force install packages', false)
     .option('-dr --dry-run [dryRun]', 'Publish pacakge to package manager', false)
-    .action((name: string, options: PublishOptions): void => {
-      const config = loadDeployConfig();
-      const version = generateVersion(config, options);
-      options.version = version;
-      const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
-      const cwd = process.cwd();
-      try {
-        for (const project of projects) {
-          const configProject = config.projects[project];
-          process.chdir(normalize(join(cwd, configProject.rootDir)));
-          publishPackage(configProject, options);
-        }
-      } finally {
-        process.chdir(cwd);
-      }
-    });
+    .action(publishPackages);
+};
+
+const publishPackages = (name: string, options: PublishOptions): void => {
+  const config = loadDeployConfig();
+  const version = generateVersion(config, options);
+  options.version = version;
+  const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const cwd = process.cwd();
+  try {
+    for (const project of projects) {
+      const configProject = config.projects[project];
+      process.chdir(normalize(join(cwd, configProject.rootDir)));
+      publishPackage(configProject, options);
+    }
+  } finally {
+    process.chdir(cwd);
+  }
 };
 
 export const publishPackage = (config: any, options: PublishOptions) => {

@@ -3,7 +3,7 @@ import { join } from 'path';
 import { createApp } from '../src/create';
 
 describe('app structure', () => {
-  const appName = join('test', 'test-app');
+  const appName = 'test-app';
   const folderPath = join(process.cwd(), appName);
   beforeAll(() => {
     delete process.env.ENIGMA_DB;
