@@ -43,8 +43,7 @@ export const publishPackage = (config: DeployConfiguration, options: PublishOpti
   const packageJsonName = 'package.json';
   updatePackagesDependencies(config, packageJsonName, ...mapProjectDependencies(config.dependencies));
   exec(`npm i${options.force ? ' -f' : ''}`);
-  const version = getPackageVersion(config.name);
-  updatePackageVersion(packageJsonName, version);
+  updatePackageVersion(packageJsonName, getPackageVersion(config.name));
   generateBuild(config, options);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
   log('Publishing to package manager'.magenta);
@@ -52,7 +51,7 @@ export const publishPackage = (config: DeployConfiguration, options: PublishOpti
     uglifyPackage(config, options);
     exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
   } else {
-    exec(`git tag -d v${version}`);
+    exec(`git tag -d ${options.version}`);
     exec(`git reset --hard HEAD~1`);
   }
 
