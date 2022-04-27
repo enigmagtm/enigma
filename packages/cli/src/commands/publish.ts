@@ -22,19 +22,31 @@ export const createPublishCommand = (): void => {
     .action(publishPackages);
 };
 
+const revert = (version: string) => {
+  exec(`git tag -d ${version}`);
+  exec(`git reset --hard HEAD~1`);
+};
+
 const publishPackages = (name: string, options: PublishOptions): void => {
   const version = generateVersion(deployCfg, options);
-  options.version = version;
-  const projects = Object.keys(deployCfg.projects).filter((projectName: any): boolean => !name || projectName === name);
-  const cwd = process.cwd();
   try {
-    for (const project of projects) {
-      const configProject = deployCfg.projects[project];
-      process.chdir(configProject.rootDir);
-      publishPackage(configProject, options);
+    options.version = version;
+    const projects = Object.keys(deployCfg.projects).filter((projectName: any): boolean => !name || projectName === name);
+    const cwd = process.cwd();
+    try {
+      for (const project of projects) {
+        const configProject = deployCfg.projects[project];
+        process.chdir(configProject.rootDir);
+        publishPackage(configProject, options);
+      }
+    } finally {
+      if (options.dryRun) revert(options.version);
+      process.chdir(cwd);
+      exec(`git checkout .`);
     }
-  } finally {
-    process.chdir(cwd);
+  } catch (e: any) {
+    log(`Error publishing packages ${e.message}`.red.bold);
+    revert(options.version);
   }
 };
 
@@ -50,11 +62,7 @@ export const publishPackage = (config: DeployConfiguration, options: PublishOpti
   if (!options.dryRun) {
     uglifyPackage(config, options);
     exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
-  } else {
-    exec(`git tag -d ${options.version}`);
-    exec(`git reset --hard HEAD~1`);
   }
 
-  exec(`git checkout .`);
   log(`Published on package manager ${config.name}`.green.bold);
 };
