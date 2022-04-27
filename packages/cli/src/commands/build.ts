@@ -1,7 +1,9 @@
 import { program } from 'commander';
 import fs from 'fs';
 import { join, normalize } from 'path';
-import { buildCompilerOptions, getPackageVersion, loadDeployConfig, updatePackagesDependencies, updatePackagesDependenciesZero, updatePackageVersion } from '../scripts';
+import {
+  buildCompilerOptions, deployCfg, getPackageVersion, updatePackagesDependencies, updatePackagesDependenciesZero, updatePackageVersion
+} from '../scripts';
 import { exec, log } from '../utils';
 import { VersionOptions } from './version';
 
@@ -18,12 +20,11 @@ export const createBuildCommand = (): void => {
 };
 
 const generateBuilds = (name: string, options: BuildOptions): void => {
-  const config = loadDeployConfig();
-  const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const projects = Object.keys(deployCfg.projects).filter((projectName: any): boolean => !name || projectName === name);
   const cwd = process.cwd();
   try {
     for (const project of projects) {
-      const configProject = config.projects[project];
+      const configProject = deployCfg.projects[project];
       process.chdir(configProject.rootDir);
       generateBuild(configProject, options);
     }

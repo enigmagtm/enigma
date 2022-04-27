@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import { buildCompilerOptions, getPackageVersion, loadDeployConfig, mapProjectDependencies, updatePackagesDependencies, updatePackageVersion } from '../scripts';
+import { buildCompilerOptions, deployCfg, getPackageVersion, mapProjectDependencies, updatePackagesDependencies, updatePackageVersion } from '../scripts';
 import { exec, log } from '../utils';
 import { BuildOptions, generateBuild } from './build';
 import { generateVersion, VersionOptions } from './version';
@@ -21,14 +21,13 @@ export const createPublishCommand = (): void => {
 };
 
 const publishPackages = (name: string, options: PublishOptions): void => {
-  const config = loadDeployConfig();
-  const version = generateVersion(config, options);
+  const version = generateVersion(deployCfg, options);
   options.version = version;
-  const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const projects = Object.keys(deployCfg.projects).filter((projectName: any): boolean => !name || projectName === name);
   const cwd = process.cwd();
   try {
     for (const project of projects) {
-      const configProject = config.projects[project];
+      const configProject = deployCfg.projects[project];
       process.chdir(configProject.rootDir);
       publishPackage(configProject, options);
     }

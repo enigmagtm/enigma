@@ -3,18 +3,19 @@ import 'colors';
 import { program } from 'commander';
 import {
   createBuildCommand, createGenerateCommand, createInstallCommand, createNewCommand, createPublishCommand,
-  createTagsCommand, createVersionCommand
-} from './scripts';
+  createTagsCommand, createUglifyCommand, createVersionCommand
+} from './commands';
 
 program
   .option('-vb --verbose', 'Show commands and steps been executed.');
 
-createNewCommand();
 createBuildCommand();
+createGenerateCommand();
 createInstallCommand();
+createNewCommand();
 createPublishCommand();
 createTagsCommand();
+createUglifyCommand();
 createVersionCommand();
-createGenerateCommand();
 
 program.parse(process.argv);

@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import fs from 'fs';
-import { loadDeployConfig } from '../scripts';
+import { deployCfg } from '../scripts';
 import { exec, log } from '../utils';
 
 export const createTagsCommand = (): void => {
@@ -10,12 +10,11 @@ export const createTagsCommand = (): void => {
 };
 
 const generateTags = (name: string): void => {
-  const config = loadDeployConfig();
-  const projects = Object.keys(config.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const projects = Object.keys(deployCfg.projects).filter((projectName: any): boolean => !name || projectName === name);
   const cwd = process.cwd();
   try {
     for (const project of projects) {
-      const configProject = config.projects[project];
+      const configProject = deployCfg.projects[project];
       process.chdir(configProject.rootDir);
       generateTag(configProject);
     }

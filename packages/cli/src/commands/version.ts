@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import { join } from 'path';
-import { loadDeployConfig } from '../scripts';
+import { deployCfg } from '../scripts';
 import { debugLog, exec, log } from '../utils';
 
 export interface VersionOptions {
@@ -18,9 +18,8 @@ export const createVersionCommand = () => {
 const generateVersions = (options: VersionOptions): void => {
   const cwd = process.cwd();
   try {
-    const config = loadDeployConfig();
-    process.chdir(join(cwd, config.rootDir));
-    const version = generateVersion(config, options);
+    process.chdir(join(cwd, deployCfg.rootDir));
+    const version = generateVersion(deployCfg, options);
     debugLog(`Update project to version ${version}.`);
   } finally {
     process.chdir(cwd);
