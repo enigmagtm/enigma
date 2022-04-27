@@ -61,5 +61,6 @@ export const generateBuild = (config: any, options: BuildOptions) => {
     }
   }
 
+  exec('git checkout .');
   log(`Building complete ${config.name}`.green.bold);
 };

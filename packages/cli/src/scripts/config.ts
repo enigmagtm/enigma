@@ -11,7 +11,7 @@ export interface DeployConfiguration {
   dependencies?: string[];
 }
 
-export const mapProjectDependencies = (dependencies: string[]) => {
+export const mapProjectDependencies = (dependencies: string[] = []) => {
   return dependencies?.map((name: string) => {
     const project = loadProjectConfig(name);
     return project.name;

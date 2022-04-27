@@ -1,10 +1,11 @@
 import { program } from 'commander';
-import { buildCompilerOptions, deployCfg, getPackageVersion, mapProjectDependencies, updatePackagesDependencies, updatePackageVersion } from '../scripts';
+import { buildCompilerOptions, deployCfg, DeployConfiguration, getPackageVersion, mapProjectDependencies, updatePackagesDependencies, updatePackageVersion } from '../scripts';
 import { exec, log } from '../utils';
 import { BuildOptions, generateBuild } from './build';
+import { MinifyOptions, uglifyPackage } from './uglify';
 import { generateVersion, VersionOptions } from './version';
 
-export interface PublishOptions extends BuildOptions, VersionOptions {
+export interface PublishOptions extends BuildOptions, VersionOptions, MinifyOptions {
   force: boolean;
   dryRun: boolean;
 }
@@ -16,6 +17,7 @@ export const createPublishCommand = (): void => {
     .option('-a --assets [assets]', 'Copy assets folder to out directory', 'assets')
     .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
     .option('-f --force [force]', 'Force install packages', false)
+    .option('-c --compress [compress]', 'Minify build project/package', true)
     .option('-dr --dry-run [dryRun]', 'Publish package to package manager', false)
     .action(publishPackages);
 };
@@ -36,17 +38,22 @@ const publishPackages = (name: string, options: PublishOptions): void => {
   }
 };
 
-export const publishPackage = (config: any, options: PublishOptions) => {
+export const publishPackage = (config: DeployConfiguration, options: PublishOptions) => {
   log(`Publish to package manager ${config.name}`.blue.bold);
   const packageJsonName = 'package.json';
-  updatePackagesDependencies(config, packageJsonName, ...mapProjectDependencies(config.dsependencies));
+  updatePackagesDependencies(config, packageJsonName, ...mapProjectDependencies(config.dependencies));
   exec(`npm i${options.force ? ' -f' : ''}`);
-  updatePackageVersion(packageJsonName, getPackageVersion(config.name));
+  const version = getPackageVersion(config.name);
+  updatePackageVersion(packageJsonName, version);
   generateBuild(config, options);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
   log('Publishing to package manager'.magenta);
   if (!options.dryRun) {
+    uglifyPackage(config, options);
     exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
+  } else {
+    exec(`git tag -d v${version}`);
+    exec(`git reset --hard HEAD~1`);
   }
 
   exec(`git checkout .`);
