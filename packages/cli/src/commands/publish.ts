@@ -44,11 +44,11 @@ export const publishPackage = (config: any, options: PublishOptions) => {
   updatePackageVersion(packageJsonName, getPackageVersion(config.name));
   generateBuild(config, options);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
+  log('Publishing to package manager'.magenta);
   if (!options.dryRun) {
-    log('Publishing to package manager'.magenta);
     exec(`cd ${compilerOptions?.outDir || '.'} && npm publish`);
   }
 
-  exec(`git reset --hard HEAD`);
+  exec(`git checkout .`);
   log(`Published on package manager ${config.name}`.green.bold);
 };
