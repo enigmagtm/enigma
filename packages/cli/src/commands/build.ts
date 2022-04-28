@@ -30,6 +30,7 @@ const generateBuilds = (name: string, options: BuildOptions): void => {
     }
   } finally {
     process.chdir(cwd);
+    exec('git checkout .');
   }
 };
 

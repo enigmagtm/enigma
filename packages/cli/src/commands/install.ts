@@ -33,6 +33,7 @@ const installPackages = (name: string, options: InstallOptions): void => {
     }
   } finally {
     process.chdir(cwd);
+    exec('git checkout .');
   }
 };
 
