@@ -51,7 +51,7 @@ export const generateBuild = (config: any, options: BuildOptions) => {
       exec(`cd ${outDir} && npm version ${options.version}`);
     }
 
-    exec(`cp {*.md,package.json} ${outDir}`);
+    exec(`cp LICENSE README.md package.json ${outDir}`);
     updatePackageVersion('package.json', '0.0.0');
     updatePackagesDependenciesZero(config, packageJsonName);
     const baseUrl = normalize(compilerOptions.baseUrl);
