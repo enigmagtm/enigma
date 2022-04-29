@@ -1,6 +1,6 @@
 {
   "name": "enigma-srcs",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Enigma Framework for Node server aplications",
   "scripts": {
     "lint": "eslint packages/**/*.ts --fix",
