@@ -51,16 +51,15 @@ export const createApp = (name: string, options: NewAppOptions) => {
   const sourcePath = createFolders([...names, source]);
   const appPath = createFolders([...names, source, app]);
   const configPath = createFolders([...names, source, config]);
-  const currentDir = __dirname.split(sep);
-  const entryFile = fs.readFileSync(join(...currentDir, '..', 'assets', 'entry.file'), 'utf8');
+  const entryFile = fs.readFileSync(join(__dirname, '..', 'assets', 'entry.file'), 'utf8');
   fs.writeFileSync(join(sourcePath, entryFilename), entryFile);
-  const appModuleFile = fs.readFileSync(join(...currentDir, '..', 'assets', 'app-module.file'), 'utf8');
+  const appModuleFile = fs.readFileSync(join(__dirname, '..', 'assets', 'app-module.file'), 'utf8');
   fs.writeFileSync(join(appPath, appFilename), appModuleFile);
-  const connectionFile = fs.readFileSync(join(...currentDir, '..', 'assets', 'connection.file'), 'utf8');
+  const connectionFile = fs.readFileSync(join(__dirname, '..', 'assets', 'connection.file'), 'utf8');
   fs.writeFileSync(join(configPath, connectionFilename), connectionFile);
-  const readmeFile = fs.readFileSync(join(...currentDir, '..', 'assets', 'readme.file'), 'utf8');
+  const readmeFile = fs.readFileSync(join(__dirname, '..', 'assets', 'readme.file'), 'utf8');
   fs.writeFileSync(join(basePath, readmeFilename), format(readmeFile, names[names.length - 1]));
-  const dotGitignoreFile = fs.readFileSync(join(...currentDir, '..', 'assets', 'gitignore.file'), 'utf8');
+  const dotGitignoreFile = fs.readFileSync(join(__dirname, '..', 'assets', 'gitignore.file'), 'utf8');
   fs.writeFileSync(join(basePath, dotGitignoreFilename), dotGitignoreFile);
   process.chdir(basePath);
   createTsconfigJson();
@@ -72,7 +71,7 @@ export const createApp = (name: string, options: NewAppOptions) => {
   if (!options.skipGit) {
     exec(`git init`);
     if (!options.skipCommit) {
-      exec(`git add . && git commit -m ":tada: initial commit`);
+      exec(`git add . && git commit -m ":tada: initial commit"`);
     }
   }
   process.chdir('..');
