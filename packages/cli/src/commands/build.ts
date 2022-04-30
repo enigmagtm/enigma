@@ -50,9 +50,7 @@ export const generateBuild = (config: any, options: BuildOptions) => {
     updatePackageVersion(packageJsonName, getPackageVersion(config.name));
     updatePackagesDependencies(config, packageJsonName);
     if (options.version) {
-      process.chdir(outDir);
-      exec(`npm version ${options.version}`);
-      process.chdir('..');
+      exec(`cd ${outDir} && npm version ${options.version}`);
     }
 
     exec(`cp -f LICENSE README.md package.json ${outDir}`);
