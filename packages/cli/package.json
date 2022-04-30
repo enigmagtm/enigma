@@ -6,10 +6,10 @@
     "ngm": "./src/cli.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && cp -f LICENSE README.md package.json ./dist && mkdir -p ./dist/src/assets && cp -f src/assets/*.* ./dist/src/assets",
+    "build": "tsc -p tsconfig.json && cp -f LICENSE README.md package.json ./dist && mkdir -p ./dist/src/assets && cp -f ./src/assets/*.* ./dist/src/assets",
     "install:pkg": "npm i --no-save",
     "link": "npm run build && npm link ./dist",
-    "publish:pkg": "npm run build && cd dist && npm publish",
+    "publish:pkg": "npm run build && cd ./dist && npm publish",
     "unlink": "npm unlink ./dist",
     "version:pkg": "npm version"
   },
