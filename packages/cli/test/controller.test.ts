@@ -1,7 +1,6 @@
 import fs from 'fs';
-import { join, sep } from 'path';
+import { join } from 'path';
 import { createController, createDataAccessObject, createModel, createResourceController } from '../src/controller';
-import { createFolders } from '../src/utils';
 
 describe('controller file', () => {
   let folderPath: string;
@@ -10,7 +9,8 @@ describe('controller file', () => {
   const model = 'folders';
   const cwd = process.cwd();
   beforeAll(async () => {
-    folderPath = createFolders(join(cwd, folder1, folder2, model).split(sep));
+    folderPath = join(cwd, folder1, folder2, model);
+    fs.mkdirSync(folderPath, { recursive: true });
     delete process.env.ENIGMA_DB;
     createController(folderPath, model);
     createDataAccessObject(folderPath, model);

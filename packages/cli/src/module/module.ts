@@ -2,14 +2,13 @@ import fs from 'fs';
 import { capitalize } from 'lodash';
 import { join, sep } from 'path';
 import prompt from 'prompt-sync';
-import { createFolders, format, log } from '../utils';
+import { format, log } from '../utils';
 
 export const createModule = (path: string, name: string) => {
   try {
-    const folders = path.split(sep);
-    const folder = createFolders(folders);
-    name = (name || folders[folders.length - 1]).toLowerCase();
-    const filename = join(folder, `${name}.module.ts`);
+    fs.mkdirSync(path, { recursive: true });
+    name = (name || path.split(sep).pop() || '').toLowerCase();
+    const filename = join(path, `${name}.module.ts`);
     if (fs.existsSync(filename)) {
       const ask = prompt({ sigint: true });
       const yesNo = ask('File already exists, replace existing file? y/n ') || 'n';
@@ -21,8 +20,7 @@ export const createModule = (path: string, name: string) => {
       fs.rmSync(filename, { force: true });
     }
 
-    const dirname = __dirname.split(sep);
-    const file = fs.readFileSync(join(...dirname, '..', 'assets', 'module.file'), 'utf8');
+    const file = fs.readFileSync(join(__dirname, '..', 'assets', 'module.file'), 'utf8');
     fs.writeFileSync(filename, format(file, name, capitalize(name)), { encoding: 'utf8' });
   } catch (e: any) {
     log(`Error in process ${e.message}`);

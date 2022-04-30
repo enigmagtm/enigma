@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { join, sep } from 'path';
-import { createFolders, format, getType } from '../src/utils';
+import { join } from 'path';
+import { format, getType } from '../src/utils';
 
 describe('utils', () => {
   let folderPath: string;
@@ -9,7 +9,7 @@ describe('utils', () => {
   const cwd = process.cwd();
   beforeAll(() => {
     folderPath = join(cwd, folder1, folder2);
-    folderPath = createFolders(folderPath.split(sep));
+    fs.mkdirSync(folderPath, { recursive: true });
   });
 
   afterAll(() => {

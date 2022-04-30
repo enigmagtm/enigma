@@ -1,8 +1,8 @@
 import { program } from 'commander';
 import fs from 'fs';
-import { join, sep } from 'path';
+import { join } from 'path';
 import PromptSync from 'prompt-sync';
-import { createFolders, exec, format, log } from '../utils';
+import { exec, format, log } from '../utils';
 import { createPackageJson } from './package';
 import { createTsconfigJson } from './tsconfig';
 
@@ -34,9 +34,9 @@ export const createApp = (name: string, options: NewAppOptions) => {
   const connectionFilename = 'connection.ts';
   const readmeFilename = 'README.md';
   const dotGitignoreFilename = '.gitignore';
-  const names = name.split(sep);
-  const projectPath = createFolders(names);
-  if (fs.readdirSync(projectPath).length > 0) {
+  const folderPath = join(process.cwd(), name);
+  fs.mkdirSync(folderPath, { recursive: true });
+  if (fs.readdirSync(folderPath).length > 0) {
     const ask = PromptSync({ sigint: true });
     const yesNo = ask('Folder already exists, create app? y/n ') || 'n';
     if (yesNo.toLowerCase() !== 'y') {
@@ -44,13 +44,15 @@ export const createApp = (name: string, options: NewAppOptions) => {
       process.exit();
     }
 
-    fs.rmSync(projectPath, { recursive: true, force: true });
+    fs.rmSync(folderPath, { recursive: true, force: true });
   }
 
-  const basePath = createFolders(names);
-  const sourcePath = createFolders([...names, source]);
-  const appPath = createFolders([...names, source, app]);
-  const configPath = createFolders([...names, source, config]);
+  const sourcePath = join(folderPath, source);
+  fs.mkdirSync(sourcePath, { recursive: true });
+  const appPath = join(sourcePath, app);
+  fs.mkdirSync(appPath, { recursive: true });
+  const configPath = join(sourcePath, config);
+  fs.mkdirSync(configPath, { recursive: true });
   const entryFile = fs.readFileSync(join(__dirname, '..', 'assets', 'entry.file'), 'utf8');
   fs.writeFileSync(join(sourcePath, entryFilename), entryFile);
   const appModuleFile = fs.readFileSync(join(__dirname, '..', 'assets', 'app-module.file'), 'utf8');
@@ -58,10 +60,10 @@ export const createApp = (name: string, options: NewAppOptions) => {
   const connectionFile = fs.readFileSync(join(__dirname, '..', 'assets', 'connection.file'), 'utf8');
   fs.writeFileSync(join(configPath, connectionFilename), connectionFile);
   const readmeFile = fs.readFileSync(join(__dirname, '..', 'assets', 'readme.file'), 'utf8');
-  fs.writeFileSync(join(basePath, readmeFilename), format(readmeFile, names[names.length - 1]));
+  fs.writeFileSync(join(folderPath, readmeFilename), format(readmeFile, name));
   const dotGitignoreFile = fs.readFileSync(join(__dirname, '..', 'assets', 'gitignore.file'), 'utf8');
-  fs.writeFileSync(join(basePath, dotGitignoreFilename), dotGitignoreFile);
-  process.chdir(basePath);
+  fs.writeFileSync(join(folderPath, dotGitignoreFilename), dotGitignoreFile);
+  process.chdir(folderPath);
   createTsconfigJson();
   createPackageJson(options.database);
   if (!options.skipInstall) {

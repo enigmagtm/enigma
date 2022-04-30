@@ -4,9 +4,9 @@ export * from './dao';
 export * from './model';
 
 import fs from 'fs';
-import { normalize, sep } from 'path';
+import { sep } from 'path';
 import prompt from 'prompt-sync';
-import { createFolders, debugLog, log } from '../utils';
+import { debugLog, log } from '../utils';
 import { createController, createDataAccessObject, createModel } from './';
 
 export interface ResourceControllerOptions {
@@ -15,10 +15,9 @@ export interface ResourceControllerOptions {
 
 export const createResourceController = async (path: string, schema: string, model: string, options: ResourceControllerOptions) => {
   try {
-    const folders = normalize(path).split(sep);
     debugLog('Create folers'.yellow);
-    const folder = createFolders(folders);
-    if (fs.readdirSync(folder).length > 0) {
+    fs.mkdirSync(path, { recursive: true });
+    if (fs.readdirSync(path).length > 0) {
       const ask = prompt({ sigint: true });
       const yesNo = ask('Directory is not empty, replace existing files? y/n ') || 'n';
       if (yesNo.toLowerCase() !== 'y') {
@@ -27,13 +26,13 @@ export const createResourceController = async (path: string, schema: string, mod
       }
     }
 
-    model = model || folders[folders.length - 1];
+    model = model || path.split(sep).pop() || '';
     debugLog('Create model');
-    await createModel(folder, model, schema, model, options.database);
+    await createModel(path, model, schema, model, options.database);
     debugLog('Create dao');
-    createDataAccessObject(folder, model);
+    createDataAccessObject(path, model);
     debugLog('Create ctrl');
-    createController(folder, model);
+    createController(path, model);
   } catch (e: any) {
     log(`Error in process ${e.message}`.red);
   }

@@ -9,13 +9,15 @@ import { VersionOptions } from './version';
 
 export interface BuildOptions extends VersionOptions {
   assets: string;
+  clean: boolean;
 }
 
 export const createBuildCommand = (): void => {
   program
     .command('build [name]').alias('b')
     .option('-a --assets [assets]', 'Copy assets folder to out directory', 'assets')
-    .option('-v --version [version]', 'Type of version according to SemVer')
+    .option('-v --version [version]', 'Type of version according to SemVer', 'patch')
+    .option('-c --clean [clean]', 'Clean build folder', false)
     .action(generateBuilds);
 };
 
@@ -38,7 +40,7 @@ export const generateBuild = (config: any, options: BuildOptions) => {
   log(`Building project/package ${config.name}`.blue.bold);
   const compilerOptions = buildCompilerOptions(config.tsconfig);
   const outDir = compilerOptions.outDir ? normalize(join(config.rootDir, compilerOptions.outDir)) : null;
-  if (outDir) {
+  if (options.clean && outDir) {
     fs.rmSync(outDir, { recursive: true, force: true });
   }
 
@@ -48,10 +50,12 @@ export const generateBuild = (config: any, options: BuildOptions) => {
     updatePackageVersion(packageJsonName, getPackageVersion(config.name));
     updatePackagesDependencies(config, packageJsonName);
     if (options.version) {
-      exec(`cd ${outDir} && npm version ${options.version}`);
+      process.chdir(outDir);
+      exec(`npm version ${options.version}`);
+      process.chdir('..');
     }
 
-    exec(`cp LICENSE README.md package.json ${outDir}`);
+    exec(`cp -f LICENSE README.md package.json ${outDir}`);
     updatePackageVersion('package.json', '0.0.0');
     updatePackagesDependenciesZero(config, packageJsonName);
     const baseUrl = normalize(compilerOptions.baseUrl);
