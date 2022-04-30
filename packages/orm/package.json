@@ -5,9 +5,9 @@
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json && cp LICENSE README.md package.json ./dist",
+    "build": "tsc -p tsconfig.json && cp LICENSE README.md package.json ./dist",
     "install:pkg": "npm i --no-save --legacy-peer-deps && npm-install-peers",
-    "publish:pkg": "npm run build && cd dist && npm publish --access public",
+    "publish:pkg": "npm run build && cd dist && npm publish",
     "version:pkg": "npm version"
   },
   "repository": {
