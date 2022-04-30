@@ -49,9 +49,6 @@ export const generateBuild = (config: any, options: BuildOptions) => {
     const packageJsonName = 'package.json';
     updatePackageVersion(packageJsonName, getPackageVersion(config.name));
     updatePackagesDependencies(config, packageJsonName);
-    if (options.version) {
-      exec(`cd ${outDir} && npm version ${options.version}`);
-    }
 
     exec(`cp -f LICENSE README.md package.json ${outDir}`);
     updatePackageVersion('package.json', '0.0.0');
@@ -61,6 +58,10 @@ export const generateBuild = (config: any, options: BuildOptions) => {
     if (fs.existsSync(assets)) {
       const assetsDist = join(outDir, baseUrl, options.assets);
       fs.cpSync(assets, assetsDist, { recursive: true });
+    }
+
+    if (options.version) {
+      exec(`cd ${outDir} && npm version ${options.version}`);
     }
   }
 
