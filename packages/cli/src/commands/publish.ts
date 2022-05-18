@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import { buildCompilerOptions, deployCfg, DeployConfiguration, getPackageVersion, mapProjectDependencies, updatePackagesDependencies, updatePackageVersion } from '../scripts';
-import { exec, log } from '../utils';
+import { exec, log, sleep } from '../utils';
 import { BuildOptions, generateBuild } from './build';
 import { MinifyOptions, uglifyPackage } from './uglify';
 import { generateVersion, VersionOptions } from './version';
@@ -27,7 +27,7 @@ const revert = (version: string) => {
   exec(`git reset --hard HEAD~1`);
 };
 
-const publishPackages = (name: string, options: PublishOptions): void => {
+const publishPackages = async (name: string, options: PublishOptions): Promise<void> => {
   const version = generateVersion(deployCfg, options);
   try {
     options.version = version;
@@ -38,6 +38,7 @@ const publishPackages = (name: string, options: PublishOptions): void => {
         const configProject = deployCfg.projects[project];
         process.chdir(configProject.rootDir);
         publishPackage(configProject, options);
+        await sleep(5000, `Waiting to publish package ${project}.`);
       }
     } finally {
       if (options.dryRun) revert(options.version);
