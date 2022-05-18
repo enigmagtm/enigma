@@ -19,7 +19,7 @@ export const mapProjectDependencies = (dependencies: string[] = []) => {
 };
 
 export const loadProjectConfig = (name: string): DeployConfiguration => {
-  const project = deployCfg?.projects[name];
+  const project = deployCfg()?.projects[name];
   if (!project) {
     log(`Project ${name} not found in configuration projects`, red);
     process.exit();
@@ -28,20 +28,23 @@ export const loadProjectConfig = (name: string): DeployConfiguration => {
   return project;
 };
 
+const rootDir = process.cwd();
+
 const loadDeployConfig = (): DeployConfiguration => {
   try {
-    if (!fs.existsSync('deploy.json')) {
+    const deployFile = join(rootDir, 'deploy.json');
+    if (!fs.existsSync(deployFile)) {
       log('Deploy configuration file not found on root directory.'.red)
       process.exit();
     }
 
     debugLog('Loading deploy configuration');
-    const cfg = JSON.parse(fs.readFileSync('deploy.json', 'utf8'));
-    cfg.rootDir = normalize(process.cwd());
+    const cfg = JSON.parse(fs.readFileSync(deployFile, 'utf8'));
+    cfg.rootDir = normalize(rootDir);
     const projects = Object.keys(cfg?.projects || {});
     for (const key of projects) {
       const project = cfg.projects[key];
-      project.rootDir = normalize(join(process.cwd(), project.rootDir));
+      project.rootDir = normalize(join(rootDir, project.rootDir));
     }
     return cfg;
   } catch (e: any) {
@@ -50,4 +53,4 @@ const loadDeployConfig = (): DeployConfiguration => {
   }
 }
 
-export const deployCfg = loadDeployConfig();
+export const deployCfg = loadDeployConfig;

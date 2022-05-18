@@ -18,8 +18,9 @@ export const createVersionCommand = () => {
 const generateVersions = (options: VersionOptions): void => {
   const cwd = process.cwd();
   try {
-    process.chdir(join(cwd, deployCfg.rootDir));
-    const version = generateVersion(deployCfg, options);
+    const cfg = deployCfg();
+    process.chdir(join(cwd, cfg.rootDir));
+    const version = generateVersion(cfg, options);
     debugLog(`Update project to version ${version}.`);
   } finally {
     process.chdir(cwd);

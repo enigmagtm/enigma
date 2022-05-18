@@ -22,11 +22,12 @@ export const createBuildCommand = (): void => {
 };
 
 const generateBuilds = (name: string, options: BuildOptions): void => {
-  const projects = Object.keys(deployCfg.projects).filter((projectName: any): boolean => !name || projectName === name);
+  const cfg = deployCfg();
+  const projects = Object.keys(cfg.projects).filter((projectName: any): boolean => !name || projectName === name);
   const cwd = process.cwd();
   try {
     for (const project of projects) {
-      const configProject = deployCfg.projects[project];
+      const configProject = cfg.projects[project];
       process.chdir(configProject.rootDir);
       generateBuild(configProject, options);
     }
