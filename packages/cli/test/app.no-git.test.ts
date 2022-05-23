@@ -6,7 +6,7 @@ describe('app structure with no git', () => {
   const appName = 'test-no-git-app';
   const folderPath = join(process.cwd(), appName);
   beforeAll(() => {
-    delete process.env.ENIGMA_DB;
+    delete process.env.ENIGMA_RDB;
     fs.rmSync(folderPath, { recursive: true, force: true });
     createApp(appName, { database: 'pg', skipInstall: true, skipGit: true, skipCommit: false, force: false });
   });

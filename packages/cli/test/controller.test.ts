@@ -11,7 +11,7 @@ describe('controller file', () => {
   beforeAll(async () => {
     folderPath = join(cwd, folder1, folder2, model);
     fs.mkdirSync(folderPath, { recursive: true });
-    delete process.env.ENIGMA_DB;
+    delete process.env.ENIGMA_RDB;
     createController(folderPath, model);
     createDataAccessObject(folderPath, model);
     await createModel(folderPath, model, model, model);
@@ -37,7 +37,7 @@ describe('command line', () => {
   const cwd = process.cwd();
   const folderPath = join(cwd, folder1, folder2, model);
   beforeAll(() => {
-    delete process.env.ENIGMA_DB;
+    delete process.env.ENIGMA_RDB;
     createResourceController(folderPath, model, model, { database: 'pg' });
   });
 

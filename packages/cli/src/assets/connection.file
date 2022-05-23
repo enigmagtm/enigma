@@ -1,6 +1,6 @@
 import { Config, initializeConnection } from '@enigmagtm/orm';
 
-const db = process.env.ENIGMA_DB || '{}';
+const db = process.env.ENIGMA_RDB || '{}';
 const { client, version, connection, pool } = JSON.parse(db);
 const config: Config = {
   client,
