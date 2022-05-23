@@ -1,11 +1,11 @@
 import { BaseRecord } from '@enigmagtm/core';
 import { isNil, remove } from 'lodash';
-import { connection } from '../db';
 import { Model } from '../model';
-import { CountResult, FieldInfo, GetAllParams, Transaction } from '../types';
+import { connection } from '../rdb';
+import { Connection, CountResult, FieldInfo, GetAllParams, Transaction } from '../types';
 import { compareObj, copyFields, copyObject, parseWhere } from '../utils';
-import { DataAccess } from './data-access';
-import { ModelAccessBase } from './model-access-base';
+import { DataAccess } from '../access/data-access';
+import { ModelAccessBase } from '../access/model-access-base';
 
 export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements DataAccess<T> {
 
@@ -349,5 +349,9 @@ export class ModelAccess<T extends Model> extends ModelAccessBase<T> implements 
     } catch (e) {
       throw e;
     }
+  }
+
+  get db(): Connection {
+    return connection(this.schema);
   }
 }

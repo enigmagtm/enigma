@@ -1,6 +1,5 @@
-import { connection } from '../db';
 import { Model, ModelRef } from '../model';
-import { Connection, FieldInfo } from '../types';
+import { FieldInfo } from '../types';
 import { DataAccessBase } from './data-access-base';
 
 export class ModelAccessBase<T extends Model> implements DataAccessBase {
@@ -18,9 +17,5 @@ export class ModelAccessBase<T extends Model> implements DataAccessBase {
     this.primaryKeys = primaryKeys;
     this.orderBy = orderBy;
     this.oneToMany = oneToMany;
-  }
-
-  get db(): Connection {
-    return connection(this.schema);
   }
 }
