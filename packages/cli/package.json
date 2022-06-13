@@ -27,7 +27,7 @@
   "dependencies": {
     "colors": "1.4.0",
     "commander": "9.2.0",
-    "knex": "2.0.0",
+    "knex": "2.1.0",
     "lodash": "4.17.21",
     "prompt-sync": "4.2.0"
   },
